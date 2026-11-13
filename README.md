@@ -9,3 +9,13 @@ Dados de mercado e rotinas da análise diária do sistema Break & Retest (linhas
 - `config/regras.json`: parâmetros do sistema.
 
 Nada de conta, senha ou saldo é guardado aqui.
+
+## Como rodar a análise
+
+```
+pip install pandas matplotlib
+python scripts/analise.py                # EURUSD, USDJPY e US500
+python scripts/analise.py EURUSD         # só um ativo
+```
+
+Gera `saida/analise.json` (linhas, níveis, planos e situação do rompimento/reteste/confirmação) e um painel PNG por ativo (4H e 1H em cima, 15m com o plano embaixo).
