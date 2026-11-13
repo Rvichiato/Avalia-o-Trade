@@ -1,0 +1,2008 @@
+{
+ "US500": {
+  "ativo": "US500",
+  "nome": "US500",
+  "ultimo_candle_15m_utc": "2026-11-13 17:00:00+00:00",
+  "preco": 7537.560059,
+  "ajuste_us500": "futuro +21.9 pontos acima do à vista (mediana de 37 candles)",
+  "atr": {
+   "4h": 49.607142857142854,
+   "1h": 24.946428571428573,
+   "15m": 24.625
+  },
+  "tendencia": {
+   "4h": "baixa",
+   "1h": "baixa",
+   "15m": "baixa"
+  },
+  "linhas": {
+   "4h": [
+    {
+     "tipo": "LTB",
+     "tf": "4h",
+     "a_hora": "2026-10-28 18:00:00+00:00",
+     "a_preco": 7797.560059,
+     "b_hora": "2026-11-11 18:00:00+00:00",
+     "b_preco": 7649.560059,
+     "toques": 4,
+     "toques_idx": [
+      -72,
+      -42,
+      -38,
+      -12
+     ],
+     "a_idx": -72,
+     "b_idx": -12,
+     "inclinacao_por_hora": -0.6166666666666667,
+     "valor_agora": 7622.426725666667,
+     "valor_proximo": 7619.960059,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "4h",
+     "a_hora": "2026-10-12 02:00:00+00:00",
+     "a_preco": 7865.060059,
+     "b_hora": "2026-10-28 18:00:00+00:00",
+     "b_preco": 7797.560059,
+     "toques": 3,
+     "toques_idx": [
+      -148,
+      -134,
+      -72
+     ],
+     "a_idx": -148,
+     "b_idx": -72,
+     "inclinacao_por_hora": -0.22203947368421054,
+     "valor_agora": 7734.5008484736845,
+     "valor_proximo": 7733.612690578948,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "4h",
+     "a_hora": "2026-11-05 10:00:00+00:00",
+     "a_preco": 7716.810059,
+     "b_hora": "2026-11-09 18:00:00+00:00",
+     "b_preco": 7578.560059,
+     "toques": 2,
+     "toques_idx": [
+      -38,
+      -24
+     ],
+     "a_idx": -38,
+     "b_idx": -24,
+     "inclinacao_por_hora": -2.46875,
+     "valor_agora": 7351.435059,
+     "valor_proximo": 7341.560059,
+     "rompida": true,
+     "rompe_idx": -22,
+     "rompe_hora": "2026-11-10 02:00:00+00:00"
+    }
+   ],
+   "1h": [
+    {
+     "tipo": "LTA",
+     "tf": "1h",
+     "a_hora": "2026-11-06 07:00:00+00:00",
+     "a_preco": 7329.310059,
+     "b_hora": "2026-11-09 07:00:00+00:00",
+     "b_preco": 7363.810059,
+     "toques": 2,
+     "toques_idx": [
+      -126,
+      -103
+     ],
+     "a_idx": -126,
+     "b_idx": -103,
+     "inclinacao_por_hora": 1.5,
+     "valor_agora": 7516.810059,
+     "valor_proximo": 7518.310059,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "1h",
+     "a_hora": "2026-11-12 16:00:00+00:00",
+     "a_preco": 7652.810059,
+     "b_hora": "2026-11-13 13:00:00+00:00",
+     "b_preco": 7647.310059,
+     "toques": 2,
+     "toques_idx": [
+      -24,
+      -4
+     ],
+     "a_idx": -24,
+     "b_idx": -4,
+     "inclinacao_por_hora": -0.275,
+     "valor_agora": 7646.485059000001,
+     "valor_proximo": 7646.210059,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTA",
+     "tf": "1h",
+     "a_hora": "2026-11-09 07:00:00+00:00",
+     "a_preco": 7363.810059,
+     "b_hora": "2026-11-13 08:00:00+00:00",
+     "b_preco": 7576.560059,
+     "toques": 2,
+     "toques_idx": [
+      -103,
+      -9
+     ],
+     "a_idx": -103,
+     "b_idx": -9,
+     "inclinacao_por_hora": 2.2632978723404253,
+     "valor_agora": 7594.666441978724,
+     "valor_proximo": 7596.929739851064,
+     "rompida": true,
+     "rompe_idx": -3,
+     "rompe_hora": "2026-11-13 14:00:00+00:00"
+    }
+   ],
+   "15m": [
+    {
+     "tipo": "LTB",
+     "tf": "15m",
+     "a_hora": "2026-11-12 16:15:00+00:00",
+     "a_preco": 7652.810059,
+     "b_hora": "2026-11-13 13:30:00+00:00",
+     "b_preco": 7647.310059,
+     "toques": 2,
+     "toques_idx": [
+      -96,
+      -15
+     ],
+     "a_idx": -96,
+     "b_idx": -15,
+     "inclinacao_por_hora": -0.2716049382716049,
+     "valor_agora": 7646.359441716049,
+     "valor_proximo": 7646.291540481482,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "15m",
+     "a_hora": "2026-11-13 00:15:00+00:00",
+     "a_preco": 7627.810059,
+     "b_hora": "2026-11-13 12:00:00+00:00",
+     "b_preco": 7617.310059,
+     "toques": 3,
+     "toques_idx": [
+      -68,
+      -62,
+      -21
+     ],
+     "a_idx": -68,
+     "b_idx": -21,
+     "inclinacao_por_hora": -0.8936170212765957,
+     "valor_agora": 7612.841973893617,
+     "valor_proximo": 7612.618569638298,
+     "rompida": true,
+     "rompe_idx": -16,
+     "rompe_hora": "2026-11-13 13:15:00+00:00"
+    }
+   ]
+  },
+  "niveis": {
+   "4h": [
+    {
+     "tf": "4h",
+     "de": 7468.060059,
+     "ate": 7471.060059,
+     "meio": 7469.560059,
+     "toques": 2,
+     "ultimo_idx": -19,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7524.060059,
+     "ate": 7536.310059,
+     "meio": 7530.185059,
+     "toques": 2,
+     "ultimo_idx": -51,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7649.560059,
+     "ate": 7654.810059,
+     "meio": 7653.435059,
+     "toques": 4,
+     "ultimo_idx": -7,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7671.810059,
+     "ate": 7682.560059,
+     "meio": 7677.810059,
+     "toques": 3,
+     "ultimo_idx": -55,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7716.810059,
+     "ate": 7724.310059,
+     "meio": 7717.560059,
+     "toques": 3,
+     "ultimo_idx": -38,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7738.310059,
+     "ate": 7751.310059,
+     "meio": 7746.153809,
+     "toques": 4,
+     "ultimo_idx": -60,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7761.060059,
+     "ate": 7771.060059,
+     "meio": 7766.060059,
+     "toques": 2,
+     "ultimo_idx": -107,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7787.560059,
+     "ate": 7797.560059,
+     "meio": 7792.060059,
+     "toques": 4,
+     "ultimo_idx": -72,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7842.060059,
+     "ate": 7857.810059,
+     "meio": 7849.935059,
+     "toques": 2,
+     "ultimo_idx": -134,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 7865.060059,
+     "ate": 7875.560059,
+     "meio": 7870.310059,
+     "toques": 2,
+     "ultimo_idx": -148,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ],
+   "1h": [
+    {
+     "tf": "1h",
+     "de": 7356.060059,
+     "ate": 7363.810059,
+     "meio": 7359.935059,
+     "toques": 2,
+     "ultimo_idx": -103,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 7544.060059,
+     "ate": 7550.060059,
+     "meio": 7545.310059,
+     "toques": 3,
+     "ultimo_idx": -27,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 7571.310059,
+     "ate": 7578.560059,
+     "meio": 7576.560059,
+     "toques": 5,
+     "ultimo_idx": -9,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 7598.560059,
+     "ate": 7606.560059,
+     "meio": 7602.560059,
+     "toques": 2,
+     "ultimo_idx": -31,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 7647.310059,
+     "ate": 7652.810059,
+     "meio": 7649.560059,
+     "toques": 3,
+     "ultimo_idx": -4,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ],
+   "15m": [
+    {
+     "tf": "15m",
+     "de": 7497.310059,
+     "ate": 7502.810059,
+     "meio": 7500.060059,
+     "toques": 2,
+     "ultimo_idx": -4,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 7571.310059,
+     "ate": 7579.560059,
+     "meio": 7578.560059,
+     "toques": 7,
+     "ultimo_idx": -35,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 7580.560059,
+     "ate": 7588.560059,
+     "meio": 7585.310059,
+     "toques": 3,
+     "ultimo_idx": -78,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 7590.810059,
+     "ate": 7599.060059,
+     "meio": 7596.060059,
+     "toques": 4,
+     "ultimo_idx": -40,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 7601.810059,
+     "ate": 7607.810059,
+     "meio": 7604.185059,
+     "toques": 6,
+     "ultimo_idx": -18,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 7611.060059,
+     "ate": 7617.310059,
+     "meio": 7614.810059,
+     "toques": 3,
+     "ultimo_idx": -21,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 7620.810059,
+     "ate": 7627.810059,
+     "meio": 7626.685059,
+     "toques": 4,
+     "ultimo_idx": -62,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 7641.310059,
+     "ate": 7649.560059,
+     "meio": 7647.310059,
+     "toques": 3,
+     "ultimo_idx": -15,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ]
+  },
+  "zonas": [
+   {
+    "de": 7544.060059,
+    "ate": 7550.060059,
+    "toques": 3,
+    "tfs": [
+     "1h"
+    ],
+    "ultimo_idx": -27,
+    "meio": 7547.060059
+   },
+   {
+    "de": 7571.310059,
+    "ate": 7627.810059,
+    "toques": 34,
+    "tfs": [
+     "15m",
+     "1h"
+    ],
+    "ultimo_idx": -9,
+    "meio": 7599.560059
+   }
+  ],
+  "redondos": [
+   7400,
+   7450,
+   7500,
+   7550,
+   7600,
+   7650
+  ],
+  "planos": [
+   {
+    "direcao": "compra",
+    "gatilho": "rompimento da resistência 7544.1–7550.1",
+    "origem": {
+     "tipo": "resistencia",
+     "toques": 3,
+     "tempos": [
+      "1h"
+     ]
+    },
+    "nivel_de": 7544.060059,
+    "nivel_ate": 7550.060059,
+    "entrada": 7552.522559,
+    "stop": 7504.660059000001,
+    "alvo": 7580.3,
+    "stop_pips": 47.9,
+    "alvo_pips": 27.8,
+    "rr": 0.58,
+    "obs_alvo": "primeiro obstáculo em 7600.0 deixa só 0.6R",
+    "alvo_estendido": 7630.3,
+    "distancia_preco_pips": 12.5,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.04,
+     "cabe_na_conta": true,
+     "risco_real_usd": 1.91,
+     "custo_comissao_usd": 0.0
+    },
+    "estado": {
+     "rompimento": null,
+     "reteste": null,
+     "confirmacao": null,
+     "falhou": "2026-11-13 15:15:00+00:00"
+    },
+    "valido": false
+   },
+   {
+    "direcao": "venda",
+    "gatilho": "rompimento da LTA do 1h (hoje em 7518.3)",
+    "origem": {
+     "tipo": "LTA",
+     "tf": "1h",
+     "toques": 2,
+     "incl_h": 1.5
+    },
+    "nivel_de": 7518.310059,
+    "nivel_ate": 7520.772559,
+    "entrada": 7515.847559000001,
+    "stop": 7621.735059,
+    "alvo": 7469.7,
+    "stop_pips": 105.9,
+    "alvo_pips": 46.1,
+    "rr": 0.44,
+    "obs_alvo": "primeiro obstáculo em 7450.0 deixa só 0.4R",
+    "alvo_estendido": 7419.7,
+    "distancia_preco_pips": 19.2,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.01,
+     "cabe_na_conta": true,
+     "risco_real_usd": 1.06,
+     "custo_comissao_usd": 0.0
+    },
+    "estado": {
+     "rompimento": "2026-11-13 16:00:00+00:00",
+     "reteste": "2026-11-13 16:15:00+00:00",
+     "confirmacao": "2026-11-13 16:30:00+00:00",
+     "falhou": "2026-11-13 15:45:00+00:00",
+     "invalidado_depois": "2026-11-13 17:00:00+00:00"
+    },
+    "valido": false
+   }
+  ],
+  "dia_anterior": {
+   "data": "2026-11-11",
+   "maxima": 7652.810059,
+   "minima": 7550.060059
+  },
+  "plano_desenhado": {
+   "direcao": "venda",
+   "gatilho": "rompimento da LTA do 1h (hoje em 7518.3)",
+   "origem": {
+    "tipo": "LTA",
+    "tf": "1h",
+    "toques": 2,
+    "incl_h": 1.5
+   },
+   "nivel_de": 7518.310059,
+   "nivel_ate": 7520.772559,
+   "entrada": 7515.847559000001,
+   "stop": 7621.735059,
+   "alvo": 7469.7,
+   "stop_pips": 105.9,
+   "alvo_pips": 46.1,
+   "rr": 0.44,
+   "obs_alvo": "primeiro obstáculo em 7450.0 deixa só 0.4R",
+   "alvo_estendido": 7419.7,
+   "distancia_preco_pips": 19.2,
+   "tamanho": {
+    "risco_usd": 2.0,
+    "lote": 0.01,
+    "cabe_na_conta": true,
+    "risco_real_usd": 1.06,
+    "custo_comissao_usd": 0.0
+   },
+   "estado": {
+    "rompimento": "2026-11-13 16:00:00+00:00",
+    "reteste": "2026-11-13 16:15:00+00:00",
+    "confirmacao": "2026-11-13 16:30:00+00:00",
+    "falhou": "2026-11-13 15:45:00+00:00",
+    "invalidado_depois": "2026-11-13 17:00:00+00:00"
+   },
+   "valido": false
+  },
+  "imagem": "/home/claude/avalia-o-trade/saida/us500_20261113_1415.png"
+ },
+ "EURUSD": {
+  "ativo": "EURUSD",
+  "nome": "EURUSD",
+  "ultimo_candle_15m_utc": "2026-11-13 17:00:00+00:00",
+  "preco": 1.103631,
+  "ajuste_us500": null,
+  "atr": {
+   "4h": 0.002297857142857161,
+   "1h": 0.00120507142857145,
+   "15m": 0.0006799285714285595
+  },
+  "tendencia": {
+   "4h": "baixa",
+   "1h": "baixa",
+   "15m": "baixa"
+  },
+  "linhas": {
+   "4h": [
+    {
+     "tipo": "LTB",
+     "tf": "4h",
+     "a_hora": "2026-11-04 10:00:00+00:00",
+     "a_preco": 1.127523,
+     "b_hora": "2026-11-10 06:00:00+00:00",
+     "b_preco": 1.125366,
+     "toques": 3,
+     "toques_idx": [
+      -45,
+      -41,
+      -21
+     ],
+     "a_idx": -45,
+     "b_idx": -21,
+     "inclinacao_por_hora": -2.246874999999963e-05,
+     "valor_agora": 1.1235685000000002,
+     "valor_proximo": 1.1234786250000002,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "4h",
+     "a_hora": "2026-10-06 10:00:00+00:00",
+     "a_preco": 1.127904,
+     "b_hora": "2026-11-04 10:00:00+00:00",
+     "b_preco": 1.127523,
+     "toques": 2,
+     "toques_idx": [
+      -171,
+      -45
+     ],
+     "a_idx": -171,
+     "b_idx": -45,
+     "inclinacao_por_hora": -7.559523809523109e-07,
+     "valor_agora": 1.1273899523809525,
+     "valor_proximo": 1.1273869285714286,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "4h",
+     "a_hora": "2026-11-10 06:00:00+00:00",
+     "a_preco": 1.125366,
+     "b_hora": "2026-11-12 10:00:00+00:00",
+     "b_preco": 1.110618,
+     "toques": 2,
+     "toques_idx": [
+      -21,
+      -8
+     ],
+     "a_idx": -21,
+     "b_idx": -8,
+     "inclinacao_por_hora": -0.0002836153846153843,
+     "valor_agora": 1.1026767692307693,
+     "valor_proximo": 1.1015423076923079,
+     "rompida": true,
+     "rompe_idx": -3,
+     "rompe_hora": "2026-11-13 06:00:00+00:00"
+    }
+   ],
+   "1h": [
+    {
+     "tipo": "LTB",
+     "tf": "1h",
+     "a_hora": "2026-11-10 08:00:00+00:00",
+     "a_preco": 1.125366,
+     "b_hora": "2026-11-13 13:00:00+00:00",
+     "b_preco": 1.107052,
+     "toques": 2,
+     "toques_idx": [
+      -81,
+      -4
+     ],
+     "a_idx": -81,
+     "b_idx": -4,
+     "inclinacao_por_hora": -0.00023784415584415797,
+     "valor_agora": 1.1063384675324675,
+     "valor_proximo": 1.1061006233766233,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "1h",
+     "a_hora": "2026-11-10 08:00:00+00:00",
+     "a_preco": 1.125366,
+     "b_hora": "2026-11-13 07:00:00+00:00",
+     "b_preco": 1.10742,
+     "toques": 2,
+     "toques_idx": [
+      -81,
+      -10
+     ],
+     "a_idx": -81,
+     "b_idx": -10,
+     "inclinacao_por_hora": -0.0002527605633802819,
+     "valor_agora": 1.1051451549295774,
+     "valor_proximo": 1.1048923943661972,
+     "rompida": true,
+     "rompe_idx": -3,
+     "rompe_hora": "2026-11-13 14:00:00+00:00"
+    }
+   ],
+   "15m": [
+    {
+     "tipo": "LTB",
+     "tf": "15m",
+     "a_hora": "2026-11-12 10:45:00+00:00",
+     "a_preco": 1.110618,
+     "b_hora": "2026-11-13 07:00:00+00:00",
+     "b_preco": 1.10742,
+     "toques": 4,
+     "toques_idx": [
+      -122,
+      -108,
+      -41,
+      -10
+     ],
+     "a_idx": -122,
+     "b_idx": -41,
+     "inclinacao_por_hora": -0.00015792592592592762,
+     "valor_agora": 1.105840740740741,
+     "valor_proximo": 1.1058012592592592,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "15m",
+     "a_hora": "2026-11-12 10:45:00+00:00",
+     "a_preco": 1.110618,
+     "b_hora": "2026-11-13 13:30:00+00:00",
+     "b_preco": 1.107052,
+     "toques": 2,
+     "toques_idx": [
+      -122,
+      -15
+     ],
+     "a_idx": -122,
+     "b_idx": -15,
+     "inclinacao_por_hora": -0.00013330841121496,
+     "valor_agora": 1.1065854205607475,
+     "valor_proximo": 1.1065520934579438,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTA",
+     "tf": "15m",
+     "a_hora": "2026-11-12 17:45:00+00:00",
+     "a_preco": 1.10485,
+     "b_hora": "2026-11-13 10:45:00+00:00",
+     "b_preco": 1.104972,
+     "toques": 2,
+     "toques_idx": [
+      -94,
+      -26
+     ],
+     "a_idx": -94,
+     "b_idx": -26,
+     "inclinacao_por_hora": 7.176470588232675e-06,
+     "valor_agora": 1.1050168529411766,
+     "valor_proximo": 1.1050186470588237,
+     "rompida": true,
+     "rompe_idx": -8,
+     "rompe_hora": "2026-11-13 15:15:00+00:00"
+    }
+   ]
+  },
+  "niveis": {
+   "4h": [
+    {
+     "tf": "4h",
+     "de": 1.110618,
+     "ate": 1.111358,
+     "meio": 1.110988,
+     "toques": 2,
+     "ultimo_idx": -8,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.113586,
+     "ate": 1.113958,
+     "meio": 1.113772,
+     "toques": 2,
+     "ultimo_idx": -32,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.114951,
+     "ate": 1.1152,
+     "meio": 1.1150755,
+     "toques": 2,
+     "ultimo_idx": -19,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.116819,
+     "ate": 1.117568,
+     "meio": 1.117194,
+     "toques": 3,
+     "ultimo_idx": -73,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.118944,
+     "ate": 1.119319,
+     "meio": 1.1191315,
+     "toques": 4,
+     "ultimo_idx": -94,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.120699,
+     "ate": 1.120825,
+     "meio": 1.120762,
+     "toques": 2,
+     "ultimo_idx": -112,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.121705,
+     "ate": 1.121705,
+     "meio": 1.121705,
+     "toques": 3,
+     "ultimo_idx": -44,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.123974,
+     "ate": 1.124606,
+     "meio": 1.124354,
+     "toques": 3,
+     "ultimo_idx": -58,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.125366,
+     "ate": 1.125746,
+     "meio": 1.125556,
+     "toques": 2,
+     "ultimo_idx": -21,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.12638,
+     "ate": 1.127142,
+     "meio": 1.1267610000000001,
+     "toques": 2,
+     "ultimo_idx": -41,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 1.127269,
+     "ate": 1.127904,
+     "meio": 1.127523,
+     "toques": 3,
+     "ultimo_idx": -45,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ],
+   "1h": [
+    {
+     "tf": "1h",
+     "de": 1.10485,
+     "ate": 1.105094,
+     "meio": 1.104972,
+     "toques": 2,
+     "ultimo_idx": -17,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 1.107052,
+     "ate": 1.10742,
+     "meio": 1.1072359999999999,
+     "toques": 2,
+     "ultimo_idx": -4,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 1.110371,
+     "ate": 1.110618,
+     "meio": 1.1104945000000002,
+     "toques": 2,
+     "ultimo_idx": -31,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ],
+   "15m": [
+    {
+     "tf": "15m",
+     "de": 1.104728,
+     "ate": 1.10485,
+     "meio": 1.104728,
+     "toques": 3,
+     "ultimo_idx": -12,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 1.104972,
+     "ate": 1.105094,
+     "meio": 1.1050330000000002,
+     "toques": 2,
+     "ultimo_idx": -26,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 1.105828,
+     "ate": 1.10595,
+     "meio": 1.105828,
+     "toques": 3,
+     "ultimo_idx": -22,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 1.106072,
+     "ate": 1.106195,
+     "meio": 1.1061334999999999,
+     "toques": 2,
+     "ultimo_idx": -10,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 1.107052,
+     "ate": 1.107052,
+     "meio": 1.107052,
+     "toques": 2,
+     "ultimo_idx": -15,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 1.108893,
+     "ate": 1.109016,
+     "meio": 1.1089544999999998,
+     "toques": 2,
+     "ultimo_idx": -170,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 1.109755,
+     "ate": 1.109755,
+     "meio": 1.109755,
+     "toques": 2,
+     "ultimo_idx": -173,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ]
+  },
+  "zonas": [
+   {
+    "de": 1.104728,
+    "ate": 1.105094,
+    "toques": 7,
+    "tfs": [
+     "15m",
+     "1h"
+    ],
+    "ultimo_idx": -12,
+    "meio": 1.104911
+   },
+   {
+    "de": 1.105828,
+    "ate": 1.106195,
+    "toques": 5,
+    "tfs": [
+     "15m"
+    ],
+    "ultimo_idx": -10,
+    "meio": 1.1060115000000001
+   },
+   {
+    "de": 1.107052,
+    "ate": 1.10742,
+    "toques": 4,
+    "tfs": [
+     "15m",
+     "1h"
+    ],
+    "ultimo_idx": -15,
+    "meio": 1.1072359999999999
+   }
+  ],
+  "redondos": [
+   1.09,
+   1.095,
+   1.1,
+   1.105,
+   1.11,
+   1.115
+  ],
+  "planos": [
+   {
+    "direcao": "compra",
+    "gatilho": "rompimento da resistência 1.1047–1.1051",
+    "origem": {
+     "tipo": "resistencia",
+     "toques": 7,
+     "tempos": [
+      "15m",
+      "1h"
+     ]
+    },
+    "nivel_de": 1.104728,
+    "nivel_ate": 1.105094,
+    "entrada": 1.1051619928571428,
+    "stop": 1.1036401142857144,
+    "alvo": 1.1065080571428572,
+    "stop_pips": 15.2,
+    "alvo_pips": 13.5,
+    "rr": 0.88,
+    "obs_alvo": "primeiro obstáculo em 1.1071 deixa só 0.9R",
+    "alvo_estendido": 1.1094560571428573,
+    "distancia_preco_pips": 14.6,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.01,
+     "cabe_na_conta": true,
+     "risco_real_usd": 1.52,
+     "custo_comissao_usd": 0.07
+    },
+    "estado": {
+     "rompimento": null,
+     "reteste": null,
+     "confirmacao": null,
+     "falhou": "2026-11-13 15:30:00+00:00"
+    },
+    "valido": false
+   },
+   {
+    "direcao": "compra",
+    "gatilho": "rompimento da LTB do 15m (hoje em 1.1058)",
+    "origem": {
+     "tipo": "LTB",
+     "tf": "15m",
+     "toques": 4,
+     "incl_h": -0.00015792592592592762
+    },
+    "nivel_de": 1.1057332664021164,
+    "nivel_ate": 1.1058012592592592,
+    "entrada": 1.105869252116402,
+    "stop": 1.104645380687831,
+    "alvo": 1.1065080571428572,
+    "stop_pips": 12.2,
+    "alvo_pips": 6.4,
+    "rr": 0.52,
+    "obs_alvo": "primeiro obstáculo em 1.1071 deixa só 0.5R",
+    "alvo_estendido": 1.1094560571428573,
+    "distancia_preco_pips": 21.7,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.01,
+     "cabe_na_conta": true,
+     "risco_real_usd": 1.22,
+     "custo_comissao_usd": 0.07
+    },
+    "estado": {
+     "rompimento": null,
+     "reteste": null,
+     "confirmacao": null
+    },
+    "valido": false
+   }
+  ],
+  "dia_anterior": {
+   "data": "2026-11-11",
+   "maxima": 1.110618,
+   "minima": 1.10485
+  },
+  "plano_desenhado": {
+   "direcao": "compra",
+   "gatilho": "rompimento da resistência 1.1047–1.1051",
+   "origem": {
+    "tipo": "resistencia",
+    "toques": 7,
+    "tempos": [
+     "15m",
+     "1h"
+    ]
+   },
+   "nivel_de": 1.104728,
+   "nivel_ate": 1.105094,
+   "entrada": 1.1051619928571428,
+   "stop": 1.1036401142857144,
+   "alvo": 1.1065080571428572,
+   "stop_pips": 15.2,
+   "alvo_pips": 13.5,
+   "rr": 0.88,
+   "obs_alvo": "primeiro obstáculo em 1.1071 deixa só 0.9R",
+   "alvo_estendido": 1.1094560571428573,
+   "distancia_preco_pips": 14.6,
+   "tamanho": {
+    "risco_usd": 2.0,
+    "lote": 0.01,
+    "cabe_na_conta": true,
+    "risco_real_usd": 1.52,
+    "custo_comissao_usd": 0.07
+   },
+   "estado": {
+    "rompimento": null,
+    "reteste": null,
+    "confirmacao": null,
+    "falhou": "2026-11-13 15:30:00+00:00"
+   },
+   "valido": false
+  },
+  "imagem": "/home/claude/avalia-o-trade/saida/eurusd_20261113_1415.png"
+ },
+ "USDJPY": {
+  "ativo": "USDJPY",
+  "nome": "USDJPY",
+  "ultimo_candle_15m_utc": "2026-11-13 17:00:00+00:00",
+  "preco": 159.899002,
+  "ajuste_us500": null,
+  "atr": {
+   "4h": 0.3385729285714295,
+   "1h": 0.17442885714285492,
+   "15m": 0.0923592142857156
+  },
+  "tendencia": {
+   "4h": "alta",
+   "1h": "alta",
+   "15m": "lateral"
+  },
+  "linhas": {
+   "4h": [
+    {
+     "tipo": "LTA",
+     "tf": "4h",
+     "a_hora": "2026-10-26 02:00:00+00:00",
+     "a_preco": 156.645004,
+     "b_hora": "2026-11-05 22:00:00+00:00",
+     "b_preco": 157.248993,
+     "toques": 3,
+     "toques_idx": [
+      -89,
+      -63,
+      -36
+     ],
+     "a_idx": -89,
+     "b_idx": -36,
+     "inclinacao_por_hora": 0.0028490047169811923,
+     "valor_agora": 157.6478536603774,
+     "valor_proximo": 157.6592496792453,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTA",
+     "tf": "4h",
+     "a_hora": "2026-10-22 22:00:00+00:00",
+     "a_preco": 156.072006,
+     "b_hora": "2026-11-05 22:00:00+00:00",
+     "b_preco": 157.248993,
+     "toques": 2,
+     "toques_idx": [
+      -96,
+      -36
+     ],
+     "a_idx": -96,
+     "b_idx": -36,
+     "inclinacao_por_hora": 0.004904112500000105,
+     "valor_agora": 157.93556875000002,
+     "valor_proximo": 157.95518520000002,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTA",
+     "tf": "4h",
+     "a_hora": "2026-10-22 22:00:00+00:00",
+     "a_preco": 156.072006,
+     "b_hora": "2026-11-04 02:00:00+00:00",
+     "b_preco": 157.380005,
+     "toques": 3,
+     "toques_idx": [
+      -96,
+      -63,
+      -47
+     ],
+     "a_idx": -96,
+     "b_idx": -47,
+     "inclinacao_por_hora": 0.006673464285714407,
+     "valor_agora": 158.60792242857147,
+     "valor_proximo": 158.63461628571432,
+     "rompida": true,
+     "rompe_idx": -24,
+     "rompe_hora": "2026-11-09 18:00:00+00:00"
+    }
+   ],
+   "1h": [
+    {
+     "tipo": "LTA",
+     "tf": "1h",
+     "a_hora": "2026-11-11 05:00:00+00:00",
+     "a_preco": 158.703003,
+     "b_hora": "2026-11-12 16:00:00+00:00",
+     "b_preco": 159.302994,
+     "toques": 2,
+     "toques_idx": [
+      -60,
+      -25
+     ],
+     "a_idx": -60,
+     "b_idx": -25,
+     "inclinacao_por_hora": 0.017142600000000487,
+     "valor_agora": 159.71441640000003,
+     "valor_proximo": 159.73155900000003,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTA",
+     "tf": "1h",
+     "a_hora": "2026-11-09 19:00:00+00:00",
+     "a_preco": 157.662994,
+     "b_hora": "2026-11-10 07:00:00+00:00",
+     "b_preco": 157.865997,
+     "toques": 2,
+     "toques_idx": [
+      -94,
+      -82
+     ],
+     "a_idx": -94,
+     "b_idx": -82,
+     "inclinacao_por_hora": 0.016916916666666282,
+     "valor_agora": 159.23626724999997,
+     "valor_proximo": 159.25318416666664,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTA",
+     "tf": "1h",
+     "a_hora": "2026-11-10 07:00:00+00:00",
+     "a_preco": 157.865997,
+     "b_hora": "2026-11-13 06:00:00+00:00",
+     "b_preco": 159.643005,
+     "toques": 3,
+     "toques_idx": [
+      -82,
+      -25,
+      -11
+     ],
+     "a_idx": -82,
+     "b_idx": -11,
+     "inclinacao_por_hora": 0.025028281690140774,
+     "valor_agora": 159.8932878169014,
+     "valor_proximo": 159.91831609859153,
+     "rompida": true,
+     "rompe_idx": -3,
+     "rompe_hora": "2026-11-13 14:00:00+00:00"
+    }
+   ],
+   "15m": [
+    {
+     "tipo": "LTA",
+     "tf": "15m",
+     "a_hora": "2026-11-12 01:00:00+00:00",
+     "a_preco": 159.472,
+     "b_hora": "2026-11-12 13:00:00+00:00",
+     "b_preco": 159.552994,
+     "toques": 4,
+     "toques_idx": [
+      -161,
+      -113,
+      -108,
+      -8
+     ],
+     "a_idx": -161,
+     "b_idx": -113,
+     "inclinacao_por_hora": 0.006749500000000334,
+     "valor_agora": 159.74198,
+     "valor_proximo": 159.74366737500003,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTB",
+     "tf": "15m",
+     "a_hora": "2026-11-13 06:15:00+00:00",
+     "a_preco": 160.188004,
+     "b_hora": "2026-11-13 12:15:00+00:00",
+     "b_preco": 160.063004,
+     "toques": 2,
+     "toques_idx": [
+      -44,
+      -20
+     ],
+     "a_idx": -44,
+     "b_idx": -20,
+     "inclinacao_por_hora": -0.020833333333333332,
+     "valor_agora": 159.96404566666666,
+     "valor_proximo": 159.95883733333335,
+     "rompida": false,
+     "rompe_idx": null,
+     "rompe_hora": null
+    },
+    {
+     "tipo": "LTA",
+     "tf": "15m",
+     "a_hora": "2026-11-12 01:00:00+00:00",
+     "a_preco": 159.472,
+     "b_hora": "2026-11-12 14:15:00+00:00",
+     "b_preco": 159.567993,
+     "toques": 3,
+     "toques_idx": [
+      -161,
+      -113,
+      -108
+     ],
+     "a_idx": -161,
+     "b_idx": -108,
+     "inclinacao_por_hora": 0.0072447547169805955,
+     "valor_agora": 159.76179018867924,
+     "valor_proximo": 159.76360137735847,
+     "rompida": true,
+     "rompe_idx": -9,
+     "rompe_hora": "2026-11-13 15:00:00+00:00"
+    }
+   ]
+  },
+  "niveis": {
+   "4h": [
+    {
+     "tf": "4h",
+     "de": 157.160004,
+     "ate": 157.248993,
+     "meio": 157.2044985,
+     "toques": 2,
+     "ultimo_idx": -36,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 157.503998,
+     "ate": 157.597,
+     "meio": 157.558502,
+     "toques": 4,
+     "ultimo_idx": -71,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 157.649002,
+     "ate": 157.761993,
+     "meio": 157.686996,
+     "toques": 5,
+     "ultimo_idx": -24,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 157.820999,
+     "ate": 157.841995,
+     "meio": 157.828499,
+     "toques": 4,
+     "ultimo_idx": -105,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 158.001007,
+     "ate": 158.106003,
+     "meio": 158.070999,
+     "toques": 3,
+     "ultimo_idx": -57,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 158.246994,
+     "ate": 158.347,
+     "meio": 158.31900000000002,
+     "toques": 6,
+     "ultimo_idx": -73,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 158.369995,
+     "ate": 158.431,
+     "meio": 158.391998,
+     "toques": 3,
+     "ultimo_idx": -108,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 158.503006,
+     "ate": 158.604004,
+     "meio": 158.511993,
+     "toques": 3,
+     "ultimo_idx": -39,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 158.653,
+     "ate": 158.768005,
+     "meio": 158.71099850000002,
+     "toques": 4,
+     "ultimo_idx": -33,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "4h",
+     "de": 159.938004,
+     "ate": 160.044006,
+     "meio": 159.991005,
+     "toques": 2,
+     "ultimo_idx": -7,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ],
+   "1h": [
+    {
+     "tf": "1h",
+     "de": 157.662994,
+     "ate": 157.686005,
+     "meio": 157.6744995,
+     "toques": 2,
+     "ultimo_idx": -94,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 157.865997,
+     "ate": 157.908005,
+     "meio": 157.887001,
+     "toques": 2,
+     "ultimo_idx": -82,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 157.992996,
+     "ate": 158.007996,
+     "meio": 158.000496,
+     "toques": 2,
+     "ultimo_idx": -119,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 158.123993,
+     "ate": 158.125,
+     "meio": 158.12449650000002,
+     "toques": 2,
+     "ultimo_idx": -89,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 158.653,
+     "ate": 158.703003,
+     "meio": 158.658997,
+     "toques": 3,
+     "ultimo_idx": -60,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 159.472,
+     "ate": 159.529999,
+     "meio": 159.5009995,
+     "toques": 2,
+     "ultimo_idx": -31,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 159.938004,
+     "ate": 159.945999,
+     "meio": 159.9420015,
+     "toques": 2,
+     "ultimo_idx": -34,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "1h",
+     "de": 160.044006,
+     "ate": 160.063004,
+     "meio": 160.053505,
+     "toques": 2,
+     "ultimo_idx": -5,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ],
+   "15m": [
+    {
+     "tf": "15m",
+     "de": 159.472,
+     "ate": 159.492004,
+     "meio": 159.48200200000002,
+     "toques": 2,
+     "ultimo_idx": -161,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.552994,
+     "ate": 159.567993,
+     "meio": 159.5604935,
+     "toques": 2,
+     "ultimo_idx": -108,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.589996,
+     "ate": 159.598007,
+     "meio": 159.5940015,
+     "toques": 2,
+     "ultimo_idx": -117,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.630005,
+     "ate": 159.653,
+     "meio": 159.643005,
+     "toques": 3,
+     "ultimo_idx": -43,
+     "papeis": [
+      "fundo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.720001,
+     "ate": 159.735992,
+     "meio": 159.727005,
+     "toques": 3,
+     "ultimo_idx": -8,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.757996,
+     "ate": 159.781998,
+     "meio": 159.774002,
+     "toques": 5,
+     "ultimo_idx": -15,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.794998,
+     "ate": 159.815002,
+     "meio": 159.800499,
+     "toques": 4,
+     "ultimo_idx": -85,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.835007,
+     "ate": 159.860992,
+     "meio": 159.845497,
+     "toques": 4,
+     "ultimo_idx": -31,
+     "papeis": [
+      "fundo",
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.886002,
+     "ate": 159.901001,
+     "meio": 159.8929975,
+     "toques": 4,
+     "ultimo_idx": -81,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.919998,
+     "ate": 159.949997,
+     "meio": 159.945007,
+     "toques": 5,
+     "ultimo_idx": -35,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 159.962997,
+     "ate": 159.990997,
+     "meio": 159.9735035,
+     "toques": 4,
+     "ultimo_idx": -12,
+     "papeis": [
+      "topo"
+     ]
+    },
+    {
+     "tf": "15m",
+     "de": 160.044006,
+     "ate": 160.063004,
+     "meio": 160.053505,
+     "toques": 2,
+     "ultimo_idx": -20,
+     "papeis": [
+      "topo"
+     ]
+    }
+   ]
+  },
+  "zonas": [
+   {
+    "de": 159.472,
+    "ate": 159.653,
+    "toques": 11,
+    "tfs": [
+     "15m",
+     "1h"
+    ],
+    "ultimo_idx": -43,
+    "meio": 159.5625
+   },
+   {
+    "de": 159.720001,
+    "ate": 159.990997,
+    "toques": 31,
+    "tfs": [
+     "15m",
+     "1h"
+    ],
+    "ultimo_idx": -8,
+    "meio": 159.855499
+   },
+   {
+    "de": 160.044006,
+    "ate": 160.063004,
+    "toques": 4,
+    "tfs": [
+     "15m",
+     "1h"
+    ],
+    "ultimo_idx": -5,
+    "meio": 160.053505
+   }
+  ],
+  "redondos": [
+   158.5,
+   159.0,
+   159.5,
+   160.0,
+   160.5,
+   161.0
+  ],
+  "planos": [
+   {
+    "direcao": "venda",
+    "gatilho": "rompimento do suporte 159.47–159.65",
+    "origem": {
+     "tipo": "suporte",
+     "toques": 11,
+     "tempos": [
+      "15m",
+      "1h"
+     ]
+    },
+    "nivel_de": 159.472,
+    "nivel_ate": 159.653,
+    "entrada": 159.46276407857144,
+    "stop": 159.80077474285713,
+    "alvo": 159.07388737142858,
+    "stop_pips": 33.8,
+    "alvo_pips": 38.9,
+    "rr": 1.15,
+    "obs_alvo": "primeiro obstáculo em 159.00 deixa só 1.2R",
+    "alvo_estendido": 158.57388737142858,
+    "distancia_preco_pips": 42.7,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.0,
+     "cabe_na_conta": false,
+     "risco_real_usd": 2.11,
+     "custo_comissao_usd": 0.07
+    },
+    "estado": {
+     "rompimento": null,
+     "reteste": null,
+     "confirmacao": null
+    },
+    "valido": false
+   },
+   {
+    "direcao": "compra",
+    "gatilho": "rompimento da LTB do 15m (hoje em 159.96)",
+    "origem": {
+     "tipo": "LTB",
+     "tf": "15m",
+     "toques": 2,
+     "incl_h": -0.020833333333333332
+    },
+    "nivel_de": 159.94960141190478,
+    "nivel_ate": 159.95883733333335,
+    "entrada": 159.96807325476192,
+    "stop": 159.57092863333335,
+    "alvo": 160.42611262857142,
+    "stop_pips": 39.7,
+    "alvo_pips": 45.8,
+    "rr": 1.15,
+    "obs_alvo": "primeiro obstáculo em 160.50 deixa só 1.2R",
+    "alvo_estendido": 160.92611262857142,
+    "distancia_preco_pips": 6.0,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.0,
+     "cabe_na_conta": false,
+     "risco_real_usd": 2.48,
+     "custo_comissao_usd": 0.07
+    },
+    "estado": {
+     "rompimento": null,
+     "reteste": null,
+     "confirmacao": null,
+     "falhou": "2026-11-13 13:15:00+00:00"
+    },
+    "valido": false
+   },
+   {
+    "direcao": "venda",
+    "gatilho": "rompimento da LTA do 15m (hoje em 159.74)",
+    "origem": {
+     "tipo": "LTA",
+     "tf": "15m",
+     "toques": 4,
+     "incl_h": 0.006749500000000334
+    },
+    "nivel_de": 159.74366737500003,
+    "nivel_ate": 159.7529032964286,
+    "entrada": 159.73443145357146,
+    "stop": 159.90067803928574,
+    "alvo": 159.57388737142858,
+    "stop_pips": 16.6,
+    "alvo_pips": 16.1,
+    "rr": 0.97,
+    "obs_alvo": "primeiro obstáculo em 159.50 deixa só 1.0R",
+    "alvo_estendido": 159.07388737142858,
+    "distancia_preco_pips": 15.5,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.01,
+     "cabe_na_conta": true,
+     "risco_real_usd": 1.04,
+     "custo_comissao_usd": 0.07
+    },
+    "estado": {
+     "rompimento": null,
+     "reteste": null,
+     "confirmacao": null
+    },
+    "valido": false
+   },
+   {
+    "direcao": "compra",
+    "gatilho": "rompimento da resistência 160.04–160.06",
+    "origem": {
+     "tipo": "resistencia",
+     "toques": 4,
+     "tempos": [
+      "15m",
+      "1h"
+     ]
+    },
+    "nivel_de": 160.044006,
+    "nivel_ate": 160.063004,
+    "entrada": 160.07223992142858,
+    "stop": 159.66533322142857,
+    "alvo": 160.42611262857142,
+    "stop_pips": 40.7,
+    "alvo_pips": 35.4,
+    "rr": 0.87,
+    "obs_alvo": "primeiro obstáculo em 160.50 deixa só 0.9R",
+    "alvo_estendido": 160.92611262857142,
+    "distancia_preco_pips": 16.4,
+    "tamanho": {
+     "risco_usd": 2.0,
+     "lote": 0.0,
+     "cabe_na_conta": false,
+     "risco_real_usd": 2.54,
+     "custo_comissao_usd": 0.07
+    },
+    "estado": {
+     "rompimento": null,
+     "reteste": null,
+     "confirmacao": null
+    },
+    "valido": false
+   }
+  ],
+  "dia_anterior": {
+   "data": "2026-11-11",
+   "maxima": 160.044006,
+   "minima": 159.302994
+  },
+  "plano_desenhado": {
+   "direcao": "compra",
+   "gatilho": "rompimento da LTB do 15m (hoje em 159.96)",
+   "origem": {
+    "tipo": "LTB",
+    "tf": "15m",
+    "toques": 2,
+    "incl_h": -0.020833333333333332
+   },
+   "nivel_de": 159.94960141190478,
+   "nivel_ate": 159.95883733333335,
+   "entrada": 159.96807325476192,
+   "stop": 159.57092863333335,
+   "alvo": 160.42611262857142,
+   "stop_pips": 39.7,
+   "alvo_pips": 45.8,
+   "rr": 1.15,
+   "obs_alvo": "primeiro obstáculo em 160.50 deixa só 1.2R",
+   "alvo_estendido": 160.92611262857142,
+   "distancia_preco_pips": 6.0,
+   "tamanho": {
+    "risco_usd": 2.0,
+    "lote": 0.0,
+    "cabe_na_conta": false,
+    "risco_real_usd": 2.48,
+    "custo_comissao_usd": 0.07
+   },
+   "estado": {
+    "rompimento": null,
+    "reteste": null,
+    "confirmacao": null,
+    "falhou": "2026-11-13 13:15:00+00:00"
+   },
+   "valido": false
+  },
+  "imagem": "/home/claude/avalia-o-trade/saida/usdjpy_20261113_1415.png"
+ }
+}
