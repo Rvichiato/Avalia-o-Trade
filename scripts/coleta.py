@@ -25,6 +25,7 @@ def baixar(simbolo, intervalo, periodo):
     raise RuntimeError(f"falha ao baixar {simbolo} {intervalo}")
 
 def main():
+    os.makedirs(BASE, exist_ok=True)
     agora = pd.Timestamp.now(tz="UTC")
     ultimo, erros = {}, []
     for nome, simbolo in ATIVOS.items():
