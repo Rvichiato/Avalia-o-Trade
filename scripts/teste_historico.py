@@ -25,6 +25,7 @@ P = {
     "intervalo_decisao_min": 60,
     "duplicata_atr": 0.5,
     "bootstrap": 3000,
+    "stop_minimo_atr": 0.75,         # stop menor que isso (ou que 3x o custo) não é operável
 }
 UTC = pd.Timedelta(0)
 
@@ -105,7 +106,8 @@ def simular(ativo, d15, i_ini, p, a15, contexto):
                 fase, i_romp = 1, i
                 # modo direto: entra no fechamento do candle de rompimento
                 ent = float(r.c)
-                if (direcao == "venda" and ent < p["stop"]) or (direcao == "compra" and ent > p["stop"]):
+                risco_d = (p["stop"] - ent) if direcao == "venda" else (ent - p["stop"])
+                if risco_d >= max(P["stop_minimo_atr"] * a15, 3 * custo_pips(ativo, ent) * pip):
                     if p["alvo"] is None or (direcao == "venda" and ent > p["alvo"]) or (direcao == "compra" and ent < p["alvo"]):
                         sai, mot, j = gerenciar(d15, i + 1, direcao, ent, p["stop"], p["alvo"], ativo)
                         out.append(_registro("direto", ativo, p, d15, i, i + 1, j, ent, sai, mot, contexto, pip))
@@ -134,6 +136,9 @@ def simular(ativo, d15, i_ini, p, a15, contexto):
                 ent = float(d15.o.iloc[i + 1])  # deslizamento entra no custo
                 risco = (p["stop"] - ent) if direcao == "venda" else (ent - p["stop"])
                 if risco <= 0:
+                    break
+                if risco < max(P["stop_minimo_atr"] * a15, 3 * custo_pips(ativo, ent) * pip):
+                    out.append(dict(modo="sistema", ativo=ativo, descartado="stop pequeno demais na entrada"))
                     break
                 if p["alvo"] is not None:
                     ganho = (ent - p["alvo"]) if direcao == "venda" else (p["alvo"] - ent)
@@ -234,6 +239,8 @@ def metricas(R):
         payoff=round(float(ganhos.mean() / -perdas.mean()), 2) if len(ganhos) and len(perdas) and perdas.mean() < 0 else None,
         profit_factor=round(float(ganhos.sum() / -perdas.sum()), 2) if len(perdas) and perdas.sum() < 0 else None,
         soma_R=round(float(R.sum()), 2), drawdown_R=round(dd, 2), pior_sequencia=int(pior),
+        mediana=round(float(np.median(R)), 3),
+        media_sem_2_maiores=round(float(np.sort(R)[:-2].mean()), 3) if len(R) > 4 else None,
     )
 
 
