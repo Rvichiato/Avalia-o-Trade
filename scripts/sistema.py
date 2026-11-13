@@ -339,11 +339,11 @@ def planos(ativo, dfs, lin, niv):
             continue
         if l["tipo"] == "LTB" and v > preco:
             montar("compra", f"rompimento da LTB do {l['tf']} (hoje em {v:.{A['casas']}f})",
-                   v - 0.1 * a15, v, dict(tipo="LTB", tf=l["tf"], toques=l["toques"]),
+                   v - 0.1 * a15, v, dict(tipo="LTB", tf=l["tf"], toques=l["toques"], incl_h=l["inclinacao_por_hora"]),
                    l["toques_idx"][-1] if l["tf"] == "15m" else None)
         if l["tipo"] == "LTA" and v < preco:
             montar("venda", f"rompimento da LTA do {l['tf']} (hoje em {v:.{A['casas']}f})",
-                   v, v + 0.1 * a15, dict(tipo="LTA", tf=l["tf"], toques=l["toques"]),
+                   v, v + 0.1 * a15, dict(tipo="LTA", tf=l["tf"], toques=l["toques"], incl_h=l["inclinacao_por_hora"]),
                    l["toques_idx"][-1] if l["tf"] == "15m" else None)
     out.sort(key=lambda p: (not p["valido"], -(p["rr"] or 0)))
     finais = []
@@ -360,6 +360,12 @@ def analisar(ativo):
     if CFG["ativos"][ativo].get("ajuste_futuro"):
         ajuste, nota = ajuste_us500()
     dfs = {tf: carregar(ativo, tf, ajuste) for tf in ("4h", "1h", "15m")}
+    return analisar_dfs(ativo, dfs, nota), dfs
+
+
+def analisar_dfs(ativo, dfs, nota=None):
+    """Mesma análise, sobre dataframes já cortados (o teste histórico usa isto
+    com os dados cortados no instante simulado, sem ver o futuro)."""
     lin = {tf: linhas(dfs[tf], tf, ativo) for tf in dfs}
     niv = {tf: niveis(dfs[tf], tf, ativo) for tf in dfs}
     pl, zonas, rd = planos(ativo, dfs, lin, niv)
@@ -375,7 +381,7 @@ def analisar(ativo):
         ajuste_us500=nota, atr={tf: atr(dfs[tf]) for tf in dfs},
         tendencia=tend, linhas=lin, niveis=niv, zonas=zonas, redondos=rd, planos=pl,
         dia_anterior=_dia_anterior(dfs["1h"]),
-    ), dfs
+    )
 
 
 def _dia_anterior(d1):

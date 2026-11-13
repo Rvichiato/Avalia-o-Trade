@@ -19,3 +19,11 @@ python scripts/analise.py EURUSD         # só um ativo
 ```
 
 Gera `saida/analise.json` (linhas, níveis, planos e situação do rompimento/reteste/confirmação) e um painel PNG por ativo (4H e 1H em cima, 15m com o plano embaixo).
+
+## Teste histórico
+
+```
+python scripts/teste_historico.py              # EURUSD, USDJPY e US500
+```
+
+Roda o motor a cada hora cheia da sessão só com os candles já fechados naquele instante e simula cada plano no 15m: (1) o sistema completo (rompimento, reteste e confirmação) e (2) a entrada direta no rompimento. Custos descontados em R. Resultado em `testes/AAAA-MM-DD/` (trades.csv, resumo.json, curva.png).

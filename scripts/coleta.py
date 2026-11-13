@@ -1,7 +1,7 @@
 """Coleta candles do Yahoo Finance (via yfinance) e salva em dados/<ATIVO>_<tf>.csv (horário UTC).
 
 Ativos: EURUSD, USDJPY, US500 (futuro do S&P 500, ES=F), XAUUSD (futuro do ouro, GC=F) e SPX (índice à vista, ^GSPC, só no pregão: serve para calibrar a diferença entre o futuro e o US500 da Tickmill).
-Tempos: 15m (últimos 30 dias) e 1h (últimos 180 dias). O 4H é montado a partir do 1h.
+Tempos: 15m (últimos 60 dias, o máximo do Yahoo) e 1h (últimos 180 dias). O 4H é montado a partir do 1h.
 Só candles fechados são gravados; o candle em formação vai para dados/ultimo.json.
 """
 import json, sys, time, os, datetime as dt
@@ -9,7 +9,7 @@ import pandas as pd
 import yfinance as yf
 
 ATIVOS = {"EURUSD": "EURUSD=X", "USDJPY": "JPY=X", "US500": "ES=F", "XAUUSD": "GC=F", "SPX": "^GSPC"}
-TEMPOS = {"15m": ("15m", "30d", 900), "1h": ("60m", "180d", 3600)}
+TEMPOS = {"15m": ("15m", "60d", 900), "1h": ("60m", "180d", 3600)}
 BASE = os.path.join(os.path.dirname(__file__), "..", "dados")
 
 def baixar(simbolo, intervalo, periodo):
