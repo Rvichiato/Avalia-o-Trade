@@ -8,46 +8,110 @@
   },
   "fuso_exibicao_horas": -3,
   "sessoes_brt": {
-    "londres": ["05:00", "14:00"],
-    "nova_york": ["10:00", "19:00"],
-    "pregao_eua": ["11:30", "18:00"]
+    "londres": [
+      "05:00",
+      "14:00"
+    ],
+    "nova_york": [
+      "10:00",
+      "19:00"
+    ],
+    "pregao_eua": [
+      "11:30",
+      "18:00"
+    ]
   },
-  "janela_sem_entrada_brt": [["10:00", "11:00"]],
+  "janela_sem_entrada_brt": [
+    [
+      "10:00",
+      "11:00"
+    ]
+  ],
   "abertura_4h_utc": 22,
   "ativos": {
     "EURUSD": {
-      "nome": "EURUSD", "pip": 0.0001, "casas": 4, "valor_pip_lote": 10.0,
-      "spread_pips": 0.2, "redondo": 0.0050, "sessao": "fx", "operar": true
+      "nome": "EURUSD",
+      "pip": 0.0001,
+      "casas": 4,
+      "valor_pip_lote": 10.0,
+      "spread_pips": 0.2,
+      "redondo": 0.005,
+      "sessao": "fx",
+      "operar": true,
+      "unidade": "pips",
+      "fator_unidade": 1
     },
     "USDJPY": {
-      "nome": "USDJPY", "pip": 0.01, "casas": 2, "valor_pip_lote": "1000/preco",
-      "spread_pips": 0.3, "redondo": 0.50, "sessao": "fx", "operar": true
+      "nome": "USDJPY",
+      "pip": 0.01,
+      "casas": 2,
+      "valor_pip_lote": "1000/preco",
+      "spread_pips": 0.3,
+      "redondo": 0.5,
+      "sessao": "fx",
+      "operar": true,
+      "unidade": "pips",
+      "fator_unidade": 1
     },
     "US500": {
-      "nome": "US500", "pip": 1.0, "casas": 1, "valor_pip_lote": 1.0,
-      "spread_pips": 0.4, "redondo": 50, "sessao": "indice", "operar": true,
+      "nome": "US500",
+      "pip": 1.0,
+      "casas": 1,
+      "valor_pip_lote": 1.0,
+      "spread_pips": 0.4,
+      "redondo": 50,
+      "sessao": "indice",
+      "operar": true,
       "comissao_usd_por_lote_ida_volta": 0.0,
-      "ajuste_futuro": "SPX"
+      "ajuste_futuro": "SPX",
+      "unidade": "pontos",
+      "fator_unidade": 1
     },
     "XAUUSD": {
-      "nome": "XAUUSD (ouro)", "pip": 0.1, "casas": 2, "valor_pip_lote": 10.0,
-      "spread_pips": 1.5, "redondo": 10, "sessao": "fx", "operar": false
+      "nome": "XAUUSD (ouro)",
+      "pip": 0.1,
+      "casas": 2,
+      "valor_pip_lote": 10.0,
+      "spread_pips": 1.5,
+      "redondo": 50,
+      "sessao": "fx",
+      "operar": false,
+      "unidade": "dólares",
+      "fator_unidade": 0.1,
+      "ajuste_fixo": 5.0
     }
   },
   "tempos": {
-    "4h":  {"janela": 180, "pivo": 3, "intervalo_min_linha": 12, "mostrar": 110},
-    "1h":  {"janela": 140, "pivo": 3, "intervalo_min_linha": 10, "mostrar": 120},
-    "15m": {"janela": 200, "pivo": 3, "intervalo_min_linha": 10, "mostrar": 150}
+    "4h": {
+      "janela": 180,
+      "pivo": 3,
+      "intervalo_min_linha": 12,
+      "mostrar": 110
+    },
+    "1h": {
+      "janela": 140,
+      "pivo": 3,
+      "intervalo_min_linha": 10,
+      "mostrar": 120
+    },
+    "15m": {
+      "janela": 200,
+      "pivo": 3,
+      "intervalo_min_linha": 10,
+      "mostrar": 150
+    }
   },
   "linhas": {
     "tolerancia_atr": 0.15,
     "toques_minimos": 2,
-    "rompimento_recente_barras": 24
+    "rompimento_recente_barras": 24,
+    "rompimento_atr": 0.3
   },
   "niveis": {
     "agrupar_atr": 0.35,
     "toques_minimos": 2,
-    "distancia_max_atr_1h": 4
+    "distancia_max_atr_1h": 4,
+    "pivo_4h": 5
   },
   "filtro_picos_atr": 6
 }

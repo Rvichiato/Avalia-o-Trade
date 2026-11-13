@@ -120,7 +120,7 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
     F = _fmt(ativo); T = CFG["tempos"]
     fig = plt.figure(figsize=(16, 12.5), facecolor="#0e0f13")
     gs = fig.add_gridspec(2, 1, height_ratios=[1, 1.35], hspace=0.22,
-                          left=0.02, right=0.95, top=0.88, bottom=0.04)
+                          left=0.02, right=0.95, top=0.86, bottom=0.04)
     gs_cima = gs[0].subgridspec(1, 2, wspace=0.1)
     gs_baixo = gs[1].subgridspec(1, 2, width_ratios=[3.3, 1], wspace=0.07)
     hora = (pd.Timestamp(r["ultimo_candle_15m_utc"]) + pd.Timedelta(minutes=15) + FUSO)
@@ -148,7 +148,7 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
     info = fig.add_subplot(gs_baixo[0, 1])
     caixa = []
     d = dfs["15m"].iloc[-T["15m"]["mostrar"]:]
-    n = len(d); extra = 46
+    n = len(d); extra = 56
     _velas(ax, d)
     _eixo(ax, d, "15m", extra)
     ax.axvspan(n - 0.5, n + extra, color="#000000", alpha=0.35, zorder=0)
@@ -158,7 +158,7 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
     lo, hi = d.l.min(), d.h.max()
     for z in r["zonas"]:
         ax.axhspan(z["de"], z["ate"], xmax=1, color=TEAL, alpha=0.22, zorder=1)
-        ax.text(2, z["ate"], f" {F(z['de'])}–{F(z['ate'])} · {z['toques']} toques", color=TEAL, fontsize=8, va="bottom", clip_on=True)
+        ax.text(2, z["ate"], f" {F(z['de'])}–{F(z['ate'])} · {z['toques']} toque{'s' if z['toques'] > 1 else ''}", color=TEAL, fontsize=8, va="bottom", clip_on=True)
     marcas = [] if not plano else [plano["entrada"], plano["stop"]] + ([plano["alvo"]] if plano["alvo"] else [])
     for rd in r["redondos"]:
         if lo - (hi - lo) * 0.3 <= rd <= hi + (hi - lo) * 0.3:
@@ -180,7 +180,9 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
             ylo, yhi = min(ylo, p["alvo"]), max(yhi, p["alvo"])
         ax.plot([x0, x1], [p["entrada"]] * 2, color=AZUL, linewidth=2.2, zorder=7)
         ylo, yhi = min(ylo, p["stop"]), max(yhi, p["stop"])
-        ax.text(x1 + 0.5, p["stop"], f"Stop {F(p['stop'])} ({p['stop_pips']:.0f})", color=VERM, fontsize=9, va="center", fontweight="bold")
+        A_ = CFG["ativos"][ativo]; un = A_.get("unidade", "pips"); fu = A_.get("fator_unidade", 1)
+        un = {"dólares": "dól.", "pontos": "pts"}.get(un, un)
+        ax.text(x1 + 0.5, p["stop"], f"Stop {F(p['stop'])} ({p['stop_pips'] * fu:.0f} {un})", color=VERM, fontsize=9, va="center", fontweight="bold")
         ax.text(x1 + 0.5, p["entrada"], f"Entrada {F(p['entrada'])}", color=AZUL, fontsize=9, va="center", fontweight="bold")
         if p["alvo"] is not None:
             ax.text(x1 + 0.5, p["alvo"], f"Alvo {F(p['alvo'])} ({p['rr']:.1f}R)", color=VERDE, fontsize=9, va="center", fontweight="bold")
@@ -209,7 +211,7 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
                  f"2 · Reteste: o preço volta a {F(nv)}",
                  f"3 · Confirmação: candle fecha a favor → entra no seguinte",
                  br(f"Lote {lote:.2f} · risco ≈ US$ {p['tamanho']['risco_real_usd']:.2f}") if lote >= 0.01 else
-                 f"Stop de {p['stop_pips']:.0f} não cabe no risco de US$ {p['tamanho']['risco_usd']:.0f}",
+                 f"Stop de {p['stop_pips'] * fu:.0f} {un} não cabe no risco de US$ {p['tamanho']['risco_usd']:.0f}",
                  st]
         if p.get("obs_alvo"):
             caixa.append(br(f"Atenção: {p['obs_alvo']}; abaixo do mínimo de 1,5R"))
@@ -226,7 +228,7 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
             linhas15.append(f"{nome}: {l['toques']} toques, hoje em {F(l['valor_proximo'])}")
     _titulo(ax, [linhas15[0], "  ·  ".join(linhas15[1:])] if len(linhas15) > 1 else linhas15)
     if not caixa:
-        caixa = ["Sem plano desenhado agora."]
+        caixa = ["Só observar: nenhum plano a favor da tendência do 4H/1H com risco e relação mínima de 1,5R."]
     # cabeçalho do plano em destaque, resto em texto corrido
     _coluna(info, [caixa[0], ""] + caixa[1:4] + [""] + caixa[4:])
     fig.savefig(caminho, dpi=110, facecolor=fig.get_facecolor())

@@ -119,9 +119,9 @@ def linhas(df, tf, ativo):
                 # rompimento por fechamento
                 rompe = None
                 for x in range(B + 1, n):
-                    if tipo == "LTB" and d.c.values[x] > f(x) + tol * 0.5:
+                    if tipo == "LTB" and d.c.values[x] > f(x) + L.get("rompimento_atr", 0.3) * a:
                         rompe = x; break
-                    if tipo == "LTA" and d.c.values[x] < f(x) - tol * 0.5:
+                    if tipo == "LTA" and d.c.values[x] < f(x) - L.get("rompimento_atr", 0.3) * a:
                         rompe = x; break
                 fim = rompe if rompe is not None else n
                 toques = [i for i in piv if A <= i < fim and abs(v[i] - f(i)) <= tol]
@@ -223,7 +223,7 @@ def estado_gatilho(df15, nivel, direcao, a15, barras=24, desde=None):
     reteste (volta a tocar o nível pelo outro lado) e confirmação (fecha a favor)."""
     ini = -barras if desde is None else max(-barras, desde + 1)
     d = df15.iloc[ini:] if ini < 0 else df15.iloc[0:0]
-    tol = 0.1 * a15
+    tol = CFG["linhas"].get("rompimento_atr", 0.3) * a15
     passos = {"rompimento": None, "reteste": None, "confirmacao": None}
     for i, (t, r) in enumerate(d.iterrows()):
         if passos["rompimento"] is None:
@@ -257,7 +257,13 @@ def planos(ativo, dfs, lin, niv):
     buf = max(A["spread_pips"] * pip * 2, 0.1 * a15)
     buf_alvo = max(buf, 0.8 * a15)  # alvo fica antes do obstáculo, não em cima dele
     # gatilhos: níveis do 1h/15m perto do preço + linhas ativas do 15m/1h
-    zonas = [z for z in niv["1h"] + niv["15m"]
+    d4 = dfs["4h"].iloc[-CFG["tempos"]["4h"]["janela"]:]
+    k4 = CFG["niveis"].get("pivo_4h", 5)
+    marcantes = [dict(tf="4h", de=float(d4.l.iloc[i]), ate=float(d4.l.iloc[i]), meio=float(d4.l.iloc[i]), toques=1,
+                      ultimo_idx=-10**6, papeis=["fundo"]) for i in pivos(d4.l, k4, "fundo")]
+    marcantes += [dict(tf="4h", de=float(d4.h.iloc[i]), ate=float(d4.h.iloc[i]), meio=float(d4.h.iloc[i]), toques=1,
+                       ultimo_idx=-10**6, papeis=["topo"]) for i in pivos(d4.h, k4, "topo")]
+    zonas = [z for z in niv["4h"] + marcantes + niv["1h"] + niv["15m"]
              if abs(z["meio"] - preco) <= CFG["niveis"]["distancia_max_atr_1h"] * a1]
     zonas = [dict(z) for z in zonas]
     # junta zonas sobrepostas de tempos diferentes
@@ -273,7 +279,7 @@ def planos(ativo, dfs, lin, niv):
         uni[-1]["ultimo_idx"] = max(uni[-1]["ultimo_idx"], z["ultimo_idx"]) if z["tf"] == "15m" else uni[-1]["ultimo_idx"]
     for u in uni:
         u["meio"] = (u["de"] + u["ate"]) / 2
-    uni = [u for u in uni if u["toques"] >= 3 or "1h" in u["tfs"]]
+    uni = [u for u in uni if u["toques"] >= 3 or "1h" in u["tfs"] or "4h" in u["tfs"]]
     rd = redondos(ativo, preco, 3)
     alvos_baixo = sorted([u["ate"] for u in uni if u["ate"] < preco] + [x for x in rd if x < preco], reverse=True)
     alvos_cima = sorted([u["de"] for u in uni if u["de"] > preco] + [x for x in rd if x > preco])
@@ -323,12 +329,12 @@ def planos(ativo, dfs, lin, niv):
 
     sup = [u for u in uni if u["ate"] < preco]
     res = [u for u in uni if u["de"] > preco]
-    if sup:
-        s = max(sup, key=lambda u: u["ate"])
+    # os dois suportes e as duas resistências mais próximos: se o primeiro esbarra em
+    # obstáculo perto demais, o segundo costuma ser o gatilho que vale
+    for s in sorted(sup, key=lambda u: -u["ate"])[:2]:
         montar("venda", f"rompimento do suporte {s['de']:.{A['casas']}f}–{s['ate']:.{A['casas']}f}",
                s["de"], s["ate"], dict(tipo="suporte", toques=s["toques"], tempos=s["tfs"]), s["ultimo_idx"])
-    if res:
-        r = min(res, key=lambda u: u["de"])
+    for r in sorted(res, key=lambda u: u["de"])[:2]:
         montar("compra", f"rompimento da resistência {r['de']:.{A['casas']}f}–{r['ate']:.{A['casas']}f}",
                r["de"], r["ate"], dict(tipo="resistencia", toques=r["toques"], tempos=r["tfs"]), r["ultimo_idx"])
     for l in lin.get("15m", []) + lin.get("1h", []):
@@ -359,6 +365,9 @@ def analisar(ativo):
     ajuste, nota = (0.0, None)
     if CFG["ativos"][ativo].get("ajuste_futuro"):
         ajuste, nota = ajuste_us500()
+    elif CFG["ativos"][ativo].get("ajuste_fixo"):
+        ajuste = CFG["ativos"][ativo]["ajuste_fixo"]
+        nota = f"futuro convertido para o à vista da Tickmill (−{ajuste:.0f}, calibrado com print)"
     dfs = {tf: carregar(ativo, tf, ajuste) for tf in ("4h", "1h", "15m")}
     return analisar_dfs(ativo, dfs, nota), dfs
 

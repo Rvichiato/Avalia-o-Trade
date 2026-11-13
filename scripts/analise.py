@@ -14,15 +14,21 @@ import grafico as G
 
 
 def melhor_plano(r):
-    """Prefere o plano a favor da tendência do 4H e do 1H; depois o válido; depois o mais perto do preço."""
-    if not r["planos"]:
-        return None
+    """Só desenha plano a favor da tendência: do 4H, ou do 1H quando o 4H está lateral.
+    Sem plano assim, nada é desenhado (o painel diz "só observar")."""
     t4, t1 = r["tendencia"]["4h"], r["tendencia"]["1h"]
-    def a_favor(p):
-        alvo = "baixa" if p["direcao"] == "venda" else "alta"
-        return (t4 == alvo) + (t1 == alvo)
-    return sorted(r["planos"], key=lambda p: (-a_favor(p), not p["valido"],
-                                              p["distancia_preco_pips"], -(p["rr"] or 0)))[0]
+    ref = t4 if t4 != "lateral" else t1
+    if ref == "lateral":
+        cand = [p for p in r["planos"] if p["valido"]]
+    else:
+        alvo = "venda" if ref == "baixa" else "compra"
+        cand = [p for p in r["planos"] if p["direcao"] == alvo]
+    if not cand:
+        return None
+    validos = [p for p in cand if p["valido"]]
+    if validos:  # o válido mais perto do preço
+        return sorted(validos, key=lambda p: (p["distancia_preco_pips"], -(p["rr"] or 0)))[0]
+    return sorted(cand, key=lambda p: -(p["rr"] or 0))[0]  # nenhum vale: mostra o melhor, marcado como inválido
 
 
 def main():
