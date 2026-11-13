@@ -1,0 +1,22 @@
+name: Enviar ao Telegram
+
+on:
+  workflow_dispatch: {}
+  repository_dispatch:
+    types: [telegram]
+
+concurrency:
+  group: telegram
+  cancel-in-progress: false
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enviar mensagens de envio/mensagens.json
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/telegram.py
