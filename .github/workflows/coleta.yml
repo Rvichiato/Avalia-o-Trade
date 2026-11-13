@@ -3,8 +3,8 @@ name: Coleta de candles
 on:
   schedule:
     # a cada 5 minutos, de domingo 21h UTC a sexta 22h UTC (mercado de câmbio aberto)
-    - cron: "*/5 * * * 1-5"
-    - cron: "*/5 21-23 * * 0"
+    - cron: "0-59/5 * * * 1-5"
+    - cron: "0-59/5 21-23 * * 0"
   workflow_dispatch: {}
 
 permissions:
