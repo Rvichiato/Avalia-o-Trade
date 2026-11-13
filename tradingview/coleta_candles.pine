@@ -1,0 +1,24 @@
+//@version=6
+// Coleta B&R: a cada candle fechado, envia por webhook os candles dos 3 ativos
+// no feed da corretora (mesmo preço que o Rodrigo opera).
+// Use em um gráfico de 15 minutos de TICKMILL:EURUSD e crie UM alerta
+// com a condição "Qualquer chamada da função alert()" e o webhook da ponte.
+indicator("Coleta B&R (webhook)", overlay = true)
+
+s1    = input.symbol("TICKMILL:EURUSD", "Ativo 1")
+s2    = input.symbol("TICKMILL:USDJPY", "Ativo 2")
+s3    = input.symbol("TICKMILL:US500",  "Ativo 3")
+chave = input.string("TROQUE-ESTA-CHAVE", "Chave secreta (igual à da ponte)")
+
+candle(simbolo) =>
+    [t, o, h, l, c] = request.security(simbolo, timeframe.period, [time, open, high, low, close], lookahead = barmerge.lookahead_off)
+    '{"s":"' + simbolo + '","t":' + str.tostring(t) + ',"o":' + str.tostring(o) + ',"h":' + str.tostring(h) + ',"l":' + str.tostring(l) + ',"c":' + str.tostring(c) + '}'
+
+j1 = candle(s1)
+j2 = candle(s2)
+j3 = candle(s3)
+
+if barstate.isconfirmed
+    alert('{"k":"' + chave + '","tf":"' + timeframe.period + '","velas":[' + j1 + ',' + j2 + ',' + j3 + ']}', alert.freq_once_per_bar_close)
+
+plot(close, "fechamento", display = display.none)

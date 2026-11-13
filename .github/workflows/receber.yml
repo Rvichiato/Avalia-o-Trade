@@ -1,0 +1,28 @@
+name: Receber candle do TradingView
+
+on:
+  repository_dispatch:
+    types: [candle]
+
+permissions:
+  contents: write
+
+jobs:
+  gravar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Gravar candle
+        env:
+          CANDLE: ${{ toJson(github.event.client_payload) }}
+        run: python scripts/receber.py
+      - name: Enviar
+        run: |
+          git config user.name "coleta-bot"
+          git config user.email "coleta-bot@users.noreply.github.com"
+          git add dados/tv/
+          git diff --cached --quiet && exit 0
+          git commit -m "tv: $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4 5; do git pull --rebase -q && git push -q && exit 0; sleep $((i*3)); done
+          exit 1
