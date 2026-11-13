@@ -2,6 +2,12 @@
 
 **Propósito:** tornar o modelo vencedor e rentável, com prova estatística, não com impressão. Toda melhoria (dados, código, portal, cérebro) se justifica só se ajudar a medir ou aumentar a expectativa em R.
 
+## Ciclo de melhoria (como o modelo evolui)
+1. **Ideia:** vem da pesquisa (estudos e fontes de dados), da revisão diária ou do que o Rodrigo observa no mercado.
+2. **Teste no histórico:** roda com custos e sem ver o futuro, comparando com a versão atual. Toda ideia testada fica registrada em `testes/`, inclusive as que falharam (13/11: entrada direta no rompimento descartada).
+3. **Validação ao vivo:** o que passou no histórico roda em paralelo nas análises automáticas, medido pela revisão diária.
+4. **Decisão:** o Rodrigo aprova antes de virar regra. Uma mudança por vez, para saber o que funcionou.
+
 ## Critério de sucesso (do manual)
 50 trades com resultado, expectativa acima de +0,2R, profit factor acima de 1,3, drawdown abaixo de 10%, disciplina de 90% ou mais. Para medir uma vantagem de +0,2R com confiança são necessários cerca de 200 trades.
 
