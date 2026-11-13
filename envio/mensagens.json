@@ -1,1 +1,10 @@
-[{"imagem": null, "texto": "✅ Robô do Break & Retest conectado. A partir de agora as análises das 05h20 e 11h45 chegam aqui também."}]
+[
+ {
+  "imagem": "envio/xauusd_tickmill.png",
+  "texto": "OURO · 13/11 · 15h50 · ~3.880 (só estudo)\n\nSituação: tendência de baixa no 4H, no 1H e no 15m, com topos cada vez mais baixos desde 4.680 em agosto. O preço está sobre um suporte duplo em 3.853–3.872: o fundo de 31/10 (~3.871) e a mínima de ontem (~3.853). No 15m, uma LTB desce dos topos de hoje (3.922 → 3.899) e passa em ~3.890, espremendo o preço contra o suporte.\n\nCenário a favor da tendência: venda só no rompimento de 3.853.\n1 · candle de 15m fecha abaixo de 3.853\n2 · reteste de 3.853 por baixo\n3 · candle de confirmação fechando em queda\nEntrada ~3.850 · stop 3.876 (26 dólares) · alvo 3.805, antes do 3.800 (≈1,7R).\nAbaixo de 3.853 o ouro fica no menor nível desde julho, sem suporte próximo até 3.800.\n\nCompra: não, porque iria contra a tendência.\nFora da conta: no lote mínimo esse stop arrisca US$ 26 (o limite é US$ 2)."
+ },
+ {
+  "imagem": "envio/xauusd.png",
+  "texto": "Ouro · painel do robô (4H, 1H e 15m)\nMesmo cenário gerado automaticamente: venda abaixo de 3.851,70 com alvo antes do 3.800. O robô coloca o stop acima de 3.885 e por isso marca o plano como inválido (1,3R). Essa diferença de stop entre o robô e a análise manual entra na validação."
+ }
+]
