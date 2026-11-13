@@ -2,6 +2,19 @@
 
 Cada avaliação nova entra no topo. Critérios: (1) preço próximo ao da Tickmill, (2) atraso até o candle chegar, (3) resolução do preço, (4) custo e limites, (5) funciona a partir do GitHub Actions sem intervenção.
 
+## 13/11/2026 · fontes pagas (Rodrigo topou custo razoável)
+
+**1ª opção: o próprio TradingView, com o feed da Tickmill, via webhook**
+- O TradingView não vende API de dados para pessoa física. Mas um alerta de script Pine pode disparar a cada candle de 15m fechado e mandar abertura, máxima, mínima e fechamento do símbolo TICKMILL:EURUSD, USDJPY e US500 para uma URL (webhook).
+- É o preço exato que o Rodrigo opera, inclusive o US500 (acaba a conversão do futuro). Atraso de segundos.
+- Requisitos (central de ajuda do TradingView e comparativos de out/2026): plano pago a partir do Essential (~US$ 12,95/mês no anual; o Basic grátis não tem webhook), autenticação de dois fatores ligada, URL só nas portas 80/443, resposta em até 3 s.
+- Ponte: o GitHub exige cabeçalho de autorização e o TradingView não manda cabeçalho; por isso um Cloudflare Worker gratuito recebe o alerta e chama o repository_dispatch do repositório, que grava o candle.
+- Limites: só dados daqui para frente (o histórico continua vindo do Yahoo até acumular); um alerta por ativo; em alguns planos os alertas expiram e precisam ser renovados (a revisão de sexta deve checar).
+
+**2ª opção: Tiingo Power, US$ 30/mês**: forex de provedor tier-1, tempo real, barras de 1 minuto desde 2020; limite de 10.000 requisições/hora. Não cobre o índice S&P 500 (só ações/ETF via IEX). Uso interno pessoal.
+
+**Outras avaliadas**: Twelve Data Grow (a partir de US$ 29/mês, sem limite diário, inclui índices); Massive Currencies Starter (US$ 49/mês, tempo real); MT5 da Tickmill + Python (preço exato e grátis, mas exige Windows ligado 24h ou VPS de US$ 15–30/mês e mais manutenção).
+
 ## 13/11/2026 · avaliação inicial
 
 **Em uso: Yahoo Finance via yfinance** (EURUSD=X, JPY=X, ES=F, ^GSPC, GC=F)
