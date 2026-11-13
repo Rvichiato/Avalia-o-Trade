@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import numpy as np
 import re
+import textwrap
 import pandas as pd
 from sistema import CFG
 
@@ -92,23 +93,45 @@ def _painel_simples(ax, ativo, d, tf, lin, zonas, titulo):
             ax.axhspan(z["de"], z["ate"], color=TEAL, alpha=0.18, zorder=1)
     ax.set_ylim(lo - (hi - lo) * 0.04, hi + (hi - lo) * 0.18)
     ax.yaxis.set_major_formatter(matplotlib.ticker.FuncFormatter(lambda v, _: F(v)))
-    _caixa(ax, titulo, size=9)
+    _titulo(ax, titulo)
+
+
+def _titulo(ax, linhas):
+    """Informações acima do gráfico (nunca por cima das velas)."""
+    cab, resto = linhas[0], linhas[1:]
+    corpo = "\n".join(textwrap.fill(x, 70) for x in resto)
+    ax.set_title(cab + ("\n" + corpo if corpo else ""), loc="left", fontsize=9, color=TXT, pad=8, linespacing=1.4)
+
+
+def _coluna(ax, linhas, largura=40):
+    """Coluna lateral de texto, fora do gráfico."""
+    ax.set_facecolor("#0e1015")
+    ax.set_xticks([]); ax.set_yticks([])
+    for sp in ax.spines.values():
+        sp.set_color("#2a2e39")
+    blocos = []
+    for x in linhas:
+        blocos.append(textwrap.fill(x, largura, subsequent_indent="   ") if x else "")
+    ax.text(0.05, 0.97, "\n".join(blocos), transform=ax.transAxes, va="top", ha="left",
+            fontsize=9, color=TXT, linespacing=1.45)
 
 
 def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
     F = _fmt(ativo); T = CFG["tempos"]
-    fig = plt.figure(figsize=(16, 11), facecolor="#0e0f13")
-    gs = fig.add_gridspec(2, 2, height_ratios=[1, 1.35], hspace=0.16, wspace=0.08,
-                          left=0.02, right=0.95, top=0.93, bottom=0.04)
+    fig = plt.figure(figsize=(16, 12.5), facecolor="#0e0f13")
+    gs = fig.add_gridspec(2, 1, height_ratios=[1, 1.35], hspace=0.22,
+                          left=0.02, right=0.95, top=0.88, bottom=0.04)
+    gs_cima = gs[0].subgridspec(1, 2, wspace=0.1)
+    gs_baixo = gs[1].subgridspec(1, 2, width_ratios=[3.3, 1], wspace=0.07)
     hora = (pd.Timestamp(r["ultimo_candle_15m_utc"]) + pd.Timedelta(minutes=15) + FUSO)
-    fig.text(0.02, 0.965, f"{r['nome']} · {hora.strftime('%d/%m/%Y %Hh%M')} (Brasília) · preço {F(r['preco'])}",
+    fig.text(0.02, 0.972, f"{r['nome']} · {hora.strftime('%d/%m/%Y %Hh%M')} (Brasília) · preço {F(r['preco'])}",
              color=TXT, fontsize=15, fontweight="bold")
     if subtitulo:
-        fig.text(0.02, 0.945, subtitulo, color=CINZA, fontsize=10)
+        fig.text(0.02, 0.952, subtitulo, color=CINZA, fontsize=10)
 
     tend = {"alta": "alta", "baixa": "baixa", "lateral": "lateral"}
     for i, tf in enumerate(("4h", "1h")):
-        ax = fig.add_subplot(gs[0, i])
+        ax = fig.add_subplot(gs_cima[0, i])
         d = dfs[tf].iloc[-T[tf]["mostrar"]:]
         ativas = [l for l in r["linhas"][tf] if not l["rompida"]]
         txt = [f"{tf.upper()} · tendência de {tend[r['tendencia'][tf]]}"]
@@ -121,7 +144,9 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
         _painel_simples(ax, ativo, d, tf, r["linhas"][tf], r["zonas"], txt)
 
     # ---- 15m com projeção
-    ax = fig.add_subplot(gs[1, :])
+    ax = fig.add_subplot(gs_baixo[0, 0])
+    info = fig.add_subplot(gs_baixo[0, 1])
+    caixa = []
     d = dfs["15m"].iloc[-T["15m"]["mostrar"]:]
     n = len(d); extra = 46
     _velas(ax, d)
@@ -188,11 +213,6 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
                  st]
         if p.get("obs_alvo"):
             caixa.append(br(f"Atenção: {p['obs_alvo']}; abaixo do mínimo de 1,5R"))
-        if sg > 0:
-            ax.text(0.70, 0.03, "\n".join(caixa), transform=ax.transAxes, va="bottom", ha="left", fontsize=9, color=TXT,
-                    bbox=dict(boxstyle="round,pad=0.45", facecolor="#0e1015", edgecolor="#444a58", alpha=0.93), zorder=10)
-        else:
-            _caixa(ax, caixa, xy=(0.70, 0.98), size=9)
         ax.text(n + 1, ylo, "projeção ilustrativa", color="#777", fontsize=8, va="bottom")
     rng = yhi - ylo
     ax.set_ylim(ylo - rng * 0.06, yhi + rng * 0.12)
@@ -204,7 +224,11 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
             linhas15.append(f"{nome} rompida")
         else:
             linhas15.append(f"{nome}: {l['toques']} toques, hoje em {F(l['valor_proximo'])}")
-    _caixa(ax, linhas15, size=9)
+    _titulo(ax, [linhas15[0], "  ·  ".join(linhas15[1:])] if len(linhas15) > 1 else linhas15)
+    if not caixa:
+        caixa = ["Sem plano desenhado agora."]
+    # cabeçalho do plano em destaque, resto em texto corrido
+    _coluna(info, [caixa[0], ""] + caixa[1:4] + [""] + caixa[4:])
     fig.savefig(caminho, dpi=110, facecolor=fig.get_facecolor())
     plt.close(fig)
     return caminho
