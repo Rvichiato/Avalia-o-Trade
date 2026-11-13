@@ -287,14 +287,14 @@ def planos(ativo, dfs, lin, niv):
             acima = [x for x in piv_h if x > nivel_hi + 0.5 * a15]
             ref = min(acima) if acima else nivel_hi + 1.5 * a15
             stop = min(max(ref, nivel_hi + 1.5 * a15), nivel_hi + 4 * a15) + buf
-            cands = [x for x in alvos_baixo if x < entrada - 0.5 * a15]
+            cands = [x for x in alvos_baixo if x + buf_alvo < entrada - 0.5 * a15]
             alvo = cands[0] + buf_alvo if cands else None
         else:
             entrada = nivel_hi + buf
             abaixo = [x for x in piv_l if x < nivel_lo - 0.5 * a15]
             ref = max(abaixo) if abaixo else nivel_lo - 1.5 * a15
             stop = max(min(ref, nivel_lo - 1.5 * a15), nivel_lo - 4 * a15) - buf
-            cands = [x for x in alvos_cima if x > entrada + 0.5 * a15]
+            cands = [x for x in alvos_cima if x - buf_alvo > entrada + 0.5 * a15]
             alvo = cands[0] - buf_alvo if cands else None
         stop_p = abs(entrada - stop) / pip
         alvo_p = abs(alvo - entrada) / pip if alvo is not None else None
