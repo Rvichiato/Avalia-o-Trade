@@ -25,6 +25,7 @@
 
 ## Pendências com data
 - **Segunda 16/11:** Rodrigo decide sobre o plano do TradingView (Essential ou acima). Se sim, ligar a ponte (`tradingview/LEIA-ME.md`) e rodar uma semana em paralelo com o Yahoo antes de trocar.
+- **Segunda 16/11 (pedido de 14/11):** incluir o XAUUSD no teste histórico só para estudo, em seção separada, sem somar aos ativos operados. Origem: short em 3.904 de 13/11 (reteste de LTA rompida + Fibonacci + topo do canal; alvo antes do suporte teria dado ~2–3R; o dado das 10h30 levou o preço de volta à entrada). Medir em R, porque no ouro o stop típico passa do limite de US$ 2.
 - **Pedido de 13/11 (anotado):** relatórios das análises e dos testes em PDF dinâmico e profissional, no tema cyberpunk (mesma identidade visual da amostra do Obsidian): capa, um bloco por ativo com o painel 4H/1H/15m, plano, alertas e situação; versão do teste histórico com curva e tabelas. Gerado automaticamente junto com as análises das 05h20 e 11h45.
 - **Depois da validação:** cérebro no Obsidian (repositório privado `cerebro-trade`, amostra visual aprovada em estilo cyberpunk) e portal web.
 
