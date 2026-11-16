@@ -368,7 +368,7 @@ def analisar(ativo):
         ajuste, nota = ajuste_us500()
     elif CFG["ativos"][ativo].get("ajuste_fixo"):
         ajuste = CFG["ativos"][ativo]["ajuste_fixo"]
-        nota = f"futuro convertido para o à vista da Tickmill (−{ajuste:.0f}, calibrado com print)"
+        nota = CFG["ativos"][ativo].get("nota_curta") or f"futuro convertido para o à vista da Tickmill (−{ajuste:.0f}, calibrado com print)"
     dfs = {tf: carregar(ativo, tf, ajuste) for tf in ("4h", "1h", "15m")}
     return analisar_dfs(ativo, dfs, nota), dfs
 

@@ -39,7 +39,10 @@
       "sessao": "fx",
       "operar": true,
       "unidade": "pips",
-      "fator_unidade": 1
+      "fator_unidade": 1,
+      "ajuste_fixo": 0.00032,
+      "nota_ajuste": "Yahoo fica ~3,2 pips acima da Tickmill (mediana de 12 semanas, conferido com o histórico do MT5 em 16/11/2026)",
+      "nota_curta": "preços ajustados para a Tickmill (−3,2 pips em relação ao Yahoo)"
     },
     "USDJPY": {
       "nome": "USDJPY",
