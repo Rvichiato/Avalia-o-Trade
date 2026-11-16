@@ -1,0 +1,42 @@
+{
+ "titulo_pdf": "Teste histórico · Tickmill (MT5) · quase 3 anos",
+ "subtitulo": "Preços da Tickmill exportados do MT5 · jan/2024 a 16/11/2026 · sem e com filtro de tendência",
+ "titulo_curva": "EURUSD · USDJPY · US500 · preços da Tickmill",
+ "veredito": [
+  "Em 3 anos de preços reais, o robô ainda não ganha: o filtro leva a empate.",
+  "Os custos (~0,11R por trade) comem a pouca vantagem. Nada muda nas regras ao vivo."
+ ],
+ "recortes": "Mais operações não deixaram o resultado mais claro. Vendas em rompimento de LTA (+0,20R, 61 trades) e a sobreposição Londres+NY (+0,23R, 32) se destacam, mas foram vistos depois dos dados: são hipóteses, não regras. Trades abertos às 8h30 de NY parecem melhores, mas isso é viés: quem toma stop rápido nem chega ao dado.",
+ "anos": "Com filtro: 2024 -0,06R, 2025 -0,11R, 2026 +0,10R. O resultado positivo das últimas 12 semanas não se repetiu nos anos anteriores. Só com o 4H definido (sem usar o 1H quando o 4H está lateral): 97 trades, +0,07R, ainda dentro do ruído.",
+ "blocos": [
+  [
+   "mag",
+   "1 · Sem filtro, o robô perde, e agora com certeza",
+   "356 trades, -0,19R por trade, intervalo de -0,33R a -0,06R: inteiro abaixo de zero. Soma de -69R em quase 3 anos. Até sem custos fica negativo (-0,08R)."
+  ],
+  [
+   "ciano",
+   "2 · O filtro de tendência é indispensável, mas não basta",
+   "Com o filtro: 128 trades, -0,02R por trade (intervalo de -0,26R a +0,24R), soma de -3R e queda máxima de 12R, contra 73R sem filtro. Antes dos custos fica em +0,09R: a vantagem existe, mas é menor que o custo."
+  ],
+  [
+   "amar",
+   "3 · Onde o resultado escapa",
+   "Só 17% dos trades chegam ao alvo; a maioria sai no stop (52%) ou por tempo. O stop mediano é de ~14 pips, então spread e comissão pesam ~0,11R por trade. Os 31 trades com o 4H lateral (usando o 1H) deram -0,31R."
+  ],
+  [
+   "verde",
+   "4 · O que isso diz e o que não diz",
+   "Isto mede o robô, que ainda desenha linhas diferentes das suas. Não mede as suas entradas manuais, como o ouro de 13/11. Por isso a validação das linhas do robô contra os seus prints continua sendo o passo mais importante."
+  ]
+ ],
+ "proximo": "Testar, já registrado antes de olhar o resultado: (a) só operar com o 4H definido; (b) stops mais largos ou descartar trades em que o custo passe de 10% do risco; (c) revisar alvo e saída por tempo. Desenvolver em 2024–2025 e validar só em 2026, para não ajustar aos dados. Em paralelo, comparar as linhas do robô com as suas.",
+ "limitacoes": [
+  "Histórico da Tickmill pelo MT5: preços exatos, mas spread real não usado (custos fixos da configuração)",
+  "Horário do servidor convertido (GMT+2/+3, horário de verão dos EUA), conferido contra o Yahoo",
+  "Sem limite diário de perdas; dado americano medido pelas 8h30 de NY, sem calendário",
+  "Recortes por sessão e origem foram vistos depois dos dados: precisam de teste novo",
+  "Linhas e níveis do robô ainda em calibração (validação em curso)"
+ ],
+ "data": "16/11/2026"
+}

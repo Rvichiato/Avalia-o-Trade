@@ -15,7 +15,8 @@ TF_MIN = {"15m": 15, "1h": 60, "4h": 240}
 
 # ---------------------------------------------------------------- dados
 def _ler(ativo, tf):
-    df = pd.read_csv(os.path.join(RAIZ, "dados", f"{ativo}_{tf}.csv"), index_col=0)
+    pasta = os.environ.get("PASTA_DADOS") or os.path.join(RAIZ, "dados")  # ex.: dados/mt5 (histórico da Tickmill)
+    df = pd.read_csv(os.path.join(pasta, f"{ativo}_{tf}.csv"), index_col=0)
     df.index = pd.to_datetime(df.index, utc=True)
     df.columns = ["o", "h", "l", "c"]
     return df.sort_index()

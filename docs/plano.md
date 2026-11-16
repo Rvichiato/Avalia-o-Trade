@@ -26,6 +26,9 @@
 ## Resultado de 16/11 (teste com filtro de tendência)
 Com o filtro: 15 trades, +0,32R por trade (intervalo de −0,30 a +1,01), soma de +4,8R, queda máxima de 2,7R. Sem filtro, nos mesmos dados: 35 trades, −0,03R, soma de −0,9R, queda de 5,5R. Na direção certa, mas sem prova: quase tudo vem do USDJPY. Ouro (estudo): 11 trades, −0,13R, quase só compras contra a queda; com filtro, 2 trades. Próximo: ampliar a amostra (1H em 8 meses, histórico do MT5) e corrigir linhas duplicadas. Detalhes em `testes/2026-11-16/`.
 
+## Resultado de 16/11 com os preços da Tickmill (MT5, jan/2024 a nov/2026)
+Sem filtro: 356 trades, −0,19R (intervalo inteiro negativo). Com filtro de tendência: 128 trades, −0,02R (−0,26 a +0,24), +0,09R antes dos custos. O filtro é indispensável, mas não basta: os custos (~0,11R por trade) comem a vantagem, e o bom resultado de 2026 não se repete em 2024–2025. Próximos testes (registrados antes): só 4H definido; stop mais largo ou corte por custo; alvo e saída por tempo. Desenvolver em 2024–2025, validar em 2026. Yahoo x Tickmill: EURUSD do Yahoo ~3,2 pips acima (correção proposta, aguarda aprovação). Detalhes em `testes/2026-11-16-mt5/`.
+
 ## Pendências com data
 - **TradingView:** decisão adiada para a Black Friday do TradingView em 23/11 (preço melhor). Conferir se o plano tem alertas com webhook antes de assinar.
 - **Segunda 16/11:** Rodrigo decide sobre o plano do TradingView (Essential ou acima). Se sim, ligar a ponte (`tradingview/LEIA-ME.md`) e rodar uma semana em paralelo com o Yahoo antes de trocar.

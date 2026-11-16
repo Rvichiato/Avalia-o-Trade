@@ -11,20 +11,27 @@ from reportlab.lib.utils import ImageReader
 from relatorio_pdf import Rel, br, W, H, M, CIANO, MAG, AMAR, VERDE, BRANCO, MUTED, TXT, BORDA, Color
 
 
-def curva(pasta):
+def curva(pasta, titulo_esq="EURUSD · USDJPY · US500"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    fig, axs = plt.subplots(1, 2, figsize=(12, 4.6), facecolor="#07080f", gridspec_kw={"width_ratios": [2, 1]})
-    series = [(axs[0], "base", "sem filtro", "#ff3ec8"), (axs[0], "filtro", "com filtro de tendência", "#00e5ff"),
-              (axs[1], "ouro_base", "ouro sem filtro", "#f4ff52"), (axs[1], "ouro_filtro", "ouro com filtro", "#4dffb5")]
+    tem_ouro = os.path.exists(os.path.join(pasta, "ouro_base", "trades.csv"))
+    if tem_ouro:
+        fig, axs = plt.subplots(1, 2, figsize=(12, 4.6), facecolor="#07080f", gridspec_kw={"width_ratios": [2, 1]})
+    else:
+        fig, ax0 = plt.subplots(1, 1, figsize=(12, 4.6), facecolor="#07080f"); axs = [ax0]
+    series = [(axs[0], "base", "sem filtro", "#ff3ec8"), (axs[0], "filtro", "com filtro de tendência", "#00e5ff")]
+    if tem_ouro:
+        series += [(axs[1], "ouro_base", "ouro sem filtro", "#f4ff52"), (axs[1], "ouro_filtro", "ouro com filtro", "#4dffb5")]
     for ax, sub, rot, cor in series:
+        if not os.path.exists(os.path.join(pasta, sub, "trades.csv")):
+            continue
         d = pd.read_csv(os.path.join(pasta, sub, "trades.csv"))
         d = d[d.modo == "sistema"].sort_values("t_entrada")
         if len(d):
             ax.plot(range(0, len(d) + 1), [0] + list(d.R.cumsum()), color=cor, linewidth=2.2,
                     marker="o", markersize=3, label=f"{rot} ({len(d)} trades)")
-    for ax, tit in zip(axs, ("EURUSD · USDJPY · US500", "XAUUSD · só estudo")):
+    for ax, tit in zip(axs, (titulo_esq, "XAUUSD · só estudo")):
         ax.set_facecolor("#0d0f1c")
         ax.axhline(0, color="#8a93c2", linewidth=0.8)
         ax.set_xlabel("trades, em ordem de entrada", color="#d9e2ff")
@@ -49,14 +56,17 @@ def pct(x):
 def gerar(pasta):
     data = os.path.basename(os.path.normpath(pasta))
     data_br = "/".join(reversed(data.split("-")))
-    R = {k: json.load(open(os.path.join(pasta, k, "resumo.json"))) for k in ("base", "filtro", "ouro_base", "ouro_filtro")}
+    R = {k: json.load(open(os.path.join(pasta, k, "resumo.json")))
+         for k in ("base", "filtro", "ouro_base", "ouro_filtro") if os.path.exists(os.path.join(pasta, k, "resumo.json"))}
+    tem_ouro = "ouro_base" in R
     L = json.load(open(os.path.join(pasta, "leitura.json")))
-    img = curva(pasta)
-    rel = Rel(os.path.join(pasta, "relatorio.pdf"), "Teste histórico · filtro de tendência",
+    img = curva(pasta, L.get("titulo_curva", "EURUSD · USDJPY · US500"))
+    data_br = L.get("data", data_br)
+    rel = Rel(os.path.join(pasta, "relatorio.pdf"), L.get("titulo_pdf", "Teste histórico · filtro de tendência"),
               data=data_br, pasta=f"testes/{data}")
     c = rel.c
     b, f = R["base"]["sistema"]["geral"], R["filtro"]["sistema"]["geral"]
-    ob = R["ouro_base"]["sistema"]["geral"]
+    ob = R["ouro_base"]["sistema"]["geral"] if tem_ouro else None
 
     # ============================================================ 1 · capa
     rel.nova("capa", "capa")
@@ -64,7 +74,7 @@ def gerar(pasta):
     c.setFont("Tit", 40); c.setFillColor(BRANCO); c.drawString(M, H - 172, "Filtro de tendência")
     c.setFillColor(MAG); c.drawString(M, H - 218, "no histórico")
     c.setFont("TxtL", 11.5); c.setFillColor(MUTED)
-    c.drawString(M, H - 246, "Só planos a favor do 4H (ou do 1H com o 4H lateral) · mesmos dados · com custos")
+    c.drawString(M, H - 246, L.get("subtitulo", "Só planos a favor do 4H (ou do 1H com o 4H lateral) · mesmos dados · com custos"))
     rel.caixa(M, H - 340, W - 2 * M, 66, borda=AMAR, brilho=AMAR)
     c.setFont("MonoB", 9); c.setFillColor(AMAR); c.drawString(M + 16, H - 296, "VEREDITO")
     c.setFont("TitM", 12.5); c.setFillColor(BRANCO); c.drawString(M + 16, H - 316, L["veredito"][0])
@@ -74,11 +84,17 @@ def gerar(pasta):
             f"{b['n']} trades · IC {br(b['ic95'][0])} a {br(b['ic95'][1])}")
     rel.kpi(M + kw + 12, H - 465, kw, "com filtro", br(f["expectativa"]) + "R", CIANO,
             f"{f['n']} trades · IC {br(f['ic95'][0])} a {br(f['ic95'][1])}")
-    rel.kpi(M + 2 * (kw + 12), H - 465, kw, "ouro · estudo", br(ob["expectativa"]) + "R", AMAR,
-            f"{ob['n']} trades sem filtro · fora da conta")
+    if tem_ouro:
+        rel.kpi(M + 2 * (kw + 12), H - 465, kw, "ouro · estudo", br(ob["expectativa"]) + "R", AMAR,
+                f"{ob['n']} trades sem filtro · fora da conta")
+    else:
+        fd0 = R["filtro"]["direto"]["geral"]
+        rel.kpi(M + 2 * (kw + 12), H - 465, kw, "entrada direta c/ filtro", br(fd0["expectativa"]) + "R", AMAR,
+                f"{fd0['n']} trades · sem esperar reteste")
     c.setFont("Mono", 9); c.setFillColor(MUTED); c.drawString(M, H - 515, "ÍNDICE  (clique para ir)")
     itens = [("01", "Resultado lado a lado", "resultado"), ("02", "De onde vem o ganho", "recortes"),
-             ("03", "Ouro · só estudo", "ouro"), ("04", "Leitura honesta e próximo passo", "leitura")]
+             ("03", "Ouro · só estudo", "ouro") if tem_ouro else ("03", "Ano a ano", "anos"),
+             ("04", "Leitura honesta e próximo passo", "leitura")]
     yy = H - 543
     for num, nome, chave in itens:
         c.setFont("MonoB", 12); c.setFillColor(CIANO); c.drawString(M, yy, num)
@@ -135,13 +151,43 @@ def gerar(pasta):
     y = rel.barras(M, y, W - 2 * M, "O que rompeu", grp("por_origem", {"LTA": "LTA (piso subindo)", "LTB": "LTB (teto caindo)", "resistencia": "resistência", "suporte": "suporte"})) - 14
     y = rel.barras(M, y, W - 2 * M, "Direção", grp("por_direcao", {})) - 14
     y = rel.barras(M, y, W - 2 * M, "Aberta às 8h30 de NY (dado americano)", grp("atravessou_dado_eua", {"True": "atravessou", "False": "não atravessou"})) - 10
-    rel.caixa(M, y - 62, W - 2 * M, 58, borda=AMAR)
-    rel.paragrafo(M + 12, y - 22, W - 2 * M - 24, L["recortes"], tam=9, cor=AMAR, entre=13)
+    caixa_texto(rel, y, L["recortes"])
 
+    if not tem_ouro:
+        pagina_anos(rel, pasta, L)
     # ============================================================ 4 · ouro
+    if tem_ouro:
+        pagina_ouro(rel, R, L, grp_de=grp, ob=ob)
+    leitura(rel, L)
+    rel.salvar()
+    return os.path.join(pasta, "relatorio.pdf")
+
+
+def pagina_anos(rel, pasta, L):
+    c = rel.c
+    rel.nova("ano a ano", "anos")
+    rel.titulo(H - 90, "Ano a ano", "A vantagem se repete em cada ano, ou vem de um período só?")
+    y = H - 138
+    for sub, rot in (("base", "Sem filtro"), ("filtro", "Com filtro de tendência")):
+        d = pd.read_csv(os.path.join(pasta, sub, "trades.csv"))
+        d = d[d.modo == "sistema"]
+        d["ano"] = d.t_entrada.str[:4]
+        g = [(a, len(x), float(x.R.mean())) for a, x in d.groupby("ano")]
+        y = rel.barras(M, y, W - 2 * M, f"{rot} · por ano", g) - 14
+        if sub == "filtro":
+            g = [(f"{a} · {k}", len(x), float(x.R.mean())) for (a, k), x in d.groupby(["ativo", "ano"])]
+            y = rel.barras(M, y, W - 2 * M, f"{rot} · ativo e ano", g) - 18
+    if L.get("anos"):
+        caixa_texto(rel, y, L["anos"])
+
+
+def pagina_ouro(rel, R, L, grp_de, ob):
+    c = rel.c
     rel.nova("ouro · só estudo", "ouro")
     rel.titulo(H - 90, "Ouro · só estudo", "XAUUSD fora da conta: medido em R, sem o limite de US$ 2")
     so = R["ouro_base"]["sistema"]; of = R["ouro_filtro"]["sistema"]["geral"]; odir = R["ouro_base"]["direto"]["geral"]
+    def grp(chave, nomes):
+        return [(nomes.get(k, k), v["n"], v["expectativa"]) for k, v in so[chave].items() if v.get("n")]
     y = H - 140
     cols = [M, M + 230, M + 370]
     linhas = [("", "SEM FILTRO", "COM FILTRO"),
@@ -162,7 +208,6 @@ def gerar(pasta):
         c.setFillColor(VERDE); c.drawString(cols[2], y, str(x2))
         y -= 20
     y -= 12
-    s = so
     y = rel.barras(M, y, W - 2 * M, "O que rompeu (sem filtro)", grp("por_origem", {"LTA": "LTA (piso subindo)", "LTB": "LTB (teto caindo)", "resistencia": "resistência", "suporte": "suporte"})) - 14
     y = rel.barras(M, y, W - 2 * M, "Direção (sem filtro)", grp("por_direcao", {})) - 14
     y = rel.barras(M, y, W - 2 * M, "Aberta às 8h30 de NY", grp("atravessou_dado_eua", {"True": "atravessou", "False": "não atravessou"})) - 14
@@ -170,6 +215,10 @@ def gerar(pasta):
         c.setFont("TitM", 10.5); c.setFillColor(cor_de(cor)); c.drawString(M, y, tit)
         y = rel.paragrafo(M, y - 16, W - 2 * M, txt, tam=9, entre=13) - 8
 
+
+
+def leitura(rel, L):
+    c = rel.c
     # ============================================================ 5 · leitura
     rel.nova("leitura honesta", "leitura")
     rel.titulo(H - 90, "Leitura honesta")
@@ -193,8 +242,12 @@ def gerar(pasta):
     for l in L["limitacoes"]:
         c.setFillColor(MAG); c.rect(M, y + 2, 4, 4, stroke=0, fill=1)
         c.setFont("Txt", 8.8); c.setFillColor(TXT); c.drawString(M + 12, y, l); y -= 14
-    rel.salvar()
-    return os.path.join(pasta, "relatorio.pdf")
+
+
+def caixa_texto(rel, y, texto):
+    alt = 24 + 13 * linhas_de(rel, texto, W - 2 * M - 24)
+    rel.caixa(M, y - alt - 4, W - 2 * M, alt, borda=AMAR)
+    rel.paragrafo(M + 12, y - 22, W - 2 * M - 24, texto, tam=9, cor=AMAR, entre=13)
 
 
 def cor_de(nome):
