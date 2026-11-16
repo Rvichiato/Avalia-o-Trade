@@ -23,6 +23,9 @@
 - Rodrigo manda um print por dia com as próprias marcações, para comparar com as linhas do robô.
 - Sexta 20/11: a revisão semanal traz o primeiro balanço (planos que dispararam, resultado hipotético, atraso dos dados, onde o robô divergiu das marcações).
 
+## Resultado de 16/11 (teste com filtro de tendência)
+Com o filtro: 15 trades, +0,32R por trade (intervalo de −0,30 a +1,01), soma de +4,8R, queda máxima de 2,7R. Sem filtro, nos mesmos dados: 35 trades, −0,03R, soma de −0,9R, queda de 5,5R. Na direção certa, mas sem prova: quase tudo vem do USDJPY. Ouro (estudo): 11 trades, −0,13R, quase só compras contra a queda; com filtro, 2 trades. Próximo: ampliar a amostra (1H em 8 meses, histórico do MT5) e corrigir linhas duplicadas. Detalhes em `testes/2026-11-16/`.
+
 ## Pendências com data
 - **Segunda 16/11:** Rodrigo decide sobre o plano do TradingView (Essential ou acima). Se sim, ligar a ponte (`tradingview/LEIA-ME.md`) e rodar uma semana em paralelo com o Yahoo antes de trocar.
 - **Segunda 16/11 (pedido de 14/11):** incluir o XAUUSD no teste histórico só para estudo, em seção separada, sem somar aos ativos operados. Origem: short em 3.904 de 13/11 (reteste de LTA rompida + Fibonacci + topo do canal; alvo antes do suporte teria dado ~2–3R; o dado das 10h30 levou o preço de volta à entrada). Medir em R, porque no ouro o stop típico passa do limite de US$ 2.

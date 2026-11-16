@@ -1,0 +1,78 @@
+EURUSD: começando
+  EURUSD: 50/822 instantes, 6 trades simulados
+  EURUSD: 100/822 instantes, 10 trades simulados
+  EURUSD: 150/822 instantes, 16 trades simulados
+  EURUSD: 200/822 instantes, 22 trades simulados
+  EURUSD: 250/822 instantes, 33 trades simulados
+  EURUSD: 300/822 instantes, 37 trades simulados
+  EURUSD: 350/822 instantes, 40 trades simulados
+  EURUSD: 400/822 instantes, 45 trades simulados
+  EURUSD: 450/822 instantes, 52 trades simulados
+  EURUSD: 500/822 instantes, 59 trades simulados
+  EURUSD: 550/822 instantes, 65 trades simulados
+  EURUSD: 600/822 instantes, 68 trades simulados
+  EURUSD: 650/822 instantes, 75 trades simulados
+  EURUSD: 700/822 instantes, 77 trades simulados
+  EURUSD: 750/822 instantes, 78 trades simulados
+  EURUSD: 800/822 instantes, 78 trades simulados
+EURUSD: 81 trades simulados, 303 planos
+USDJPY: começando
+  USDJPY: 50/822 instantes, 4 trades simulados
+  USDJPY: 100/822 instantes, 7 trades simulados
+  USDJPY: 150/822 instantes, 8 trades simulados
+  USDJPY: 200/822 instantes, 8 trades simulados
+  USDJPY: 250/822 instantes, 10 trades simulados
+  USDJPY: 300/822 instantes, 12 trades simulados
+  USDJPY: 350/822 instantes, 12 trades simulados
+  USDJPY: 400/822 instantes, 14 trades simulados
+  USDJPY: 450/822 instantes, 15 trades simulados
+  USDJPY: 500/822 instantes, 19 trades simulados
+  USDJPY: 550/822 instantes, 27 trades simulados
+  USDJPY: 600/822 instantes, 36 trades simulados
+  USDJPY: 650/822 instantes, 39 trades simulados
+  USDJPY: 700/822 instantes, 41 trades simulados
+  USDJPY: 750/822 instantes, 45 trades simulados
+  USDJPY: 800/822 instantes, 52 trades simulados
+USDJPY: 54 trades simulados, 212 planos
+US500: começando
+  US500: 50/343 instantes, 4 trades simulados
+  US500: 100/343 instantes, 13 trades simulados
+  US500: 150/343 instantes, 19 trades simulados
+  US500: 200/343 instantes, 19 trades simulados
+  US500: 250/343 instantes, 22 trades simulados
+  US500: 300/343 instantes, 25 trades simulados
+US500: 27 trades simulados, 79 planos
+{
+ "sistema": {
+  "n": 35,
+  "acerto": 0.371,
+  "expectativa": -0.026,
+  "ic95": [
+   -0.404,
+   0.389
+  ],
+  "payoff": 1.6,
+  "profit_factor": 0.95,
+  "soma_R": -0.92,
+  "drawdown_R": 5.46,
+  "pior_sequencia": 5,
+  "mediana": -0.147,
+  "media_sem_2_maiores": -0.178
+ },
+ "direto": {
+  "n": 127,
+  "acerto": 0.433,
+  "expectativa": -0.105,
+  "ic95": [
+   -0.304,
+   0.099
+  ],
+  "payoff": 1.06,
+  "profit_factor": 0.81,
+  "soma_R": -13.32,
+  "drawdown_R": 22.07,
+  "pior_sequencia": 8,
+  "mediana": -0.423,
+  "media_sem_2_maiores": -0.154
+ }
+}

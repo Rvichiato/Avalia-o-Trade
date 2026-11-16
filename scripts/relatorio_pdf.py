@@ -34,7 +34,8 @@ def br(x, casas=2, sinal=True):
 
 
 class Rel:
-    def __init__(self, caminho, titulo):
+    def __init__(self, caminho, titulo, data="13/11/2026", pasta="testes/2026-11-13"):
+        self.data, self.pasta = data, pasta
         self.c = canvas.Canvas(caminho, pagesize=A4)
         self.c.setTitle(titulo)
         self.c.setAuthor("Claude · sistema Break & Retest")
@@ -60,13 +61,13 @@ class Rel:
         c.drawString(M + 14, H - 33, "CEREBRO-TRADE")
         c.setFont("Mono", 8.5); c.setFillColor(MUTED)
         c.drawString(M + 92, H - 33, f"// {secao}")
-        c.drawRightString(W - M, H - 33, "teste histórico · 13/11/2026")
+        c.drawRightString(W - M, H - 33, f"teste histórico · {self.data}")
         c.setStrokeColor(BORDA); c.setLineWidth(0.8); c.line(M, H - 42, W - M, H - 42)
         # rodapé
         c.line(M, 34, W - M, 34)
         c.setFont("Mono", 7.5); c.setFillColor(MUTED)
-        c.drawString(M, 22, "github.com/Rvichiato/Avalia-o-Trade · testes/2026-11-13")
-        c.linkURL("https://github.com/Rvichiato/Avalia-o-Trade/tree/main/testes/2026-11-13",
+        c.drawString(M, 22, f"github.com/Rvichiato/Avalia-o-Trade · {self.pasta}")
+        c.linkURL(f"https://github.com/Rvichiato/Avalia-o-Trade/tree/main/{self.pasta}",
                   (M, 18, M + 260, 30), relative=0)
         c.setFillColor(CIANO); c.drawRightString(W - M, 22, f"{self.pag:02d}")
         if chave:

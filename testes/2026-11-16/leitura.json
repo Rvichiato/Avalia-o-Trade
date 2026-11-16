@@ -1,0 +1,54 @@
+{
+ "veredito": [
+  "O filtro melhora tudo na direção certa, mas ainda não prova vantagem.",
+  "Metade dos trades sai, a média fica positiva e a queda máxima cai à metade."
+ ],
+ "recortes": "Quase todo o ganho vem do USDJPY: +4,8R em 6 compras a favor da alta. O EURUSD fica no zero (7 trades) e o US500 teve só 2. Londres segue melhor que Nova York, como na base. Atravessar o dado americano não mostra efeito claro em 5 casos.",
+ "ouro": [
+  [
+   "mag",
+   "O robô comprou contra a queda",
+   "Dos 11 trades sem filtro, 9 foram compras em rompimento de LTB do 15m com o 4H em baixa ou lateral, e 6 deram stop. Com o filtro, sobram só 2 trades: não dá para concluir nada."
+  ],
+  [
+   "amar",
+   "O tipo de entrada que você fez no ouro quase não aparece",
+   "Vendas a favor da queda, como o short de 13/11 em 3.904 (reteste de LTA rompida), saíram só 2 vezes no teste. O robô ainda não enxerga bem as linhas do ouro: calibrar com os seus prints antes de testar de novo."
+  ],
+  [
+   "verde",
+   "O que se repete em todos os ativos",
+   "Entrar direto no rompimento também perde no ouro (46 trades, -0,19R). O reteste continua sendo o que separa rompimento real de falso."
+  ]
+ ],
+ "blocos": [
+  [
+   "ciano",
+   "1 · O filtro aponta na direção certa",
+   "Com o filtro, 15 trades, +0,32R por trade, soma de +4,8R e queda máxima de 2,7R. Sem o filtro, nos mesmos dados: 35 trades, -0,03R, soma de -0,9R e queda de 5,5R. Mesmo sinal da sexta, e a regra vem do manual, não foi ajustada aos dados."
+  ],
+  [
+   "mag",
+   "2 · Mas ainda não está provado",
+   "O intervalo de confiança vai de -0,30R a +1,01R e inclui o zero. A mediana é -0,11R e, sem os 2 maiores ganhos, a média cai para +0,03R. Quase todo o resultado vem de 6 trades no USDJPY."
+  ],
+  [
+   "amar",
+   "3 · Pistas para o próximo teste, não para agora",
+   "Londres foi melhor que Nova York nas duas versões, e zonas de suporte e resistência foram melhores que linhas na base. Com tão poucos trades, testar isso agora seria procurar padrão no ruído."
+  ],
+  [
+   "verde",
+   "4 · Nada muda nas regras ao vivo",
+   "O painel ao vivo já mostra só planos a favor da tendência desde sexta. O teste confirma que manter assim faz sentido; a validação de duas semanas com os seus prints continua."
+  ]
+ ],
+ "proximo": "Aumentar a amostra antes de qualquer outra mudança: rodar o mesmo teste no 1H em 8 meses e, quando chegar, no histórico da Tickmill exportado do MT5. Corrigir também a duplicidade de dois trades iguais no EURUSD em 15/09, que vieram de duas linhas quase idênticas.",
+ "limitacoes": [
+  "Só ~12 semanas de 15m (máximo da fonte gratuita); 15 trades com filtro",
+  "Dados do Yahoo: EURUSD em degraus de ~1,2 pip; US500 e ouro convertidos do futuro",
+  "Dois trades duplicados no EURUSD (15/09), contados duas vezes nas duas versões",
+  "Sem limite diário de perdas; dado americano medido pelas 8h30 de NY, sem calendário",
+  "Linhas e níveis do robô ainda em calibração, sobretudo no ouro"
+ ]
+}

@@ -1,0 +1,78 @@
+EURUSD: começando
+  EURUSD: 50/822 instantes, 5 trades simulados
+  EURUSD: 100/822 instantes, 5 trades simulados
+  EURUSD: 150/822 instantes, 6 trades simulados
+  EURUSD: 200/822 instantes, 7 trades simulados
+  EURUSD: 250/822 instantes, 13 trades simulados
+  EURUSD: 300/822 instantes, 14 trades simulados
+  EURUSD: 350/822 instantes, 14 trades simulados
+  EURUSD: 400/822 instantes, 14 trades simulados
+  EURUSD: 450/822 instantes, 16 trades simulados
+  EURUSD: 500/822 instantes, 16 trades simulados
+  EURUSD: 550/822 instantes, 20 trades simulados
+  EURUSD: 600/822 instantes, 21 trades simulados
+  EURUSD: 650/822 instantes, 23 trades simulados
+  EURUSD: 700/822 instantes, 24 trades simulados
+  EURUSD: 750/822 instantes, 24 trades simulados
+  EURUSD: 800/822 instantes, 24 trades simulados
+EURUSD: 25 trades simulados, 93 planos
+USDJPY: começando
+  USDJPY: 50/822 instantes, 2 trades simulados
+  USDJPY: 100/822 instantes, 2 trades simulados
+  USDJPY: 150/822 instantes, 2 trades simulados
+  USDJPY: 200/822 instantes, 2 trades simulados
+  USDJPY: 250/822 instantes, 4 trades simulados
+  USDJPY: 300/822 instantes, 6 trades simulados
+  USDJPY: 350/822 instantes, 6 trades simulados
+  USDJPY: 400/822 instantes, 6 trades simulados
+  USDJPY: 450/822 instantes, 7 trades simulados
+  USDJPY: 500/822 instantes, 11 trades simulados
+  USDJPY: 550/822 instantes, 11 trades simulados
+  USDJPY: 600/822 instantes, 13 trades simulados
+  USDJPY: 650/822 instantes, 16 trades simulados
+  USDJPY: 700/822 instantes, 16 trades simulados
+  USDJPY: 750/822 instantes, 20 trades simulados
+  USDJPY: 800/822 instantes, 25 trades simulados
+USDJPY: 25 trades simulados, 126 planos
+US500: começando
+  US500: 50/343 instantes, 2 trades simulados
+  US500: 100/343 instantes, 5 trades simulados
+  US500: 150/343 instantes, 6 trades simulados
+  US500: 200/343 instantes, 6 trades simulados
+  US500: 250/343 instantes, 8 trades simulados
+  US500: 300/343 instantes, 8 trades simulados
+US500: 10 trades simulados, 23 planos
+{
+ "sistema": {
+  "n": 15,
+  "acerto": 0.467,
+  "expectativa": 0.323,
+  "ic95": [
+   -0.304,
+   1.009
+  ],
+  "payoff": 2.08,
+  "profit_factor": 1.82,
+  "soma_R": 4.84,
+  "drawdown_R": 2.69,
+  "pior_sequencia": 5,
+  "mediana": -0.114,
+  "media_sem_2_maiores": 0.027
+ },
+ "direto": {
+  "n": 45,
+  "acerto": 0.444,
+  "expectativa": -0.035,
+  "ic95": [
+   -0.38,
+   0.321
+  ],
+  "payoff": 1.17,
+  "profit_factor": 0.94,
+  "soma_R": -1.57,
+  "drawdown_R": 10.65,
+  "pior_sequencia": 6,
+  "mediana": -0.368,
+  "media_sem_2_maiores": -0.169
+ }
+}

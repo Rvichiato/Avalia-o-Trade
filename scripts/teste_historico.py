@@ -28,6 +28,29 @@ P = {
     "stop_minimo_atr": 0.75,         # stop menor que isso (ou que 3x o custo) não é operável
 }
 UTC = pd.Timedelta(0)
+OPC = {"filtro_tendencia": False, "estudo": False}  # ligados por --filtro-tendencia / --estudo
+
+
+def a_favor_da_tendencia(p, tend):
+    """Filtro do manual: só a favor do 4H; se o 4H estiver lateral, a favor do 1H;
+    com os dois laterais, qualquer direção (igual ao painel ao vivo)."""
+    ref = tend["4h"] if tend["4h"] != "lateral" else tend["1h"]
+    if ref == "lateral":
+        return True
+    return p["direcao"] == ("venda" if ref == "baixa" else "compra")
+
+
+def cruza_dado_eua(t_ent, t_sai):
+    """A posição estava aberta às 8h30 de Nova York (horário dos dados americanos) num dia útil?"""
+    a = pd.Timestamp(t_ent).tz_convert("America/New_York")
+    b = pd.Timestamp(t_sai).tz_convert("America/New_York") + pd.Timedelta(minutes=15)
+    d = a.normalize()
+    while d <= b:
+        x = d + pd.Timedelta(hours=8, minutes=30)
+        if d.weekday() < 5 and a <= x < b:
+            return True
+        d += pd.Timedelta(days=1)
+    return False
 
 
 def sessao_ok(ativo, t_utc):
@@ -172,6 +195,8 @@ def _registro(modo, ativo, p, d15, i_romp, i_ent, i_sai, ent, sai, mot, ctx, pip
         R_bruto=round(bruto, 3), R=round(liq, 3),
         a_favor_4h=a_favor(tend4), a_favor_1h=a_favor(tend1), tend_4h=tend4, tend_1h=tend1,
         barras=int(i_sai - i_ent + 1),
+        atravessou_dado_eua=cruza_dado_eua(t_ent, d15.index[i_sai]),
+        origem_linha=o.get("tipo") in ("LTA", "LTB"),
     )
 
 
@@ -199,7 +224,12 @@ def rodar(ativo, log=print):
         i_ini = len(c15)
         ctx = dict(t=str(t), tendencia=r["tendencia"])
         for p in r["planos"]:
-            if not p["valido"]:
+            if OPC["estudo"]:  # estudo: ignora o limite de US$ 2 da conta, mede só em R
+                if not (p["rr"] and p["rr"] >= C["conta"]["rr_minimo"]):
+                    continue
+            elif not p["valido"]:
+                continue
+            if OPC["filtro_tendencia"] and not a_favor_da_tendencia(p, r["tendencia"]):
                 continue
             nivel = p["nivel_de"] if p["direcao"] == "venda" else p["nivel_ate"]
             ativos_recentes = [x for x in ativos_recentes if (t - x[0]) < pd.Timedelta(hours=8)]
@@ -252,7 +282,7 @@ def grupos(df, col):
 
 
 def relatorio(df, funis, descartes, periodos, pasta):
-    res = {"parametros": P, "periodos": periodos, "descartes_R_na_entrada": descartes}
+    res = {"parametros": P, "opcoes": OPC, "periodos": periodos, "descartes_R_na_entrada": descartes}
     f = pd.DataFrame(funis)
     res["funil"] = {k: int(f[k].sum()) for k in f.columns} if len(f) else {}
     for modo in ("sistema", "direto"):
@@ -266,6 +296,8 @@ def relatorio(df, funis, descartes, periodos, pasta):
             por_sessao=grupos(d, "sessao") if len(d) else {},
             a_favor_tendencia_4h=grupos(d, "a_favor_4h") if len(d) else {},
             a_favor_tendencia_1h=grupos(d, "a_favor_1h") if len(d) else {},
+            linha_vs_zona=grupos(d, "origem_linha") if len(d) and "origem_linha" in d else {},
+            atravessou_dado_eua=grupos(d, "atravessou_dado_eua") if len(d) and "atravessou_dado_eua" in d else {},
             por_saida=d.motivo.value_counts().to_dict() if len(d) else {},
         )
     json.dump(res, open(os.path.join(pasta, "resumo.json"), "w"), indent=1, ensure_ascii=False, default=str)
@@ -303,8 +335,11 @@ def _grafico(df, pasta):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ativos", nargs="*", default=["EURUSD", "USDJPY", "US500"])
+    ap.add_argument("--filtro-tendencia", action="store_true", help="só planos a favor do 4H (ou do 1H com 4H lateral)")
+    ap.add_argument("--estudo", action="store_true", help="ignora o limite de risco da conta (ex.: ouro), mede em R")
     ap.add_argument("--saida", default=os.path.join(S.RAIZ, "testes", pd.Timestamp.now().strftime("%Y-%m-%d")))
     a = ap.parse_args()
+    OPC["filtro_tendencia"], OPC["estudo"] = a.filtro_tendencia, a.estudo
     os.makedirs(a.saida, exist_ok=True)
     todos, funis, desc, per = [], [], 0, {}
     for ativo in a.ativos:

@@ -1,0 +1,49 @@
+XAUUSD: começando
+  XAUUSD: 50/653 instantes, 0 trades simulados
+  XAUUSD: 100/653 instantes, 0 trades simulados
+  XAUUSD: 150/653 instantes, 4 trades simulados
+  XAUUSD: 200/653 instantes, 4 trades simulados
+  XAUUSD: 250/653 instantes, 4 trades simulados
+  XAUUSD: 300/653 instantes, 4 trades simulados
+  XAUUSD: 350/653 instantes, 9 trades simulados
+  XAUUSD: 400/653 instantes, 12 trades simulados
+  XAUUSD: 450/653 instantes, 13 trades simulados
+  XAUUSD: 500/653 instantes, 13 trades simulados
+  XAUUSD: 550/653 instantes, 13 trades simulados
+  XAUUSD: 600/653 instantes, 14 trades simulados
+  XAUUSD: 650/653 instantes, 19 trades simulados
+XAUUSD: 19 trades simulados, 70 planos
+{
+ "sistema": {
+  "n": 2,
+  "acerto": 0.5,
+  "expectativa": 0.186,
+  "ic95": [
+   -1.016,
+   1.389
+  ],
+  "payoff": 1.37,
+  "profit_factor": 1.37,
+  "soma_R": 0.37,
+  "drawdown_R": 0.0,
+  "pior_sequencia": 1,
+  "mediana": 0.186,
+  "media_sem_2_maiores": null
+ },
+ "direto": {
+  "n": 17,
+  "acerto": 0.412,
+  "expectativa": 0.027,
+  "ic95": [
+   -0.586,
+   0.681
+  ],
+  "payoff": 1.49,
+  "profit_factor": 1.04,
+  "soma_R": 0.46,
+  "drawdown_R": 5.0,
+  "pior_sequencia": 4,
+  "mediana": -1.012,
+  "media_sem_2_maiores": -0.276
+ }
+}
