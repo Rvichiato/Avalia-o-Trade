@@ -336,6 +336,27 @@ def estado_gatilho(df15, nivel, direcao, a15, barras=24, desde=None):
     return passos
 
 
+def estado_reteste(df15, lo, hi, direcao, a15, desde):
+    """Nível já rompido: a partir do candle do rompimento (índice negativo `desde`), procura
+    a volta à zona (reteste) e o candle de rejeição a favor (confirmação). Falha se um candle
+    fechar do outro lado da zona inteira (acima do topo na venda, abaixo do piso na compra)."""
+    tol = CFG["linhas"].get("rompimento_atr", 0.3) * a15
+    d = df15.iloc[desde:]
+    passos = {"rompimento": str(d.index[0]), "reteste": None, "confirmacao": None}
+    for t, r in list(d.iterrows())[1:]:
+        if (direcao == "venda" and r.c > hi + tol) or (direcao == "compra" and r.c < lo - tol):
+            return {"rompimento": passos["rompimento"], "reteste": None, "confirmacao": None, "falhou": str(t)}
+        if passos["reteste"] is None:
+            if (direcao == "venda" and r.h >= lo - tol) or (direcao == "compra" and r.l <= hi + tol):
+                passos["reteste"] = str(t)
+            else:
+                continue
+        if (direcao == "venda" and r.c < r.o and r.c < lo) or (direcao == "compra" and r.c > r.o and r.c > hi):
+            passos["confirmacao"] = str(t)
+            break
+    return passos
+
+
 # ---------------------------------------------------------------- planos
 def planos(ativo, dfs, lin, niv):
     A = CFG["ativos"][ativo]; pip = A["pip"]
@@ -438,6 +459,69 @@ def planos(ativo, dfs, lin, niv):
             montar("venda", f"rompimento da LTA do {l['tf']} (hoje em {v:.{A['casas']}f})",
                    v, v + 0.1 * a15, dict(tipo="LTA", tf=l["tf"], toques=l["toques"], incl_h=l["inclinacao_por_hora"]),
                    l["toques_idx"][-1] if l["tf"] == "15m" else None)
+    # ---- reteste de nível JÁ rompido: suporte rompido vira resistência (venda na volta),
+    # resistência rompida vira suporte (compra na volta). Vale por `reteste_rompido_barras` candles.
+    K = CFG["niveis"].get("reteste_rompido_barras", 96)
+    tol_r = CFG["linhas"].get("rompimento_atr", 0.3) * a15
+    fech = d15.c.iloc[-K:].values
+
+    def quebra(lo, hi, direcao):
+        """Índice negativo do candle que rompeu a zona nos últimos K candles (o mais recente)."""
+        for k in range(len(fech) - 1, 0, -1):
+            if direcao == "venda" and fech[k] < lo - tol_r and fech[k - 1] >= lo - tol_r and fech[:k].max() > hi:
+                return k - len(fech)
+            if direcao == "compra" and fech[k] > hi + tol_r and fech[k - 1] <= hi + tol_r and fech[:k].min() < lo:
+                return k - len(fech)
+        return None
+
+    def montar_reteste(direcao, lo, hi, nome, origem, desde):
+        if direcao == "venda":
+            entrada = lo - buf
+            dist = min(max(hi + buf + 0.1 * a15 - entrada, 1.5 * a15), 4 * a15)
+            stop = entrada + dist
+            obst = sorted([u["ate"] for u in uni if u["ate"] < lo - 0.5 * a15] +
+                          [x for x in redondos(ativo, entrada, 4) if x < lo - 0.5 * a15], reverse=True)
+            cands = [x for x in obst if x + buf_alvo < entrada - 0.5 * a15]
+            alvo = cands[0] + buf_alvo if cands else None
+            alvo_est = cands[1] + buf_alvo if len(cands) > 1 else None
+        else:
+            entrada = hi + buf
+            dist = min(max(entrada - (lo - buf - 0.1 * a15), 1.5 * a15), 4 * a15)
+            stop = entrada - dist
+            obst = sorted([u["de"] for u in uni if u["de"] > hi + 0.5 * a15] +
+                          [x for x in redondos(ativo, entrada, 4) if x > hi + 0.5 * a15])
+            cands = [x for x in obst if x - buf_alvo > entrada + 0.5 * a15]
+            alvo = cands[0] - buf_alvo if cands else None
+            alvo_est = cands[1] - buf_alvo if len(cands) > 1 else None
+        stop_p = dist / pip
+        alvo_p = abs(alvo - entrada) / pip if alvo is not None else None
+        rr = alvo_p / stop_p if alvo_p else None
+        obs = (f"primeiro obstáculo em {cands[0]:.{A['casas']}f} deixa só {rr:.1f}R"
+               if rr is not None and rr < CFG["conta"]["rr_minimo"] else None)
+        tam = dimensionar(ativo, preco, stop_p)
+        est = estado_reteste(d15, lo, hi, direcao, a15, desde)
+        out.append(dict(
+            direcao=direcao, tipo="reteste_rompido", gatilho=nome, origem=origem,
+            nivel_de=lo, nivel_ate=hi, entrada=entrada, stop=stop, alvo=alvo,
+            stop_pips=round(stop_p, 1), alvo_pips=None if alvo_p is None else round(alvo_p, 1),
+            rr=None if rr is None else round(rr, 2), obs_alvo=obs, alvo_estendido=alvo_est,
+            distancia_preco_pips=round(abs(preco - (lo if direcao == "venda" else hi)) / pip, 1),
+            tamanho=tam, estado=est,
+            valido=bool(rr and rr >= CFG["conta"]["rr_minimo"] and tam["cabe_na_conta"] and not est.get("falhou")),
+        ))
+
+    for z in sorted(res, key=lambda u: u["de"])[:2]:
+        q = quebra(z["de"], z["ate"], "venda")
+        if q is not None:
+            montar_reteste("venda", z["de"], z["ate"],
+                           f"reteste do suporte rompido {z['de']:.{A['casas']}f}–{z['ate']:.{A['casas']}f}",
+                           dict(tipo="suporte rompido", toques=z["toques"], tempos=z["tfs"]), q)
+    for z in sorted(sup, key=lambda u: -u["ate"])[:2]:
+        q = quebra(z["de"], z["ate"], "compra")
+        if q is not None:
+            montar_reteste("compra", z["de"], z["ate"],
+                           f"reteste da resistência rompida {z['de']:.{A['casas']}f}–{z['ate']:.{A['casas']}f}",
+                           dict(tipo="resistência rompida", toques=z["toques"], tempos=z["tfs"]), q)
     out.sort(key=lambda p: (not p["valido"], -(p["rr"] or 0)))
     finais = []
     for p in out:

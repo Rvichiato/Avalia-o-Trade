@@ -114,7 +114,8 @@
     "agrupar_atr": 0.35,
     "toques_minimos": 2,
     "distancia_max_atr_1h": 4,
-    "pivo_4h": 5
+    "pivo_4h": 5,
+    "reteste_rompido_barras": 96
   },
   "filtro_picos_atr": 6,
   "fonte": {

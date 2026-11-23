@@ -1,0 +1,44 @@
+name: Teste histórico (preços da Tickmill)
+
+on:
+  workflow_dispatch:
+    inputs:
+      opcoes:
+        description: "Opções do teste (ex.: --filtro-tendencia --reteste-rompido)"
+        required: false
+        default: "--filtro-tendencia"
+      nome:
+        description: "Nome da pasta em testes/ (ex.: 2026-11-23-reteste)"
+        required: true
+      ativos:
+        description: "Ativos (vazio = EURUSD USDJPY US500)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q pandas numpy matplotlib
+      - name: Rodar
+        env:
+          PASTA_DADOS: dados/mt5
+        run: |
+          cd scripts
+          python teste_historico.py ${{ github.event.inputs.ativos }} ${{ github.event.inputs.opcoes }} --saida ../testes/${{ github.event.inputs.nome }}
+      - name: Guardar resultado
+        run: |
+          git config user.name "teste-historico"
+          git config user.email "teste-historico@users.noreply.github.com"
+          git add testes/${{ github.event.inputs.nome }}
+          git commit -q -m "teste histórico: ${{ github.event.inputs.nome }} (${{ github.event.inputs.opcoes }})"
+          for i in 1 2 3 4 5; do git pull --rebase -q -X theirs && git push -q && exit 0; sleep $((i*5)); done
+          exit 1

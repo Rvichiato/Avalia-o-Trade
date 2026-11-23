@@ -28,7 +28,7 @@ P = {
     "stop_minimo_atr": 0.75,         # stop menor que isso (ou que 3x o custo) não é operável
 }
 UTC = pd.Timedelta(0)
-OPC = {"filtro_tendencia": False, "estudo": False}  # ligados por --filtro-tendencia / --estudo
+OPC = {"filtro_tendencia": False, "estudo": False, "reteste_rompido": False}  # ligados por --filtro-tendencia / --estudo
 
 
 def a_favor_da_tendencia(p, tend):
@@ -114,6 +114,14 @@ def simular(ativo, d15, i_ini, p, a15, contexto):
     out = []
     funil = {"plano": 1, "rompeu": 0, "retestou": 0, "confirmou": 0}
     fase, i_romp, i = 0, None, i_ini
+    ja_rompido = p.get("tipo") == "reteste_rompido"
+    # invalidação: no nível comum é o próprio nível; no reteste de nível já rompido é o outro lado da zona
+    inv0 = (p["nivel_ate"] if direcao == "venda" else p["nivel_de"]) if ja_rompido else nivel0
+    if ja_rompido:
+        if not OPC.get("reteste_rompido"):
+            return out, funil
+        funil["rompeu"] = 1
+        fase, i_romp = 1, i_ini
     lim = min(len(d15), i_ini + P["validade_plano_barras"])
     while i < len(d15):
         r = d15.iloc[i]
@@ -138,8 +146,9 @@ def simular(ativo, d15, i_ini, p, a15, contexto):
             continue
         if i - i_romp > P["barras_reteste"]:
             break
+        nv_inv = inv0 + incl * (i - i_ini + 1)
         if fase == 1:
-            voltou = (r.c > nv + tol) if direcao == "venda" else (r.c < nv - tol)
+            voltou = (r.c > nv_inv + tol) if direcao == "venda" else (r.c < nv_inv - tol)
             if voltou:
                 break  # falso rompimento
             tocou = (r.h >= nv - tol) if direcao == "venda" else (r.l <= nv + tol)
@@ -150,10 +159,12 @@ def simular(ativo, d15, i_ini, p, a15, contexto):
                 i += 1
                 continue
         if fase == 2:
-            voltou = (r.c > nv + tol) if direcao == "venda" else (r.c < nv - tol)
+            voltou = (r.c > nv_inv + tol) if direcao == "venda" else (r.c < nv_inv - tol)
             if voltou:
                 break
             confirma = (r.c < r.o and r.c < nv) if direcao == "venda" else (r.c > r.o and r.c > nv)
+            if confirma and ja_rompido and not sessao_ok(ativo, d15.index[i]):
+                confirma = False  # nível já rompido: a confirmação é o gatilho e precisa cair na sessão
             if confirma and i + 1 < len(d15):
                 funil["confirmou"] = 1
                 ent = float(d15.o.iloc[i + 1])  # deslizamento entra no custo
@@ -336,10 +347,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ativos", nargs="*", default=["EURUSD", "USDJPY", "US500"])
     ap.add_argument("--filtro-tendencia", action="store_true", help="só planos a favor do 4H (ou do 1H com 4H lateral)")
+    ap.add_argument("--reteste-rompido", action="store_true", help="inclui os planos de reteste de nível já rompido")
     ap.add_argument("--estudo", action="store_true", help="ignora o limite de risco da conta (ex.: ouro), mede em R")
     ap.add_argument("--saida", default=os.path.join(S.RAIZ, "testes", pd.Timestamp.now().strftime("%Y-%m-%d")))
     a = ap.parse_args()
-    OPC["filtro_tendencia"], OPC["estudo"] = a.filtro_tendencia, a.estudo
+    OPC["filtro_tendencia"], OPC["estudo"], OPC["reteste_rompido"] = a.filtro_tendencia, a.estudo, a.reteste_rompido
     os.makedirs(a.saida, exist_ok=True)
     todos, funis, desc, per = [], [], 0, {}
     for ativo in a.ativos:
