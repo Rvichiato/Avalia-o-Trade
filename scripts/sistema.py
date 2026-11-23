@@ -42,6 +42,7 @@ def tickmill_15m(ativo, dias=None):
     if not partes:
         return None
     df = pd.concat(partes)
+    df.index = df.index.floor("15min")  # a Tickmill às vezes abre os candles em :02/:17/:32/:47
     df = df[~df.index.duplicated(keep="last")].sort_index()
     dias = dias or CFG.get("fonte", {}).get("historico_dias", 240)
     return df[df.index >= df.index[-1] - pd.Timedelta(days=dias)]

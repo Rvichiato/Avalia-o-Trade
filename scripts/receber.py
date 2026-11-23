@@ -37,11 +37,17 @@ def velas(ev):
 
 def gravar(ev, base=BASE):
     tf = {"15": "15m", "60": "1h"}.get(str(ev.get("tf", "15")), str(ev.get("tf")))
+    try:
+        agora = dt.datetime.fromisoformat(str(ev.get("recebido")).replace("Z", "+00:00"))
+    except ValueError:
+        agora = dt.datetime.now(dt.timezone.utc)
     os.makedirs(base, exist_ok=True)
     por_ativo = {}
     for ativo, t, o, h, l, c in velas(ev):
         seg = int(float(t)) // 1000
         seg -= seg % 900  # grade de 15 min: a Tickmill às vezes abre os candles em :02/:17/:32/:47
+        if dt.datetime.fromtimestamp(seg + 900, dt.timezone.utc) > agora + dt.timedelta(minutes=3):
+            continue  # candle ainda em formação (ex.: US500 em :00 quando o gráfico fecha em :02): chega fechado no próximo envio
         hora = dt.datetime.fromtimestamp(seg, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         o, h, l, c = (float(x) for x in (o, h, l, c))
         if not (l <= min(o, c) and h >= max(o, c) and l > 0):
@@ -54,7 +60,13 @@ def gravar(ev, base=BASE):
         if os.path.exists(caminho):
             with open(caminho) as f:
                 r = csv.reader(f); next(r, None)
-                linhas = {l[0]: l for l in r if l}
+                for l in r:
+                    if not l:
+                        continue
+                    t = dt.datetime.strptime(l[0], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.timezone.utc)
+                    t -= dt.timedelta(minutes=t.minute % 15, seconds=t.second)  # normaliza linhas antigas para a grade
+                    k = t.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    linhas[k] = [k] + l[1:]
         linhas.update(novas)
         with open(caminho, "w", newline="") as f:
             w = csv.writer(f)
