@@ -1,24 +1,49 @@
 //@version=6
-// Coleta B&R: a cada candle fechado, envia por webhook os candles dos 3 ativos
-// no feed da corretora (mesmo preço que o Rodrigo opera).
-// Use em um gráfico de 15 minutos de TICKMILL:EURUSD e crie UM alerta
-// com a condição "Qualquer chamada da função alert()" e o webhook da ponte.
-indicator("Coleta B&R (webhook)", overlay = true)
+// ─────────────────────────────────────────────────────────────────────────────
+// Coleta B&R · v2 (TradingView Premium)
+// A cada candle de 15 minutos fechado, envia por webhook os 3 últimos candles
+// fechados de cada ativo, no feed da Tickmill (o mesmo preço em que o Rodrigo opera).
+// Reenviar os 2 candles anteriores corrige sozinho qualquer alerta perdido
+// ou candle que ainda recebeu negócio depois do fechamento.
+//
+// Como usar: gráfico de TICKMILL:EURUSD em 15 minutos → adicionar este indicador →
+// criar UM alerta com a condição "Qualquer chamada da função alert()",
+// expiração "Sem expiração" (Premium) e o webhook da ponte.
+// ─────────────────────────────────────────────────────────────────────────────
+indicator("Coleta B&R v2 (webhook)", overlay = true)
 
 s1    = input.symbol("TICKMILL:EURUSD", "Ativo 1")
 s2    = input.symbol("TICKMILL:USDJPY", "Ativo 2")
 s3    = input.symbol("TICKMILL:US500",  "Ativo 3")
+s4    = input.symbol("TICKMILL:XAUUSD", "Ativo 4 (estudo)")
 chave = input.string("TROQUE-ESTA-CHAVE", "Chave secreta (igual à da ponte)")
 
-candle(simbolo) =>
-    [t, o, h, l, c] = request.security(simbolo, timeframe.period, [time, open, high, low, close], lookahead = barmerge.lookahead_off)
-    '{"s":"' + simbolo + '","t":' + str.tostring(t) + ',"o":' + str.tostring(o) + ',"h":' + str.tostring(h) + ',"l":' + str.tostring(l) + ',"c":' + str.tostring(c) + '}'
+// número sem notação científica e sem "NaN" (o JSON não aceita NaN)
+num(x) => na(x) ? "null" : str.tostring(x, "#.#######")
 
-j1 = candle(s1)
-j2 = candle(s2)
-j3 = candle(s3)
+vela(t, o, h, l, c) => na(t) or na(c) ? "" : "[" + str.tostring(t, "#") + "," + num(o) + "," + num(h) + "," + num(l) + "," + num(c) + "]"
 
-if barstate.isconfirmed
-    alert('{"k":"' + chave + '","tf":"' + timeframe.period + '","velas":[' + j1 + ',' + j2 + ',' + j3 + ']}', alert.freq_once_per_bar_close)
+pacote(simbolo) =>
+    [t0, o0, h0, l0, c0, t1, o1, h1, l1, c1, t2, o2, h2, l2, c2] = request.security(simbolo, "15",
+         [time, open, high, low, close, time[1], open[1], high[1], low[1], close[1], time[2], open[2], high[2], low[2], close[2]],
+         lookahead = barmerge.lookahead_off)
+    a = vela(t2, o2, h2, l2, c2)
+    b = vela(t1, o1, h1, l1, c1)
+    c = vela(t0, o0, h0, l0, c0)
+    lista = a
+    lista := b == "" ? lista : (lista == "" ? b : lista + "," + b)
+    lista := c == "" ? lista : (lista == "" ? c : lista + "," + c)
+    lista == "" ? "" : '{"s":"' + simbolo + '","b":[' + lista + ']}'
+
+p1 = pacote(s1)
+p2 = pacote(s2)
+p3 = pacote(s3)
+p4 = pacote(s4)
+
+juntar(acc, p) => p == "" ? acc : (acc == "" ? p : acc + "," + p)
+
+if barstate.isconfirmed and barstate.isrealtime
+    corpo = juntar(juntar(juntar(juntar("", p1), p2), p3), p4)
+    alert('{"k":"' + chave + '","tf":"15","v":2,"ativos":[' + corpo + ']}', alert.freq_once_per_bar_close)
 
 plot(close, "fechamento", display = display.none)

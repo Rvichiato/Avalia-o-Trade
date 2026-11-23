@@ -116,5 +116,12 @@
     "distancia_max_atr_1h": 4,
     "pivo_4h": 5
   },
-  "filtro_picos_atr": 6
+  "filtro_picos_atr": 6,
+  "fonte": {
+    "usar_tickmill": true,
+    "tolerancia_atraso_min": 30,
+    "buraco_max_horas": 6,
+    "historico_dias": 240,
+    "explicacao": "Candles da Tickmill (MT5 + exportação do TradingView + ponte ao vivo) têm prioridade. Se estiverem atrasados ou com buraco, a análise usa o Yahoo com os ajustes e avisa."
+  }
 }

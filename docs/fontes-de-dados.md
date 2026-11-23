@@ -2,6 +2,12 @@
 
 Cada avaliação nova entra no topo. Critérios: (1) preço próximo ao da Tickmill, (2) atraso até o candle chegar, (3) resolução do preço, (4) custo e limites, (5) funciona a partir do GitHub Actions sem intervenção.
 
+## 23/11/2026 · TradingView Premium assinado: fonte principal
+- O Rodrigo assinou o **Premium** na Black Friday (R$ 1.316 por 13 meses, praticamente o preço do Plus). Decisivo: alertas que não expiram (a ponte não para a cada 2 meses), 400 alertas, webhook, exportação de dados do gráfico, 20 mil candles e Deep Backtesting.
+- Nova ponte (v2): um único alerta, num gráfico de EURUSD 15m, manda os **3 últimos candles fechados de EURUSD, USDJPY, US500 e XAUUSD** a cada 15 min. Reenviar os 2 anteriores corrige alerta perdido e candle que mudou depois do fechamento.
+- O robô junta o histórico do MT5 + a exportação do gráfico do TradingView + os candles ao vivo, **sem ajuste nenhum** (é o preço da Tickmill). Se a ponte atrasar mais de 30 min em relação ao Yahoo, ou se houver buraco no histórico com o mercado aberto, a análise volta ao Yahoo com os ajustes e **avisa** na nota do painel. `scripts/saude_ponte.py` mostra o estado.
+- A coleta do Yahoo continua rodando como reserva (agendamento não foi mexido).
+
 ## 13/11/2026 · fontes pagas (Rodrigo topou custo razoável)
 
 **1ª opção: o próprio TradingView, com o feed da Tickmill, via webhook**

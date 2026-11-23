@@ -29,6 +29,9 @@ Com o filtro: 15 trades, +0,32R por trade (intervalo de −0,30 a +1,01), soma d
 ## Resultado de 16/11 com os preços da Tickmill (MT5, jan/2024 a nov/2026)
 Sem filtro: 356 trades, −0,19R (intervalo inteiro negativo). Com filtro de tendência: 128 trades, −0,02R (−0,26 a +0,24), +0,09R antes dos custos. O filtro é indispensável, mas não basta: os custos (~0,11R por trade) comem a vantagem, e o bom resultado de 2026 não se repete em 2024–2025. Próximos testes (registrados antes): só 4H definido; stop mais largo ou corte por custo; alvo e saída por tempo. Desenvolver em 2024–2025, validar em 2026. Yahoo x Tickmill: EURUSD do Yahoo ~3,2 pips acima (correção proposta, aguarda aprovação). Detalhes em `testes/2026-11-16-mt5/`.
 
+## 23/11 · TradingView Premium
+Assinado. Fonte principal passa a ser a Tickmill via TradingView (ponte v2 com 4 ativos, robô com reserva no Yahoo e aviso), mais os indicadores Painel B&R, B&R Nível e B&R Linha para alertas de rompimento → reteste → confirmação no celular. Guia em `tradingview/LEIA-ME.md`. Próximos: ligar a ponte, tapar o histórico de 16/11 em diante com a exportação do gráfico, decidir se as análises de 05h20 e 11h45 voltam a rodar (estão desligadas desde 19/11) e, depois, usar o Deep Backtesting para conferir o teste em Python.
+
 ## Pendências com data
 - **Hipótese para testar (19/11):** no US500, em 17/11 e 19/11, o alvo antes do primeiro suporte travou a relação abaixo de 1,5R em dias de queda forte (−150 e −260 pts). Testar no histórico da Tickmill, desenvolvendo em 2024–2025 e validando em 2026: com tendência forte no 4H, usar o 2º obstáculo como alvo, ou sair com parte no 1º e deixar o resto andar com stop móvel.
 - **Registro (19/11):** o rompimento para cima da LTB grande do ouro em 16/11 (contra o 4H) falhou: topo 3.890 em 17/11, depois −265 dólares. Rompimento contra a tendência só conta depois de fechamento + reteste.

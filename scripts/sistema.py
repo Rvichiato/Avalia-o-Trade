@@ -14,12 +14,91 @@ TF_MIN = {"15m": 15, "1h": 60, "4h": 240}
 
 
 # ---------------------------------------------------------------- dados
-def _ler(ativo, tf):
-    pasta = os.environ.get("PASTA_DADOS") or os.path.join(RAIZ, "dados")  # ex.: dados/mt5 (histórico da Tickmill)
-    df = pd.read_csv(os.path.join(pasta, f"{ativo}_{tf}.csv"), index_col=0)
+def _ler_csv(caminho):
+    df = pd.read_csv(caminho, index_col=0)
     df.index = pd.to_datetime(df.index, utc=True)
+    df = df.iloc[:, :4]
     df.columns = ["o", "h", "l", "c"]
     return df.sort_index()
+
+
+def _ler(ativo, tf):
+    pasta = os.environ.get("PASTA_DADOS") or os.path.join(RAIZ, "dados")  # ex.: dados/mt5 (histórico da Tickmill)
+    return _ler_csv(os.path.join(pasta, f"{ativo}_{tf}.csv"))
+
+
+# ---------------------------------------------------------------- fonte Tickmill (TradingView)
+# Ordem de prioridade dos candles da Tickmill (o último vence quando a mesma hora aparece em dois):
+# histórico do MT5  <  exportação do gráfico do TradingView  <  candles ao vivo da ponte (webhook)
+PARTES_TICKMILL = (("mt5",), ("tv", "export"), ("tv",))
+
+
+def tickmill_15m(ativo, dias=None):
+    partes = []
+    for sub in PARTES_TICKMILL:
+        p = os.path.join(RAIZ, "dados", *sub, f"{ativo}_15m.csv")
+        if os.path.exists(p):
+            partes.append(_ler_csv(p))
+    if not partes:
+        return None
+    df = pd.concat(partes)
+    df = df[~df.index.duplicated(keep="last")].sort_index()
+    dias = dias or CFG.get("fonte", {}).get("historico_dias", 240)
+    return df[df.index >= df.index[-1] - pd.Timedelta(days=dias)]
+
+
+def buracos(df, horas=6, dias=30, ref=None):
+    """Intervalos sem candle maiores que `horas` nos últimos `dias`.
+    Só conta como buraco se o mercado estava aberto: com `ref` (candles do Yahoo), exige que o Yahoo
+    tenha candles no meio do intervalo; sem `ref`, ignora intervalos de fim de semana (até 56 h)."""
+    rec = df[df.index >= df.index[-1] - pd.Timedelta(days=dias)].index
+    out = []
+    for a, b in zip(rec[:-1], rec[1:]):
+        if (b - a) <= pd.Timedelta(hours=horas):
+            continue
+        if ref is not None:
+            if ((ref.index > a) & (ref.index < b)).sum() >= 4:
+                out.append((a, b))
+            continue
+        dias_no_meio = pd.date_range(a.normalize(), b.normalize(), freq="D")
+        fim_de_semana = any(d.weekday() == 5 for d in dias_no_meio) and (b - a) <= pd.Timedelta(hours=56)
+        if not fim_de_semana:
+            out.append((a, b))
+    return out
+
+
+def _brt(t):
+    return (pd.Timestamp(t) + pd.Timedelta(hours=CFG["fuso_exibicao_horas"])).strftime("%d/%m %Hh%M")
+
+
+def fonte(ativo):
+    """Decide de onde vêm os candles: Tickmill (TradingView) quando estão em dia e sem buracos,
+    senão Yahoo com os ajustes de sempre. Devolve (fonte, nota legível)."""
+    if os.environ.get("PASTA_DADOS"):
+        return "pasta", None
+    F = CFG.get("fonte", {})
+    if not F.get("usar_tickmill", True) or not os.path.exists(os.path.join(RAIZ, "dados", "tv", f"{ativo}_15m.csv")):
+        return "yahoo", None
+    tk = tickmill_15m(ativo)
+    ult_tk = tk.index[-1]
+    try:
+        yh = _ler(ativo, "15m")
+        ult_y = yh.index[-1]
+    except FileNotFoundError:
+        yh, ult_y = None, ult_tk
+    tol = pd.Timedelta(minutes=F.get("tolerancia_atraso_min", 30))
+    if ult_tk < ult_y - tol:
+        return "yahoo", f"candles da Tickmill atrasados (último {_brt(ult_tk)}): análise com Yahoo ajustado"
+    b = buracos(tk, F.get("buraco_max_horas", 6), ref=yh)
+    if b:
+        a0, b0 = b[-1]
+        return "yahoo", (f"histórico da Tickmill com buraco de {_brt(a0)} a {_brt(b0)}: análise com Yahoo ajustado "
+                         f"(exportar o 15m do TradingView para tapar)")
+    agora = pd.Timestamp.now(tz="UTC")
+    atraso = (agora - (ult_tk + pd.Timedelta(minutes=15))).total_seconds() / 60
+    fds = agora.weekday() == 5 or (agora.weekday() == 4 and agora.hour >= 22) or (agora.weekday() == 6 and agora.hour < 22)
+    aviso = f" · ATENÇÃO: nenhum candle novo há {atraso:.0f} min, conferir a ponte" if (atraso > 45 and not fds) else ""
+    return "tickmill", f"preços da Tickmill via TradingView (último candle {_brt(ult_tk)}){aviso}"
 
 
 def _limpar_picos(df, k):
@@ -56,9 +135,15 @@ def ajuste_us500():
     return off, f"futuro {off:+.1f} pontos acima do à vista (mediana de {len(sel)} candles)"
 
 
-def carregar(ativo, tf, ajuste=0.0):
+def carregar(ativo, tf, ajuste=0.0, origem="yahoo"):
     base = "1h" if tf == "4h" else tf
-    df = _ler(ativo, base)
+    if origem == "tickmill":
+        df = tickmill_15m(ativo)
+        if base == "1h":
+            df = df.resample("1h", label="left", closed="left").agg(
+                {"o": "first", "h": "max", "l": "min", "c": "last"}).dropna()
+    else:
+        df = _ler(ativo, base)
     df = _limpar_picos(df, CFG["filtro_picos_atr"])
     if ajuste:
         df = df - ajuste
@@ -363,14 +448,21 @@ def planos(ativo, dfs, lin, niv):
 
 # ---------------------------------------------------------------- tudo junto
 def analisar(ativo):
+    origem, nota_fonte = fonte(ativo)
     ajuste, nota = (0.0, None)
-    if CFG["ativos"][ativo].get("ajuste_futuro"):
+    if origem == "tickmill":
+        nota = nota_fonte  # preço da própria corretora: nenhum ajuste
+    elif CFG["ativos"][ativo].get("ajuste_futuro"):
         ajuste, nota = ajuste_us500()
     elif CFG["ativos"][ativo].get("ajuste_fixo"):
         ajuste = CFG["ativos"][ativo]["ajuste_fixo"]
         nota = CFG["ativos"][ativo].get("nota_curta") or f"futuro convertido para o à vista da Tickmill (−{ajuste:.0f}, calibrado com print)"
-    dfs = {tf: carregar(ativo, tf, ajuste) for tf in ("4h", "1h", "15m")}
-    return analisar_dfs(ativo, dfs, nota), dfs
+    if origem == "yahoo" and nota_fonte:
+        nota = nota_fonte + (f" · {nota}" if nota else "")
+    dfs = {tf: carregar(ativo, tf, ajuste, origem) for tf in ("4h", "1h", "15m")}
+    r = analisar_dfs(ativo, dfs, nota)
+    r["fonte"] = "Tickmill (TradingView)" if origem == "tickmill" else "Yahoo (reserva)"
+    return r, dfs
 
 
 def analisar_dfs(ativo, dfs, nota=None):
