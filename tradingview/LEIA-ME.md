@@ -71,6 +71,10 @@ Opcional: alerta "Qualquer chamada da função alert()" avisa quando a direção
 - **Nível:** adicionar ao gráfico de 15m → clicar no preço do nível.
 - **Linha (LTA/LTB):** adicionar → clicar no 1º apoio e depois no 2º apoio.
 - Nas configurações: direção (automática pela tendência, ou fixa), **alvo** do plano (para o alerta dizer quantos R dá) e risco (US$ 2).
+- **Nível já rompido** (o preço já passou pelo nível e o plano é esperar a volta, como o EURUSD em 1,0950 no dia 23/11):
+  marque **"Já foi rompido: esperar só a volta"**, clique na borda da zona que o preço vai tocar primeiro e,
+  se quiser, ponha em **"Outro lado da zona"** o preço que cancela o plano. A espera começa quando você coloca
+  o indicador e dura 96 candles (24 h); o primeiro aviso já é o 2/3 RETESTE.
 - Criar alerta: condição **B&R Nível** (ou **B&R Linha**) → **Qualquer chamada da função alert()** → **Sem expiração** → notificação no **app** (e e-mail se quiser).
 
 Você recebe no celular:
