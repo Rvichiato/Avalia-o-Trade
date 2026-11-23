@@ -40,7 +40,9 @@ def gravar(ev, base=BASE):
     os.makedirs(base, exist_ok=True)
     por_ativo = {}
     for ativo, t, o, h, l, c in velas(ev):
-        hora = dt.datetime.fromtimestamp(int(float(t)) / 1000, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        seg = int(float(t)) // 1000
+        seg -= seg % 900  # grade de 15 min: a Tickmill às vezes abre os candles em :02/:17/:32/:47
+        hora = dt.datetime.fromtimestamp(seg, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         o, h, l, c = (float(x) for x in (o, h, l, c))
         if not (l <= min(o, c) and h >= max(o, c) and l > 0):
             continue  # candle incoerente: ignora

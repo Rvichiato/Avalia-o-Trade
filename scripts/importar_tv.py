@@ -29,7 +29,12 @@ def ler_export(caminho):
     df = pd.DataFrame({"abertura": pega("open"), "maxima": pega("high"), "minima": pega("low"),
                        "fechamento": pega("close")}, index=idx)
     df.index.name = "hora_utc"
-    df = df[~df.index.duplicated(keep="last")].sort_index()
+    # o último candle da exportação ainda estava em formação: fica de fora
+    df = df.sort_index().iloc[:-1]
+    # a Tickmill no TradingView às vezes abre os candles em :02/:17/:32/:47 (começo da semana);
+    # tudo vai para a grade de 15 min (:00/:15/:30/:45), a mesma do MT5 e do robô
+    df.index = df.index.floor("15min")
+    df = df[~df.index.duplicated(keep="last")]
     passo = df.index.to_series().diff().dropna().median()
     if passo != pd.Timedelta(minutes=15):
         raise SystemExit(f"{caminho}: os candles não são de 15 minutos (passo {passo}). Exporte o gráfico em 15m.")
