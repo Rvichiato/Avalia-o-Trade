@@ -116,7 +116,7 @@ def _coluna(ax, linhas, largura=40):
             fontsize=9, color=TXT, linespacing=1.45)
 
 
-def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
+def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo="", observacao=None):
     F = _fmt(ativo); T = CFG["tempos"]
     fig = plt.figure(figsize=(16, 12.5), facecolor="#0e0f13")
     gs = fig.add_gridspec(2, 1, height_ratios=[1, 1.35], hspace=0.22,
@@ -190,11 +190,18 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
         nv = p["nivel_de"] if p["direcao"] == "venda" else p["nivel_ate"]
         sg = -1 if p["direcao"] == "venda" else 1
         a15 = r["atr"]["15m"]
-        pts = [(n - 1, r["preco"]), (n + 4, nv + sg * 1.2 * a15), (n + 8, nv), (n + 11, nv + sg * 0.6 * a15), (n + 14, p["entrada"])]
+        ja_rompido = p.get("tipo") == "reteste_rompido"
+        if ja_rompido:  # o nível já foi rompido: o preço precisa voltar até ele e ser rejeitado
+            topo = p["nivel_ate"] if sg < 0 else p["nivel_de"]
+            ax.axhspan(p["nivel_de"], p["nivel_ate"], xmin=0, xmax=1, color=AMAR, alpha=0.10, zorder=1)
+            pts = [(n - 1, r["preco"]), (n + 6, topo), (n + 10, nv + sg * 0.4 * a15), (n + 14, p["entrada"])]
+        else:
+            pts = [(n - 1, r["preco"]), (n + 4, nv + sg * 1.2 * a15), (n + 8, nv), (n + 11, nv + sg * 0.6 * a15), (n + 14, p["entrada"])]
         ax.plot(*zip(*pts), color=AMAR, linewidth=1.6, linestyle="--", zorder=6)
-        for k, (xx, yy) in enumerate(pts[1:4], 1):
+        for k, (xx, yy) in enumerate(pts[1:3] if ja_rompido else pts[1:4], 1):
             ax.scatter([xx], [yy], s=110, facecolors="none", edgecolors=AMAR, linewidths=1.6, zorder=7)
-            ax.text(xx, yy + sg * 0.5 * a15, str(k), color=AMAR, fontsize=10, ha="center", va="center", fontweight="bold")
+            dy = -sg * 0.7 * a15 if (ja_rompido and k == 1) else sg * 0.5 * a15
+            ax.text(xx, yy + dy, str(k), color=AMAR, fontsize=10, ha="center", va="center", fontweight="bold", zorder=8)
         cor = VERM if p["direcao"] == "venda" else VERDE
         e = p["estado"]
         if e.get("confirmacao") and not e.get("invalidado_depois"):
@@ -206,15 +213,23 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
         else:
             st = "Situação: ainda não rompeu"
         lote = p["tamanho"]["lote"]
-        caixa = [br(f"Plano: {p['direcao'].upper()} no {p['gatilho']}"),
-                 f"1 · Rompimento: candle de 15m fecha {'abaixo' if sg < 0 else 'acima'} de {F(nv)}",
-                 f"2 · Reteste: o preço volta a {F(nv)}",
-                 f"3 · Confirmação: candle fecha a favor → entra no seguinte",
+        if ja_rompido:
+            st = p.get("situacao", "Situação: o preço ainda não voltou à zona")
+            passos = [br(f"1 · Reteste: o preço volta até {F(p['nivel_de'])}–{F(p['nivel_ate'])} (já rompida)"),
+                      br(f"2 · Rejeição: candle de 15m fecha {'abaixo' if sg < 0 else 'acima'} de {F(nv)}, a favor"),
+                      "3 · Entrada no candle seguinte"]
+        else:
+            passos = [f"1 · Rompimento: candle de 15m fecha {'abaixo' if sg < 0 else 'acima'} de {F(nv)}",
+                      f"2 · Reteste: o preço volta a {F(nv)}",
+                      f"3 · Confirmação: candle fecha a favor → entra no seguinte"]
+        caixa = [br(f"Plano: {p['direcao'].upper()} no {p['gatilho']}")] + passos + [
                  br(f"Lote {lote:.2f} · risco ≈ US$ {p['tamanho']['risco_real_usd']:.2f}") if lote >= 0.01 else
                  f"Stop de {p['stop_pips'] * fu:.0f} {un} não cabe no risco de US$ {p['tamanho']['risco_usd']:.0f}",
                  st]
         if p.get("obs_alvo"):
             caixa.append(br(f"Atenção: {p['obs_alvo']}; abaixo do mínimo de 1,5R"))
+        for extra_txt in p.get("notas", []):
+            caixa.append(extra_txt)  # já vem escrito em português, com vírgula decimal
         ax.text(n + 1, ylo, "projeção ilustrativa", color="#777", fontsize=8, va="bottom")
     rng = yhi - ylo
     ax.set_ylim(ylo - rng * 0.06, yhi + rng * 0.12)
@@ -229,6 +244,8 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo=""):
     _titulo(ax, [linhas15[0], "  ·  ".join(linhas15[1:])] if len(linhas15) > 1 else linhas15)
     if not caixa:
         caixa = ["Só observar: nenhum plano a favor da tendência do 4H/1H com risco e relação mínima de 1,5R."]
+        if observacao:
+            caixa = [observacao[0], "", "", ""] + list(observacao[1:])
     # cabeçalho do plano em destaque, resto em texto corrido
     _coluna(info, [caixa[0], ""] + caixa[1:4] + [""] + caixa[4:])
     fig.savefig(caminho, dpi=110, facecolor=fig.get_facecolor())

@@ -297,7 +297,7 @@ def dimensionar(ativo, preco, stop_pips):
     c = CFG["conta"]; A = CFG["ativos"][ativo]
     risco = c["capital_usd"] * c["risco_pct"] / 100
     vpl = valor_pip_lote(ativo, preco)
-    lote = math.floor(risco / (stop_pips * vpl) * 100) / 100
+    lote = math.floor(risco / (stop_pips * vpl) * 100 + 1e-6) / 100  # 1e-6: evita 0,00999… virar 0
     com = A.get("comissao_usd_por_lote_ida_volta", c["comissao_usd_por_lote_ida_volta"])
     return dict(risco_usd=risco, lote=max(lote, 0.0), cabe_na_conta=lote >= 0.01,
                 risco_real_usd=round(max(lote, 0.01) * stop_pips * vpl, 2),
