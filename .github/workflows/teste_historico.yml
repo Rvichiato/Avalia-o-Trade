@@ -30,7 +30,7 @@ jobs:
       - run: pip install -q pandas numpy matplotlib
       - name: Rodar
         env:
-          PASTA_DADOS: dados/mt5
+          PASTA_DADOS: ${{ github.workspace }}/dados/mt5
         run: |
           cd scripts
           python teste_historico.py ${{ github.event.inputs.ativos }} ${{ github.event.inputs.opcoes }} --saida ../testes/${{ github.event.inputs.nome }}
