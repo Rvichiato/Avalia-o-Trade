@@ -507,6 +507,7 @@ def planos(ativo, dfs, lin, niv):
             rr=None if rr is None else round(rr, 2), obs_alvo=obs, alvo_estendido=alvo_est,
             distancia_preco_pips=round(abs(preco - (lo if direcao == "venda" else hi)) / pip, 1),
             tamanho=tam, estado=est,
+            estudo=not CFG["niveis"].get("reteste_rompido_operar", False),
             valido=bool(rr and rr >= CFG["conta"]["rr_minimo"] and tam["cabe_na_conta"] and not est.get("falhou")),
         ))
 

@@ -17,12 +17,13 @@ def melhor_plano(r):
     """Só desenha plano a favor da tendência: do 4H, ou do 1H quando o 4H está lateral.
     Sem plano assim, nada é desenhado (o painel diz "só observar")."""
     t4, t1 = r["tendencia"]["4h"], r["tendencia"]["1h"]
+    planos = [p for p in r["planos"] if not p.get("estudo")]  # planos só de estudo não viram entrada
     ref = t4 if t4 != "lateral" else t1
     if ref == "lateral":
-        cand = [p for p in r["planos"] if p["valido"]]
+        cand = [p for p in planos if p["valido"]]
     else:
         alvo = "venda" if ref == "baixa" else "compra"
-        cand = [p for p in r["planos"] if p["direcao"] == alvo]
+        cand = [p for p in planos if p["direcao"] == alvo]
     if not cand:
         return None
     validos = [p for p in cand if p["valido"]]

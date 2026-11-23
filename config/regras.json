@@ -115,7 +115,9 @@
     "toques_minimos": 2,
     "distancia_max_atr_1h": 4,
     "pivo_4h": 5,
-    "reteste_rompido_barras": 96
+    "reteste_rompido_barras": 96,
+    "reteste_rompido_operar": false,
+    "reteste_rompido_nota": "23/11/2026: teste com 3 anos da Tickmill deu -0,10R por operação (359 operações); fica só como estudo"
   },
   "filtro_picos_atr": 6,
   "fonte": {
