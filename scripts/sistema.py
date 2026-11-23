@@ -494,4 +494,5 @@ def _dia_anterior(d1):
     if len(dias) < 2:
         return None
     ontem = d1[t.date == dias[-2]]
-    return dict(data=str(dias[-2]), maxima=float(ontem.h.max()), minima=float(ontem.l.min()))
+    # a sessão começa às 22h UTC da véspera: o dia de negociação é o seguinte ao da abertura
+    return dict(data=str(dias[-2] + pd.Timedelta(days=1)), maxima=float(ontem.h.max()), minima=float(ontem.l.min()))
