@@ -124,7 +124,9 @@ def painel(ativo, r, dfs, plano=None, caminho="painel.png", subtitulo="", observ
     gs_cima = gs[0].subgridspec(1, 2, wspace=0.1)
     gs_baixo = gs[1].subgridspec(1, 2, width_ratios=[3.3, 1], wspace=0.07)
     hora = (pd.Timestamp(r["ultimo_candle_15m_utc"]) + pd.Timedelta(minutes=15) + FUSO)
-    fig.text(0.02, 0.972, f"{r['nome']} · {hora.strftime('%d/%m/%Y %Hh%M')} (Brasília) · preço {F(r['preco'])}",
+    ag = r.get("agora")
+    ag_txt = f" · agora {F(ag['preco'])} ({ag['hora_brt']})" if ag else ""
+    fig.text(0.02, 0.972, f"{r['nome']} · {hora.strftime('%d/%m/%Y %Hh%M')} (Brasília) · preço {F(r['preco'])}{ag_txt}",
              color=TXT, fontsize=15, fontweight="bold")
     if subtitulo:
         fig.text(0.02, 0.952, subtitulo, color=CINZA, fontsize=10)

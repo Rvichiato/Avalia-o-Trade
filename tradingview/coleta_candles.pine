@@ -1,16 +1,20 @@
 //@version=6
 // ─────────────────────────────────────────────────────────────────────────────
-// Coleta B&R · v2 (TradingView Premium)
-// A cada candle de 15 minutos fechado, envia por webhook os 3 últimos candles
-// fechados de cada ativo, no feed da Tickmill (o mesmo preço em que o Rodrigo opera).
-// Reenviar os 2 candles anteriores corrige sozinho qualquer alerta perdido
-// ou candle que ainda recebeu negócio depois do fechamento.
+// Coleta B&R · v3 (TradingView Premium)
+// 1) A cada candle de 15 minutos fechado, envia por webhook os 3 últimos candles
+//    fechados de cada ativo, no feed da Tickmill (o mesmo preço em que o Rodrigo opera).
+//    Reenviar os 2 candles anteriores corrige sozinho qualquer alerta perdido
+//    ou candle que ainda recebeu negócio depois do fechamento.
+// 2) Novo na v3: nas janelas das análises automáticas (05h15–05h45 e 11h40–12h15
+//    de Brasília, dias úteis), envia também 1 vez por minuto o preço do momento
+//    (candle de 15m ainda aberto). É só informação para a análise: as regras do
+//    sistema continuam usando apenas candles fechados.
 //
 // Como usar: gráfico de TICKMILL:EURUSD em 15 minutos → adicionar este indicador →
 // criar UM alerta com a condição "Qualquer chamada da função alert()",
 // expiração "Sem expiração" (Premium) e o webhook da ponte.
 // ─────────────────────────────────────────────────────────────────────────────
-indicator("Coleta B&R v2 (webhook)", overlay = true)
+indicator("Coleta B&R v3 (webhook)", overlay = true)
 
 s1    = input.symbol("TICKMILL:EURUSD", "Ativo 1")
 s2    = input.symbol("TICKMILL:USDJPY", "Ativo 2")
@@ -18,11 +22,19 @@ s3    = input.symbol("TICKMILL:US500",  "Ativo 3")
 s4    = input.symbol("TICKMILL:XAUUSD", "Ativo 4 (estudo)")
 chave = input.string("TROQUE-ESTA-CHAVE", "Chave secreta (igual à da ponte)")
 
+enviaAgora = input.bool(true, "Enviar o preço do momento nas janelas das análises", group = "Preço do momento")
+j1ini      = input.int(515,  "Janela 1: início (HHMM, Brasília)", group = "Preço do momento")
+j1fim      = input.int(545,  "Janela 1: fim",                     group = "Preço do momento")
+j2ini      = input.int(1140, "Janela 2: início (HHMM, Brasília)", group = "Preço do momento")
+j2fim      = input.int(1215, "Janela 2: fim",                     group = "Preço do momento")
+FUSO       = "America/Sao_Paulo"
+
 // número sem notação científica e sem "NaN" (o JSON não aceita NaN)
 num(x) => na(x) ? "null" : str.tostring(x, "#.#######")
 
 vela(t, o, h, l, c) => na(t) or na(c) ? "" : "[" + str.tostring(t, "#") + "," + num(o) + "," + num(h) + "," + num(l) + "," + num(c) + "]"
 
+// devolve [3 últimos candles do ativo, candle atual sozinho]
 pacote(simbolo) =>
     [t0, o0, h0, l0, c0, t1, o1, h1, l1, c1, t2, o2, h2, l2, c2] = request.security(simbolo, "15",
          [time, open, high, low, close, time[1], open[1], high[1], low[1], close[1], time[2], open[2], high[2], low[2], close[2]],
@@ -33,17 +45,33 @@ pacote(simbolo) =>
     lista = a
     lista := b == "" ? lista : (lista == "" ? b : lista + "," + b)
     lista := c == "" ? lista : (lista == "" ? c : lista + "," + c)
-    lista == "" ? "" : '{"s":"' + simbolo + '","b":[' + lista + ']}'
+    tres  = lista == "" ? "" : '{"s":"' + simbolo + '","b":[' + lista + ']}'
+    atual = c == "" ? "" : '{"s":"' + simbolo + '","b":' + c + '}'
+    [tres, atual]
 
-p1 = pacote(s1)
-p2 = pacote(s2)
-p3 = pacote(s3)
-p4 = pacote(s4)
+[p1, a1] = pacote(s1)
+[p2, a2] = pacote(s2)
+[p3, a3] = pacote(s3)
+[p4, a4] = pacote(s4)
 
 juntar(acc, p) => p == "" ? acc : (acc == "" ? p : acc + "," + p)
 
+// 1) candles fechados
 if barstate.isconfirmed and barstate.isrealtime
     corpo = juntar(juntar(juntar(juntar("", p1), p2), p3), p4)
     alert('{"k":"' + chave + '","tf":"15","v":2,"ativos":[' + corpo + ']}', alert.freq_once_per_bar_close)
+
+// 2) preço do momento: no máximo 1 envio por minuto, só nas janelas e em dias úteis
+varip int ultimoMinuto = 0
+minutoAgora = int(timenow / 60000)
+dia         = dayofweek(timenow, FUSO)
+diaUtil     = dia != dayofweek.saturday and dia != dayofweek.sunday
+hm          = hour(timenow, FUSO) * 100 + minute(timenow, FUSO)
+dentro      = (hm >= j1ini and hm <= j1fim) or (hm >= j2ini and hm <= j2fim)
+if enviaAgora and barstate.isrealtime and not barstate.isconfirmed and diaUtil and dentro and minutoAgora != ultimoMinuto
+    ultimoMinuto := minutoAgora
+    corpoA = juntar(juntar(juntar(juntar("", a1), a2), a3), a4)
+    if corpoA != ""
+        alert('{"k":"' + chave + '","v":3,"agora":{"t":' + str.tostring(timenow, "#") + ',"ativos":[' + corpoA + ']}}', alert.freq_all)
 
 plot(close, "fechamento", display = display.none)

@@ -5,7 +5,7 @@ Tudo aqui usa o feed da **Tickmill** (o mesmo preço em que o Rodrigo opera).
 
 | Peça | Arquivo | O que faz |
 |---|---|---|
-| Coleta B&R v2 | `coleta_candles.pine` | A cada candle de 15m fechado, manda por webhook os 3 últimos candles de EURUSD, USDJPY, US500 e XAUUSD |
+| Coleta B&R v3 | `coleta_candles.pine` | A cada candle de 15m fechado, manda por webhook os 3 últimos candles de EURUSD, USDJPY, US500 e XAUUSD. Nas janelas das análises (05h15–05h45 e 11h40–12h15, dias úteis) manda também o preço do momento 1 vez por minuto (`dados/tv/agora.json`, só informação) |
 | Ponte | `ponte_worker.js` | Cloudflare Worker grátis: confere a chave secreta e repassa ao GitHub |
 | Recebedor | `../scripts/receber.py` + `../.github/workflows/receber.yml` | Grava os candles em `dados/tv/` |
 | Robô | `../scripts/sistema.py` | Usa a Tickmill (MT5 + exportação + ponte) quando está em dia; senão, Yahoo de reserva com aviso |
@@ -42,7 +42,7 @@ Perfil → Configurações → **Segurança** → ative a **autenticação de do
 2. **Pine Editor** → novo indicador → cole `coleta_candles.pine` → **Salvar** → **Adicionar ao gráfico**.
 3. Configurações do indicador: confira os 4 ativos (se a Tickmill usar outro nome para o US500 ou o ouro, escolha pela busca) e coloque a **Chave secreta** igual ao `SEGREDO`.
 4. **Criar alerta** (ícone do despertador):
-   - Condição: **Coleta B&R v2 (webhook)** → **Qualquer chamada da função alert()**;
+   - Condição: **Coleta B&R v3 (webhook)** → **Qualquer chamada da função alert()**;
    - Expiração: **Sem expiração**;
    - Notificações: marque só **URL do webhook** e cole o endereço do Worker (desmarque app/pop-up para não receber aviso a cada 15 min);
    - Nome: `ponte B&R`. Criar.
@@ -56,6 +56,14 @@ O histórico do MT5 vai até 16/11 12h45. Para ligar esse histórico à ponte:
 4. Mande os 4 arquivos .csv no chat. O Claude importa com `python scripts/importar_tv.py arquivos.csv`.
 
 Enquanto o buraco não for tapado, o robô continua no Yahoo e avisa ("histórico da Tickmill com buraco").
+
+### 1.6 Atualizar da v2 para a v3 (preço do momento, 23/11/2026)
+O alerta guarda uma cópia do indicador de quando foi criado; por isso, depois de trocar o código, é preciso criar o alerta de novo.
+1. Gráfico do coletor (EURUSD 15m) → **Pine Editor** → abra **Coleta B&R v2 (webhook)** → apague tudo → cole o novo `coleta_candles.pine` → **Salvar**. O nome passa a ser **Coleta B&R v3 (webhook)**.
+2. Configurações do indicador: confira se a **Chave secreta** continua a mesma (se apareceu `TROQUE-ESTA-CHAVE`, coloque a chave da ponte de novo).
+3. Alertas → **crie primeiro o novo** igual ao passo 1.4 (condição **Coleta B&R v3 (webhook)** → **Qualquer chamada da função alert()**, sem expiração, só webhook, nome `ponte B&R`).
+4. Só depois **remova o alerta antigo** (o da v2), para não chegarem candles em dobro.
+5. Na próxima janela (05h15 ou 11h40 de um dia útil), o arquivo `dados/tv/agora.json` passa a ser atualizado a cada minuto.
 
 ---
 
@@ -93,7 +101,7 @@ Apague os gatilhos do dia anterior para não acumular (o Premium aceita 400 aler
 - **Aba "Mesa"** (grade 2 × 4): na linha de cima o 15m de EURUSD, USDJPY, US500 e XAUUSD; na de baixo o 4H dos mesmos.
   Painel B&R em todos os de 15m.
 - **Uma aba por ativo** (3 gráficos: 4H, 1H e 15m), com **símbolo e cruz sincronizados**. É onde ficam as suas linhas e os gatilhos.
-- **Aba "Ponte"**: só o EURUSD 15m com o Coleta B&R v2. Não precisa ficar aberta: o alerta roda nos servidores do TradingView.
+- **Aba "Ponte"**: só o EURUSD 15m com o Coleta B&R v3. Não precisa ficar aberta: o alerta roda nos servidores do TradingView.
 
 ## Parte 4 · Se algo parar
 - `python scripts/saude_ponte.py` mostra o atraso de cada ativo e a fonte em uso.

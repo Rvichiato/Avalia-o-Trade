@@ -3,6 +3,7 @@
 Lê o JSON do evento da variável de ambiente CANDLE (o workflow receber.yml passa o client_payload).
 Aceita os dois formatos do indicador:
   v2: {"tf":"15","v":2,"ativos":[{"s":"TICKMILL:EURUSD","b":[[t,o,h,l,c], ...]}, ...]}
+  v3 (preço do momento): {"v":3,"agora":{"t":ms,"ativos":[{"s":..,"b":[t,o,h,l,c]}]}} → dados/tv/agora.json
   v1: {"tf":"15","velas":[{"s":"TICKMILL:EURUSD","t":..,"o":..,"h":..,"l":..,"c":..}, ...]}
 Cada candle é gravado pela hora de abertura; se o mesmo candle chegar de novo,
 a versão mais nova substitui a anterior (corrige candles que mudaram depois do fechamento).
@@ -35,7 +36,37 @@ def velas(ev):
     return out
 
 
+def gravar_agora(ev, base=BASE):
+    """Preço do momento (v3): candle de 15m ainda aberto de cada ativo. Vai só para dados/tv/agora.json,
+    nunca para os CSVs de candles fechados."""
+    ag = ev["agora"]
+    env = dt.datetime.fromtimestamp(int(float(ag.get("t", 0))) / 1000, dt.timezone.utc)
+    ativos = {}
+    for a in ag.get("ativos", []):
+        ativo = nome_ativo(a.get("s", ""))
+        b = a.get("b")
+        if not ativo or not b or len(b) != 5 or any(x is None for x in b):
+            continue
+        t, o, h, l, c = b
+        if not (float(l) <= min(float(o), float(c)) and float(h) >= max(float(o), float(c)) and float(l) > 0):
+            continue
+        seg = int(float(t)) // 1000
+        seg -= seg % 900
+        ativos[ativo] = dict(candle_abertura_utc=dt.datetime.fromtimestamp(seg, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                             abertura=float(o), maxima=float(h), minima=float(l), preco=float(c))
+    if not ativos:
+        return {}
+    os.makedirs(base, exist_ok=True)
+    with open(os.path.join(base, "agora.json"), "w") as f:
+        json.dump({"enviado_utc": env.strftime("%Y-%m-%dT%H:%M:%SZ"), "recebido_utc": ev.get("recebido"),
+                   "ativos": ativos}, f, ensure_ascii=False, indent=1)
+    print("agora", env.strftime("%H:%MZ"), ", ".join(f"{k} {v['preco']}" for k, v in ativos.items()))
+    return ativos
+
+
 def gravar(ev, base=BASE):
+    if "agora" in ev:
+        return gravar_agora(ev, base)
     tf = {"15": "15m", "60": "1h"}.get(str(ev.get("tf", "15")), str(ev.get("tf")))
     try:
         agora = dt.datetime.fromisoformat(str(ev.get("recebido")).replace("Z", "+00:00"))

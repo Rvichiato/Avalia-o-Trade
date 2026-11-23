@@ -7,8 +7,9 @@ on:
 permissions:
   contents: write
 
+# O preço do momento (v3) tem fila própria: um envio novo dele nunca cancela um envio de candles fechados.
 concurrency:
-  group: receber-tv
+  group: receber-tv-${{ github.event.client_payload.agora && 'agora' || 'candles' }}
   cancel-in-progress: false
 
 jobs:
@@ -27,7 +28,8 @@ jobs:
           git config user.email "ponte-tradingview@users.noreply.github.com"
           git add dados/tv/
           git diff --cached --quiet && exit 0
-          git commit -q -m "tv: $(date -u +%Y-%m-%dT%H:%MZ)"
+          if git diff --cached --name-only | grep -qv agora.json; then t="tv"; else t="tv agora"; fi
+          git commit -q -m "$t: $(date -u +%Y-%m-%dT%H:%MZ)"
           for i in 1 2 3 4 5 6; do
             git pull --rebase -q -X theirs && git push -q && exit 0
             sleep $((i*4))

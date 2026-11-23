@@ -548,7 +548,30 @@ def analisar(ativo):
     dfs = {tf: carregar(ativo, tf, ajuste, origem) for tf in ("4h", "1h", "15m")}
     r = analisar_dfs(ativo, dfs, nota)
     r["fonte"] = "Tickmill (TradingView)" if origem == "tickmill" else "Yahoo (reserva)"
+    r["agora"] = preco_agora(ativo)
     return r, dfs
+
+
+def preco_agora(ativo, max_min=20, agora=None):
+    """Preço do momento (candle de 15m ainda aberto) que a Coleta v3 manda a cada minuto nas janelas
+    das análises. Só informação: as regras usam apenas candles fechados. None se não houver ou for velho."""
+    if os.environ.get("PASTA_DADOS"):
+        return None
+    try:
+        with open(os.path.join(RAIZ, "dados", "tv", "agora.json")) as f:
+            d = json.load(f)
+        a = d["ativos"][ativo]
+        env = pd.Timestamp(d["enviado_utc"])
+    except (OSError, KeyError, ValueError, TypeError):
+        return None
+    agora = agora or pd.Timestamp.now(tz="UTC")
+    idade = (agora - env).total_seconds() / 60
+    if idade > max_min or idade < -2:
+        return None
+    hora = env + pd.Timedelta(hours=CFG["fuso_exibicao_horas"])
+    return dict(preco=a["preco"], maxima=a["maxima"], minima=a["minima"], candle_abertura_utc=a["candle_abertura_utc"],
+                enviado_utc=str(env), hora_brt=hora.strftime("%Hh%M"), idade_min=round(idade, 1),
+                obs="preço do candle ainda aberto: só informação, as regras usam candles fechados")
 
 
 def analisar_dfs(ativo, dfs, nota=None):
