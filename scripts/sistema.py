@@ -217,11 +217,21 @@ def linhas(df, tf, ativo):
                 res.append(dict(tipo=tipo, A=A, B=B, s=s, toques=toques, rompe=rompe,
                                 agora=float(f(n - 1)), proximo=float(f(n))))
     # pontuação: mais toques, mais longa, mais recente, mais perto do preço
+    # (opcional) bônus para a linha que nasce na origem da perna: o topo mais alto (LTB) ou o
+    # fundo mais baixo (LTA) de lá até agora, como o Rodrigo traça
     preco = d.c.values[-1]
+    b_or = L.get("bonus_origem", 0)
+    hs, ls_ = d.h.values, d.l.values
     for r in res:
         dist = abs(r["proximo"] - preco) / a
         idade = (n - 1 - r["toques"][-1]) / n
         r["nota"] = 2 * len(r["toques"]) + (r["B"] - r["A"]) / n * 3 - 0.4 * dist - 2 * idade
+        if b_or:
+            A_ = r["A"]
+            origem = hs[A_] >= hs[A_:].max() if r["tipo"] == "LTB" else ls_[A_] <= ls_[A_:].min()
+            r["origem_perna"] = bool(origem)
+            if origem:
+                r["nota"] += b_or
     res.sort(key=lambda r: -r["nota"])
     # remove duplicadas (mesma região e inclinação parecida)
     finais = []
@@ -230,7 +240,7 @@ def linhas(df, tf, ativo):
                and (r["rompe"] is None) == (q["rompe"] is None) for q in finais):
             continue
         finais.append(r)
-    ativas = [r for r in finais if r["rompe"] is None][:2]
+    ativas = [r for r in finais if r["rompe"] is None][:L.get("max_ativas", 2)]
     recentes = [r for r in finais if r["rompe"] is not None
                 and n - 1 - r["rompe"] <= L["rompimento_recente_barras"]][:1]
     out = []
@@ -378,7 +388,9 @@ def planos(ativo, dfs, lin, niv):
     zonas.sort(key=lambda z: z["meio"])
     uni = []
     for z in zonas:
-        if uni and z["de"] <= uni[-1]["ate"] + 0.5 * a15:
+        larg_max = CFG["niveis"].get("largura_max_atr_1h")  # (opcional) zona não cresce além disso
+        cabe = larg_max is None or (uni and max(uni[-1]["ate"], z["ate"]) - min(uni[-1]["de"], z["de"]) <= larg_max * a1)
+        if uni and z["de"] <= uni[-1]["ate"] + 0.5 * a15 and cabe:
             u = uni[-1]; u["de"] = min(u["de"], z["de"]); u["ate"] = max(u["ate"], z["ate"])
             u["toques"] += z["toques"]; u["tfs"] = sorted(set(u["tfs"] + [z["tf"]]))
         else:
@@ -439,13 +451,14 @@ def planos(ativo, dfs, lin, niv):
     res = [u for u in uni if u["de"] > preco]
     # os dois suportes e as duas resistências mais próximos: se o primeiro esbarra em
     # obstáculo perto demais, o segundo costuma ser o gatilho que vale
-    for s in sorted(sup, key=lambda u: -u["ate"])[:2]:
+    gat_zonas = CFG["niveis"].get("gatilho_zonas", True)  # False: só linhas viram gatilho
+    for s in sorted(sup, key=lambda u: -u["ate"])[:2 if gat_zonas else 0]:
         montar("venda", f"rompimento do suporte {s['de']:.{A['casas']}f}–{s['ate']:.{A['casas']}f}",
                s["de"], s["ate"], dict(tipo="suporte", toques=s["toques"], tempos=s["tfs"]), s["ultimo_idx"])
-    for r in sorted(res, key=lambda u: u["de"])[:2]:
+    for r in sorted(res, key=lambda u: u["de"])[:2 if gat_zonas else 0]:
         montar("compra", f"rompimento da resistência {r['de']:.{A['casas']}f}–{r['ate']:.{A['casas']}f}",
                r["de"], r["ate"], dict(tipo="resistencia", toques=r["toques"], tempos=r["tfs"]), r["ultimo_idx"])
-    for l in lin.get("15m", []) + lin.get("1h", []):
+    for l in sum((lin.get(tf, []) for tf in CFG["linhas"].get("gatilho_tfs", ["15m", "1h"])), []):
         if l["rompida"]:
             continue
         v = l["valor_proximo"]

@@ -349,9 +349,23 @@ def main():
     ap.add_argument("--filtro-tendencia", action="store_true", help="só planos a favor do 4H (ou do 1H com 4H lateral)")
     ap.add_argument("--reteste-rompido", action="store_true", help="inclui os planos de reteste de nível já rompido")
     ap.add_argument("--estudo", action="store_true", help="ignora o limite de risco da conta (ex.: ouro), mede em R")
+    ap.add_argument("--origem-perna", action="store_true", help="prioriza a linha que nasce na origem da perna")
+    ap.add_argument("--linhas-4h", action="store_true", help="3 linhas por tempo gráfico e linhas do 4H também viram gatilho")
+    ap.add_argument("--so-linhas", action="store_true", help="só LTA/LTB viram gatilho; zonas ficam só como alvo/obstáculo")
+    ap.add_argument("--zona-max", action="store_true", help="zona horizontal com no máximo 1 ATR do 1h de largura")
     ap.add_argument("--saida", default=os.path.join(S.RAIZ, "testes", pd.Timestamp.now().strftime("%Y-%m-%d")))
     a = ap.parse_args()
     OPC["filtro_tendencia"], OPC["estudo"], OPC["reteste_rompido"] = a.filtro_tendencia, a.estudo, a.reteste_rompido
+    OPC.update(origem_perna=a.origem_perna, linhas_4h=a.linhas_4h, so_linhas=a.so_linhas, zona_max=a.zona_max)
+    if a.origem_perna:
+        C["linhas"]["bonus_origem"] = 3
+    if a.linhas_4h:
+        C["linhas"]["max_ativas"] = 3
+        C["linhas"]["gatilho_tfs"] = ["15m", "1h", "4h"]
+    if a.so_linhas:
+        C["niveis"]["gatilho_zonas"] = False
+    if a.zona_max:
+        C["niveis"]["largura_max_atr_1h"] = 1.0
     os.makedirs(a.saida, exist_ok=True)
     todos, funis, desc, per = [], [], 0, {}
     for ativo in a.ativos:
