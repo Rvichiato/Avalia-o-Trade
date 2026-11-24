@@ -1,0 +1,794 @@
+{
+ "parametros": {
+  "validade_plano_barras": 16,
+  "barras_reteste": 16,
+  "max_barras_posicao": 48,
+  "deslizamento_pips": 0.2,
+  "intervalo_decisao_min": 60,
+  "duplicata_atr": 0.5,
+  "bootstrap": 3000,
+  "stop_minimo_atr": 0.75
+ },
+ "opcoes": {
+  "filtro_tendencia": true,
+  "estudo": false,
+  "reteste_rompido": false,
+  "origem_perna": true,
+  "linhas_4h": true,
+  "so_linhas": false,
+  "zona_max": true
+ },
+ "periodos": {
+  "EURUSD": [
+   "2024-01-01 22:00:00+00:00",
+   "2026-11-16 15:45:00+00:00"
+  ],
+  "USDJPY": [
+   "2024-01-01 22:00:00+00:00",
+   "2026-11-16 15:45:00+00:00"
+  ],
+  "US500": [
+   "2024-01-01 23:00:00+00:00",
+   "2026-11-16 15:45:00+00:00"
+  ]
+ },
+ "descartes_R_na_entrada": 126,
+ "funil": {
+  "plano": 6043,
+  "rompeu": 641,
+  "retestou": 333,
+  "confirmou": 247
+ },
+ "sistema": {
+  "geral": {
+   "n": 118,
+   "acerto": 0.381,
+   "expectativa": 0.03,
+   "ic95": [
+    -0.239,
+    0.317
+   ],
+   "payoff": 1.7,
+   "profit_factor": 1.05,
+   "soma_R": 3.49,
+   "drawdown_R": 18.09,
+   "pior_sequencia": 16,
+   "mediana": -1.045,
+   "media_sem_2_maiores": -0.059
+  },
+  "sem_custos": {
+   "n": 118,
+   "acerto": 0.398,
+   "expectativa": 0.143,
+   "ic95": [
+    -0.129,
+    0.429
+   ],
+   "payoff": 1.91,
+   "profit_factor": 1.26,
+   "soma_R": 16.88,
+   "drawdown_R": 16.0,
+   "pior_sequencia": 16,
+   "mediana": -1.0,
+   "media_sem_2_maiores": 0.053
+  },
+  "por_ativo": {
+   "EURUSD": {
+    "n": 66,
+    "acerto": 0.394,
+    "expectativa": 0.003,
+    "ic95": [
+     -0.324,
+     0.339
+    ],
+    "payoff": 1.55,
+    "profit_factor": 1.0,
+    "soma_R": 0.2,
+    "drawdown_R": 13.64,
+    "pior_sequencia": 9,
+    "mediana": -1.055,
+    "media_sem_2_maiores": -0.094
+   },
+   "US500": {
+    "n": 13,
+    "acerto": 0.462,
+    "expectativa": 0.228,
+    "ic95": [
+     -0.375,
+     1.035
+    ],
+    "payoff": 2.16,
+    "profit_factor": 1.85,
+    "soma_R": 2.96,
+    "drawdown_R": 2.62,
+    "pior_sequencia": 4,
+    "mediana": -0.001,
+    "media_sem_2_maiores": -0.265
+   },
+   "USDJPY": {
+    "n": 39,
+    "acerto": 0.333,
+    "expectativa": 0.009,
+    "ic95": [
+     -0.511,
+     0.603
+    ],
+    "payoff": 2.02,
+    "profit_factor": 1.01,
+    "soma_R": 0.34,
+    "drawdown_R": 18.09,
+    "pior_sequencia": 16,
+    "mediana": -1.074,
+    "media_sem_2_maiores": -0.266
+   }
+  },
+  "por_direcao": {
+   "compra": {
+    "n": 39,
+    "acerto": 0.333,
+    "expectativa": -0.253,
+    "ic95": [
+     -0.572,
+     0.114
+    ],
+    "payoff": 1.16,
+    "profit_factor": 0.58,
+    "soma_R": -9.86,
+    "drawdown_R": 11.21,
+    "pior_sequencia": 9,
+    "mediana": -0.662,
+    "media_sem_2_maiores": -0.388
+   },
+   "venda": {
+    "n": 79,
+    "acerto": 0.405,
+    "expectativa": 0.169,
+    "ic95": [
+     -0.19,
+     0.566
+    ],
+    "payoff": 1.87,
+    "profit_factor": 1.27,
+    "soma_R": 13.36,
+    "drawdown_R": 13.67,
+    "pior_sequencia": 12,
+    "mediana": -1.055,
+    "media_sem_2_maiores": 0.039
+   }
+  },
+  "por_origem": {
+   "LTA": {
+    "n": 60,
+    "acerto": 0.433,
+    "expectativa": 0.288,
+    "ic95": [
+     -0.149,
+     0.763
+    ],
+    "payoff": 1.9,
+    "profit_factor": 1.46,
+    "soma_R": 17.29,
+    "drawdown_R": 11.51,
+    "pior_sequencia": 10,
+    "mediana": -1.065,
+    "media_sem_2_maiores": 0.12
+   },
+   "LTB": {
+    "n": 16,
+    "acerto": 0.312,
+    "expectativa": -0.408,
+    "ic95": [
+     -0.923,
+     0.197
+    ],
+    "payoff": 1.07,
+    "profit_factor": 0.49,
+    "soma_R": -6.53,
+    "drawdown_R": 8.62,
+    "pior_sequencia": 4,
+    "mediana": -1.085,
+    "media_sem_2_maiores": -0.732
+   },
+   "resistencia": {
+    "n": 23,
+    "acerto": 0.348,
+    "expectativa": -0.145,
+    "ic95": [
+     -0.519,
+     0.288
+    ],
+    "payoff": 1.3,
+    "profit_factor": 0.69,
+    "soma_R": -3.33,
+    "drawdown_R": 5.53,
+    "pior_sequencia": 7,
+    "mediana": -0.262,
+    "media_sem_2_maiores": -0.366
+   },
+   "suporte": {
+    "n": 19,
+    "acerto": 0.316,
+    "expectativa": -0.207,
+    "ic95": [
+     -0.652,
+     0.274
+    ],
+    "payoff": 1.39,
+    "profit_factor": 0.64,
+    "soma_R": -3.94,
+    "drawdown_R": 6.2,
+    "pior_sequencia": 6,
+    "mediana": -0.464,
+    "media_sem_2_maiores": -0.432
+   }
+  },
+  "por_sessao": {
+   "Londres": {
+    "n": 45,
+    "acerto": 0.378,
+    "expectativa": 0.073,
+    "ic95": [
+     -0.361,
+     0.544
+    ],
+    "payoff": 1.83,
+    "profit_factor": 1.11,
+    "soma_R": 3.28,
+    "drawdown_R": 12.24,
+    "pior_sequencia": 11,
+    "mediana": -1.069,
+    "media_sem_2_maiores": -0.089
+   },
+   "Nova York": {
+    "n": 33,
+    "acerto": 0.333,
+    "expectativa": 0.006,
+    "ic95": [
+     -0.525,
+     0.612
+    ],
+    "payoff": 2.02,
+    "profit_factor": 1.01,
+    "soma_R": 0.21,
+    "drawdown_R": 10.79,
+    "pior_sequencia": 8,
+    "mediana": -0.563,
+    "media_sem_2_maiores": -0.327
+   },
+   "sobreposição Londres+NY": {
+    "n": 40,
+    "acerto": 0.425,
+    "expectativa": 0.0,
+    "ic95": [
+     -0.391,
+     0.424
+    ],
+    "payoff": 1.35,
+    "profit_factor": 1.0,
+    "soma_R": 0.0,
+    "drawdown_R": 7.8,
+    "pior_sequencia": 6,
+    "mediana": -0.72,
+    "media_sem_2_maiores": -0.145
+   }
+  },
+  "a_favor_tendencia_4h": {
+   "False": {
+    "n": 28,
+    "acerto": 0.214,
+    "expectativa": -0.427,
+    "ic95": [
+     -0.824,
+     0.05
+    ],
+    "payoff": 1.71,
+    "profit_factor": 0.47,
+    "soma_R": -11.95,
+    "drawdown_R": 14.21,
+    "pior_sequencia": 10,
+    "mediana": -1.075,
+    "media_sem_2_maiores": -0.643
+   },
+   "True": {
+    "n": 90,
+    "acerto": 0.433,
+    "expectativa": 0.172,
+    "ic95": [
+     -0.147,
+     0.5
+    ],
+    "payoff": 1.71,
+    "profit_factor": 1.31,
+    "soma_R": 15.44,
+    "drawdown_R": 12.31,
+    "pior_sequencia": 11,
+    "mediana": -0.505,
+    "media_sem_2_maiores": 0.058
+   }
+  },
+  "a_favor_tendencia_1h": {
+   "False": {
+    "n": 38,
+    "acerto": 0.5,
+    "expectativa": 0.389,
+    "ic95": [
+     -0.159,
+     0.983
+    ],
+    "payoff": 1.7,
+    "profit_factor": 1.7,
+    "soma_R": 14.78,
+    "drawdown_R": 7.73,
+    "pior_sequencia": 7,
+    "mediana": -0.297,
+    "media_sem_2_maiores": 0.128
+   },
+   "True": {
+    "n": 80,
+    "acerto": 0.325,
+    "expectativa": -0.141,
+    "ic95": [
+     -0.417,
+     0.159
+    ],
+    "payoff": 1.62,
+    "profit_factor": 0.78,
+    "soma_R": -11.29,
+    "drawdown_R": 16.01,
+    "pior_sequencia": 12,
+    "mediana": -1.054,
+    "media_sem_2_maiores": -0.238
+   }
+  },
+  "linha_vs_zona": {
+   "False": {
+    "n": 42,
+    "acerto": 0.333,
+    "expectativa": -0.173,
+    "ic95": [
+     -0.462,
+     0.133
+    ],
+    "payoff": 1.33,
+    "profit_factor": 0.67,
+    "soma_R": -7.27,
+    "drawdown_R": 7.85,
+    "pior_sequencia": 6,
+    "mediana": -0.433,
+    "media_sem_2_maiores": -0.29
+   },
+   "True": {
+    "n": 76,
+    "acerto": 0.408,
+    "expectativa": 0.142,
+    "ic95": [
+     -0.23,
+     0.533
+    ],
+    "payoff": 1.76,
+    "profit_factor": 1.21,
+    "soma_R": 10.76,
+    "drawdown_R": 14.84,
+    "pior_sequencia": 13,
+    "mediana": -1.07,
+    "media_sem_2_maiores": 0.006
+   }
+  },
+  "atravessou_dado_eua": {
+   "False": {
+    "n": 85,
+    "acerto": 0.341,
+    "expectativa": -0.131,
+    "ic95": [
+     -0.43,
+     0.192
+    ],
+    "payoff": 1.54,
+    "profit_factor": 0.8,
+    "soma_R": -11.15,
+    "drawdown_R": 20.04,
+    "pior_sequencia": 14,
+    "mediana": -1.057,
+    "media_sem_2_maiores": -0.259
+   },
+   "True": {
+    "n": 33,
+    "acerto": 0.485,
+    "expectativa": 0.444,
+    "ic95": [
+     -0.118,
+     1.018
+    ],
+    "payoff": 1.98,
+    "profit_factor": 1.86,
+    "soma_R": 14.64,
+    "drawdown_R": 9.86,
+    "pior_sequencia": 9,
+    "mediana": -0.132,
+    "media_sem_2_maiores": 0.243
+   }
+  },
+  "por_saida": {
+   "stop": 61,
+   "tempo": 26,
+   "alvo": 22,
+   "fechamento 17h45": 9
+  }
+ },
+ "direto": {
+  "geral": {
+   "n": 598,
+   "acerto": 0.411,
+   "expectativa": -0.066,
+   "ic95": [
+    -0.162,
+    0.035
+   ],
+   "payoff": 1.26,
+   "profit_factor": 0.88,
+   "soma_R": -39.72,
+   "drawdown_R": 60.67,
+   "pior_sequencia": 10,
+   "mediana": -0.369,
+   "media_sem_2_maiores": -0.087
+  },
+  "sem_custos": {
+   "n": 598,
+   "acerto": 0.436,
+   "expectativa": 0.026,
+   "ic95": [
+    -0.069,
+    0.128
+   ],
+   "payoff": 1.36,
+   "profit_factor": 1.05,
+   "soma_R": 15.52,
+   "drawdown_R": 32.56,
+   "pior_sequencia": 9,
+   "mediana": -0.322,
+   "media_sem_2_maiores": 0.005
+  },
+  "por_ativo": {
+   "EURUSD": {
+    "n": 281,
+    "acerto": 0.399,
+    "expectativa": -0.169,
+    "ic95": [
+     -0.302,
+     -0.032
+    ],
+    "payoff": 1.1,
+    "profit_factor": 0.73,
+    "soma_R": -47.47,
+    "drawdown_R": 54.44,
+    "pior_sequencia": 10,
+    "mediana": -1.058,
+    "media_sem_2_maiores": -0.2
+   },
+   "US500": {
+    "n": 117,
+    "acerto": 0.41,
+    "expectativa": -0.029,
+    "ic95": [
+     -0.162,
+     0.103
+    ],
+    "payoff": 1.3,
+    "profit_factor": 0.91,
+    "soma_R": -3.45,
+    "drawdown_R": 10.52,
+    "pior_sequencia": 8,
+    "mediana": -0.058,
+    "media_sem_2_maiores": -0.062
+   },
+   "USDJPY": {
+    "n": 200,
+    "acerto": 0.43,
+    "expectativa": 0.056,
+    "ic95": [
+     -0.138,
+     0.257
+    ],
+    "payoff": 1.45,
+    "profit_factor": 1.1,
+    "soma_R": 11.21,
+    "drawdown_R": 11.23,
+    "pior_sequencia": 7,
+    "mediana": -1.04,
+    "media_sem_2_maiores": -0.004
+   }
+  },
+  "por_direcao": {
+   "compra": {
+    "n": 184,
+    "acerto": 0.397,
+    "expectativa": -0.151,
+    "ic95": [
+     -0.282,
+     -0.013
+    ],
+    "payoff": 1.04,
+    "profit_factor": 0.69,
+    "soma_R": -27.71,
+    "drawdown_R": 34.96,
+    "pior_sequencia": 10,
+    "mediana": -0.178,
+    "media_sem_2_maiores": -0.176
+   },
+   "venda": {
+    "n": 414,
+    "acerto": 0.418,
+    "expectativa": -0.029,
+    "ic95": [
+     -0.158,
+     0.098
+    ],
+    "payoff": 1.32,
+    "profit_factor": 0.95,
+    "soma_R": -12.01,
+    "drawdown_R": 31.21,
+    "pior_sequencia": 10,
+    "mediana": -0.84,
+    "media_sem_2_maiores": -0.058
+   }
+  },
+  "por_origem": {
+   "LTA": {
+    "n": 260,
+    "acerto": 0.381,
+    "expectativa": -0.042,
+    "ic95": [
+     -0.214,
+     0.144
+    ],
+    "payoff": 1.52,
+    "profit_factor": 0.94,
+    "soma_R": -10.8,
+    "drawdown_R": 22.25,
+    "pior_sequencia": 8,
+    "mediana": -1.056,
+    "media_sem_2_maiores": -0.088
+   },
+   "LTB": {
+    "n": 75,
+    "acerto": 0.4,
+    "expectativa": -0.24,
+    "ic95": [
+     -0.474,
+     0.001
+    ],
+    "payoff": 0.93,
+    "profit_factor": 0.62,
+    "soma_R": -17.98,
+    "drawdown_R": 20.64,
+    "pior_sequencia": 5,
+    "mediana": -1.057,
+    "media_sem_2_maiores": -0.301
+   },
+   "resistencia": {
+    "n": 109,
+    "acerto": 0.394,
+    "expectativa": -0.089,
+    "ic95": [
+     -0.242,
+     0.067
+    ],
+    "payoff": 1.17,
+    "profit_factor": 0.76,
+    "soma_R": -9.73,
+    "drawdown_R": 17.66,
+    "pior_sequencia": 17,
+    "mediana": -0.078,
+    "media_sem_2_maiores": -0.129
+   },
+   "suporte": {
+    "n": 154,
+    "acerto": 0.481,
+    "expectativa": -0.008,
+    "ic95": [
+     -0.172,
+     0.156
+    ],
+    "payoff": 1.06,
+    "profit_factor": 0.98,
+    "soma_R": -1.21,
+    "drawdown_R": 14.38,
+    "pior_sequencia": 6,
+    "mediana": -0.103,
+    "media_sem_2_maiores": -0.037
+   }
+  },
+  "por_sessao": {
+   "Londres": {
+    "n": 200,
+    "acerto": 0.44,
+    "expectativa": 0.003,
+    "ic95": [
+     -0.173,
+     0.192
+    ],
+    "payoff": 1.28,
+    "profit_factor": 1.0,
+    "soma_R": 0.58,
+    "drawdown_R": 34.2,
+    "pior_sequencia": 9,
+    "mediana": -1.055,
+    "media_sem_2_maiores": -0.032
+   },
+   "Nova York": {
+    "n": 201,
+    "acerto": 0.368,
+    "expectativa": -0.13,
+    "ic95": [
+     -0.281,
+     0.042
+    ],
+    "payoff": 1.3,
+    "profit_factor": 0.76,
+    "soma_R": -26.12,
+    "drawdown_R": 33.22,
+    "pior_sequencia": 10,
+    "mediana": -0.348,
+    "media_sem_2_maiores": -0.178
+   },
+   "sobreposição Londres+NY": {
+    "n": 197,
+    "acerto": 0.426,
+    "expectativa": -0.072,
+    "ic95": [
+     -0.24,
+     0.099
+    ],
+    "payoff": 1.16,
+    "profit_factor": 0.86,
+    "soma_R": -14.18,
+    "drawdown_R": 21.15,
+    "pior_sequencia": 12,
+    "mediana": -0.301,
+    "media_sem_2_maiores": -0.131
+   }
+  },
+  "a_favor_tendencia_4h": {
+   "False": {
+    "n": 148,
+    "acerto": 0.439,
+    "expectativa": -0.069,
+    "ic95": [
+     -0.25,
+     0.123
+    ],
+    "payoff": 1.12,
+    "profit_factor": 0.88,
+    "soma_R": -10.22,
+    "drawdown_R": 14.04,
+    "pior_sequencia": 6,
+    "mediana": -0.389,
+    "media_sem_2_maiores": -0.125
+   },
+   "True": {
+    "n": 450,
+    "acerto": 0.402,
+    "expectativa": -0.066,
+    "ic95": [
+     -0.176,
+     0.046
+    ],
+    "payoff": 1.31,
+    "profit_factor": 0.88,
+    "soma_R": -29.5,
+    "drawdown_R": 59.46,
+    "pior_sequencia": 10,
+    "mediana": -0.358,
+    "media_sem_2_maiores": -0.092
+   }
+  },
+  "a_favor_tendencia_1h": {
+   "False": {
+    "n": 175,
+    "acerto": 0.429,
+    "expectativa": -0.095,
+    "ic95": [
+     -0.284,
+     0.106
+    ],
+    "payoff": 1.13,
+    "profit_factor": 0.85,
+    "soma_R": -16.56,
+    "drawdown_R": 25.78,
+    "pior_sequencia": 9,
+    "mediana": -1.047,
+    "media_sem_2_maiores": -0.148
+   },
+   "True": {
+    "n": 423,
+    "acerto": 0.404,
+    "expectativa": -0.055,
+    "ic95": [
+     -0.166,
+     0.056
+    ],
+    "payoff": 1.32,
+    "profit_factor": 0.89,
+    "soma_R": -23.16,
+    "drawdown_R": 42.3,
+    "pior_sequencia": 9,
+    "mediana": -0.297,
+    "media_sem_2_maiores": -0.082
+   }
+  },
+  "linha_vs_zona": {
+   "False": {
+    "n": 263,
+    "acerto": 0.445,
+    "expectativa": -0.042,
+    "ic95": [
+     -0.154,
+     0.075
+    ],
+    "payoff": 1.13,
+    "profit_factor": 0.9,
+    "soma_R": -10.94,
+    "drawdown_R": 25.43,
+    "pior_sequencia": 18,
+    "mediana": -0.078,
+    "media_sem_2_maiores": -0.059
+   },
+   "True": {
+    "n": 335,
+    "acerto": 0.385,
+    "expectativa": -0.086,
+    "ic95": [
+     -0.235,
+     0.071
+    ],
+    "payoff": 1.38,
+    "profit_factor": 0.87,
+    "soma_R": -28.78,
+    "drawdown_R": 40.15,
+    "pior_sequencia": 8,
+    "mediana": -1.057,
+    "media_sem_2_maiores": -0.122
+   }
+  },
+  "atravessou_dado_eua": {
+   "False": {
+    "n": 464,
+    "acerto": 0.401,
+    "expectativa": -0.104,
+    "ic95": [
+     -0.206,
+     -0.001
+    ],
+    "payoff": 1.21,
+    "profit_factor": 0.81,
+    "soma_R": -48.37,
+    "drawdown_R": 53.97,
+    "pior_sequencia": 14,
+    "mediana": -0.35,
+    "media_sem_2_maiores": -0.13
+   },
+   "True": {
+    "n": 134,
+    "acerto": 0.448,
+    "expectativa": 0.065,
+    "ic95": [
+     -0.148,
+     0.307
+    ],
+    "payoff": 1.37,
+    "profit_factor": 1.11,
+    "soma_R": 8.66,
+    "drawdown_R": 18.35,
+    "pior_sequencia": 6,
+    "mediana": -1.051,
+    "media_sem_2_maiores": 0.014
+   }
+  },
+  "por_saida": {
+   "stop": 278,
+   "alvo": 164,
+   "tempo": 83,
+   "fechamento 17h45": 73
+  }
+ }
+}
