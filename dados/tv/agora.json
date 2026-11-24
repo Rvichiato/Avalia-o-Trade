@@ -1,6 +1,6 @@
 {
- "enviado_utc": "2026-11-24T08:25:00Z",
- "recebido_utc": "2026-11-24T08:25:04.230Z",
+ "enviado_utc": "2026-11-24T08:26:00Z",
+ "recebido_utc": "2026-11-24T08:26:03.635Z",
  "ativos": {
   "EURUSD": {
    "candle_abertura_utc": "2026-11-24T08:15:00Z",
@@ -21,14 +21,14 @@
    "abertura": 7242.95,
    "maxima": 7253.27,
    "minima": 7242.08,
-   "preco": 7245.13
+   "preco": 7242.65
   },
   "XAUUSD": {
    "candle_abertura_utc": "2026-11-24T08:15:00Z",
    "abertura": 3620.8,
    "maxima": 3625.21,
-   "minima": 3616.52,
-   "preco": 3616.52
+   "minima": 3615.07,
+   "preco": 3616.27
   }
  }
 }
