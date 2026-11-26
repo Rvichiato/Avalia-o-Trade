@@ -105,6 +105,9 @@
     }
   },
   "linhas": {
+    "max_ativas": 3,
+    "gatilho_tfs": ["15m", "1h", "4h"],
+    "gatilho_nota": "26/11/2026: linhas do 4H também viram gatilho e 3 linhas por tempo gráfico (teste com 3 anos da Tickmill: +0,12R contra +0,02R por operação, 146 operações; ainda não provado, em validação na demo)",
     "tolerancia_atr": 0.15,
     "toques_minimos": 2,
     "rompimento_recente_barras": 24,
