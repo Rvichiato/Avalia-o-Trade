@@ -1,12 +1,12 @@
 {
- "enviado_utc": "2026-11-26T14:50:00Z",
- "recebido_utc": "2026-11-26T14:50:07.605Z",
+ "enviado_utc": "2026-11-26T14:51:00Z",
+ "recebido_utc": "2026-11-26T14:51:03.741Z",
  "ativos": {
   "EURUSD": {
    "candle_abertura_utc": "2026-11-26T14:45:00Z",
    "abertura": 1.09815,
    "maxima": 1.09815,
-   "minima": 1.09779,
+   "minima": 1.09776,
    "preco": 1.09788
   },
   "USDJPY": {
@@ -19,16 +19,16 @@
   "US500": {
    "candle_abertura_utc": "2026-11-26T14:45:00Z",
    "abertura": 7229.64,
-   "maxima": 7232.69,
+   "maxima": 7234.05,
    "minima": 7225.86,
-   "preco": 7231.98
+   "preco": 7233.37
   },
   "XAUUSD": {
    "candle_abertura_utc": "2026-11-26T14:45:00Z",
    "abertura": 3577.35,
    "maxima": 3578.68,
    "minima": 3574.73,
-   "preco": 3577.46
+   "preco": 3576.79
   }
  }
 }
