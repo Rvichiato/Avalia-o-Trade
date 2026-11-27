@@ -1,6 +1,6 @@
 {
- "enviado_utc": "2026-11-27T14:47:00Z",
- "recebido_utc": "2026-11-27T14:47:04.083Z",
+ "enviado_utc": "2026-11-27T14:48:00Z",
+ "recebido_utc": "2026-11-27T14:48:03.622Z",
  "ativos": {
   "EURUSD": {
    "candle_abertura_utc": "2026-11-27T14:45:00Z",
@@ -13,22 +13,22 @@
    "candle_abertura_utc": "2026-11-27T14:45:00Z",
    "abertura": 159.475,
    "maxima": 159.483,
-   "minima": 159.464,
-   "preco": 159.464
+   "minima": 159.453,
+   "preco": 159.468
   },
   "US500": {
    "candle_abertura_utc": "2026-11-27T14:45:00Z",
    "abertura": 7239.66,
    "maxima": 7242.32,
-   "minima": 7221.96,
-   "preco": 7221.96
+   "minima": 7217.78,
+   "preco": 7226.21
   },
   "XAUUSD": {
-   "candle_abertura_utc": "2026-11-27T14:30:00Z",
-   "abertura": 3635.8,
-   "maxima": 3641.01,
-   "minima": 3625.4,
-   "preco": 3632.05
+   "candle_abertura_utc": "2026-11-27T14:45:00Z",
+   "abertura": 3631.4,
+   "maxima": 3632.13,
+   "minima": 3628.17,
+   "preco": 3629.13
   }
  }
 }
