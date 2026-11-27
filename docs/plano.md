@@ -32,6 +32,14 @@ Sem filtro: 356 trades, −0,19R (intervalo inteiro negativo). Com filtro de ten
 ## 23/11 · TradingView Premium
 Assinado. Fonte principal passa a ser a Tickmill via TradingView (ponte v2 com 4 ativos, robô com reserva no Yahoo e aviso), mais os indicadores Painel B&R, B&R Nível e B&R Linha para alertas de rompimento → reteste → confirmação no celular. Guia em `tradingview/LEIA-ME.md`. Próximos: ligar a ponte, tapar o histórico de 16/11 em diante com a exportação do gráfico, decidir se as análises de 05h20 e 11h45 voltam a rodar (estão desligadas desde 19/11) e, depois, usar o Deep Backtesting para conferir o teste em Python.
 
+## 23 a 27/11 · o que os testes ensinaram (3 anos de preços da Tickmill, com custos)
+- **Modelo em vigor:** rompimento → reteste → confirmação, filtro de tendência do 4H, linhas do 4H também como gatilho (3 linhas por tempo gráfico, aprovado em 26/11), alvo fixo antes do 1º obstáculo. +0,12R por operação em 146 operações (margem −0,14 a +0,37; 19% de chance de ser ≤ 0). Ainda não provado.
+- **Descartados (não melhoraram):** reteste de nível já rompido (−0,10R, só estudo); origem da perna (neutro); zona com largura máxima (pior); saída pela linha de segurança nas nossas entradas (empate a 12h, pior a 2 dias); manual Tori A+ no 15m (−0,06R com filtro, −0,13R puro).
+- **Sem padrão estável:** linha com 2 × 3 toques (o sinal inverte de um teste para outro); vendas no rompimento de LTA (positivas em 2024 e 2026, negativas em 2025: dependem do momento do mercado).
+- **O que se confirma em todos os testes:** o filtro de tendência é o que mais pesa; os custos levam metade do resultado (+0,24R antes, +0,12R depois).
+- **Próximos testes possíveis, se o Rodrigo quiser:** corte por custo (stop grande o bastante para o custo pesar pouco), repique na linha (Setup 2, nunca testado), mesmo sistema no ouro.
+- **Rotina a partir de 27/11:** mapa da semana no domingo 20h, atualização terça e quinta 09h, vigias às 05h20 e 11h45 que só avisam com plano válido, revisão às 18h47.
+
 ## Pendências com data
 - **23/11:** análises de 05h20 e 11h45 religadas (a partir de 24/11), já com os preços da Tickmill; revisão das 18h47 e pesquisa das 09h10 passam a medir com os candles da Tickmill (`sistema.tickmill_15m`).
 - **Hipótese para testar (19/11):** no US500, em 17/11 e 19/11, o alvo antes do primeiro suporte travou a relação abaixo de 1,5R em dias de queda forte (−150 e −260 pts). Testar no histórico da Tickmill, desenvolvendo em 2024–2025 e validando em 2026: com tendência forte no 4H, usar o 2º obstáculo como alvo, ou sair com parte no 1º e deixar o resto andar com stop móvel.
