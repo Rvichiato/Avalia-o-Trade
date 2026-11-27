@@ -153,6 +153,100 @@ def gerenciar_seguranca(d15, i0, i_a0, direcao, entrada, stop, ativo, a15):
     return float(cs[i]), "tempo", i
 
 
+# ---------------------------------------------------------------- manual "Tori A+" (linha de ação + linha de segurança)
+def gerenciar_linha(d15, i0, direcao, stop, ativo, a15, linha, ancora):
+    """Segura a posição enquanto a linha de segurança não romper no fechamento.
+    linha = (iA, pA, iB, pB) no índice do 15m; ancora = (i, preço) do último fundo (compra) ou topo (venda)
+    usado. A cada novo fundo/topo confirmado além da linha, a linha passa a ligar a âncora anterior a ele
+    (o ponto B anterior vira o novo ponto A), desde que fique mais inclinada e nenhum fechamento entre os
+    dois fure a linha nova. O stop inicial vale dentro do candle."""
+    k = P["pivo_seguranca"]
+    fim = min(len(d15), i0 + P["max_barras_seguranca"])
+    hs, ls, cs, os_ = d15.h.values, d15.l.values, d15.c.values, d15.o.values
+    ext = ls if direcao == "compra" else hs
+    compra = direcao == "compra"
+    iA, pA, iB, pB = linha
+    tol = 0.1 * a15
+    val = lambda i: pA + (pB - pA) * (i - iA) / (iB - iA)
+    incl = lambda: (pB - pA) / (iB - iA)
+    for i in range(i0, fim):
+        brt = d15.index[i] + pd.Timedelta(hours=C["fuso_exibicao_horas"])
+        if C["ativos"][ativo]["sessao"] == "indice" and brt.hour + brt.minute / 60 >= 17.75:
+            return float(os_[i]), "fechamento 17h45", i
+        if brt.weekday() == 4 and brt.hour >= 18:
+            return float(os_[i]), "fim de semana", i
+        if (compra and ls[i] <= stop) or (not compra and hs[i] >= stop):
+            return stop, "stop", i
+        v = val(i)
+        if (compra and cs[i] < v - tol) or (not compra and cs[i] > v + tol):
+            return float(cs[i]), "linha de segurança", i
+        j = i - k
+        if j > ancora[0] and j - k >= 0:
+            jan = ext[j - k:j + k + 1]
+            if ext[j] == (jan.min() if compra else jan.max()) and ((ext[j] > val(j)) if compra else (ext[j] < val(j))):
+                nA, npA = ancora
+                if j > nA:
+                    ninc = (ext[j] - npA) / (j - nA)
+                    mais_inclinada = ninc > incl() if compra else ninc < incl()
+                    lin = npA + ninc * (np.arange(nA, j + 1) - nA)
+                    fura = (cs[nA:j + 1] < lin - tol).any() if compra else (cs[nA:j + 1] > lin + tol).any()
+                    if mais_inclinada and not fura:
+                        iA, pA, iB, pB = nA, npA, j, float(ext[j])
+                ancora = (j, float(ext[j]))
+    i = fim - 1
+    return float(cs[i]), "tempo", i
+
+
+def simular_tori(ativo, d15, i_ini, L, Sg, a15, ctx):
+    """Linha de ação L rompe no fechamento (na sessão), com a linha oposta Sg (segurança) já formada.
+    Entra no fechamento do candle de rompimento; stop logo além da linha de segurança; risco baixo =
+    stop até TORI['risco_max_atr'] ATRs do 15m; sai quando a linha de segurança romper."""
+    pip = C["ativos"][ativo]["pip"]
+    direcao = "venda" if L["tipo"] == "LTA" else "compra"
+    compra = direcao == "compra"
+    i0 = i_ini - 1
+    lv = lambda i: L["valor_agora"] + L["inclinacao_por_hora"] / 4 * (i - i0)
+    sv = lambda i: Sg["valor_agora"] + Sg["inclinacao_por_hora"] / 4 * (i - i0)
+    tol = 0.1 * a15
+    lim = min(len(d15), i_ini + P["validade_plano_barras"])
+    cs, hs, ls = d15.c.values, d15.h.values, d15.l.values
+    for i in range(i_ini, lim):
+        # a linha de segurança rompeu antes da linha de ação: o cenário acabou
+        if (compra and cs[i] < sv(i) - tol) or (not compra and cs[i] > sv(i) + tol):
+            return None
+        rompeu = (cs[i] > lv(i) + tol) if compra else (cs[i] < lv(i) - tol)
+        if not rompeu:
+            continue
+        if not sessao_ok(ativo, d15.index[i]):
+            return None
+        ent = float(cs[i])
+        stop = sv(i) - tol if compra else sv(i) + tol
+        risco = (ent - stop) if compra else (stop - ent)
+        if risco <= 0:
+            return None
+        if risco < max(P["stop_minimo_atr"] * a15, 3 * custo_pips(ativo, ent) * pip):
+            return dict(modo="tori", ativo=ativo, descartado="stop pequeno demais")
+        if risco > TORI["risco_max_atr"] * a15:
+            return dict(modo="tori", ativo=ativo, descartado="risco alto (longe da linha de segurança)")
+        # âncora inicial: último fundo (compra) ou topo (venda) antes da entrada
+        jan = slice(max(0, i - 8), i + 1)
+        ia = jan.start + int(np.argmin(ls[jan]) if compra else np.argmax(hs[jan]))
+        linha = (i0, Sg["valor_agora"], i0 + 4, Sg["valor_agora"] + Sg["inclinacao_por_hora"])
+        sai, mot, j = gerenciar_linha(d15, i + 1, direcao, stop, ativo, a15, linha, (ia, float(ls[ia] if compra else hs[ia])))
+        p = dict(direcao=direcao, stop=stop, alvo=None, rr=None,
+                 origem=dict(tipo=L["tipo"], tf=L["tf"], toques=L["toques"]))
+        reg = _registro("tori", ativo, p, d15, i, i, j, ent, sai, mot, ctx, pip)
+        t_ent = d15.index[i]
+        reg.update(tf_seguranca=Sg["tf"], toques_seguranca=Sg["toques"], risco_atr=round(risco / a15, 2),
+                   idade_linha_h=round((t_ent - pd.Timestamp(L["a_hora"])).total_seconds() / 3600, 1),
+                   a_favor_tendencia=a_favor_da_tendencia(dict(direcao=direcao), ctx["tendencia"]))
+        return reg
+    return None
+
+
+TORI = {"risco_max_atr": 2.0}
+
+
 def simular(ativo, d15, i_ini, p, a15, contexto):
     """Simula um plano a partir do candle i_ini (o primeiro depois da decisão)."""
     pip = C["ativos"][ativo]["pip"]
@@ -281,6 +375,7 @@ def rodar(ativo, log=print):
     fim4 = d4.index + pd.Timedelta(hours=4)
     decisoes = [t for t in fim15 if t.minute == 0 and sessao_ok(ativo, t - pd.Timedelta(minutes=1))]
     trades, funis, descartes = [], [], 0
+    fim_pos = {}  # manual Tori: hora de saída da última posição por direção
     ativos_recentes = []  # (t, direcao, nivel) para não repetir o mesmo setup
     for k, t in enumerate(decisoes):
         c15, c1, c4 = d15[fim15 <= t], d1[fim1 <= t], d4[fim4 <= t]
@@ -294,6 +389,40 @@ def rodar(ativo, log=print):
         a15 = r["atr"]["15m"]
         i_ini = len(c15)
         ctx = dict(t=str(t), tendencia=r["tendencia"])
+        if OPC.get("tori"):
+            preco = float(c15.c.iloc[-1])
+            ativas = [l for tf in ("15m", "1h", "4h") for l in r["linhas"].get(tf, []) if not l["rompida"]]
+            for L in ativas:
+                compra = L["tipo"] == "LTB"
+                if (compra and L["valor_agora"] <= preco) or (not compra and L["valor_agora"] >= preco):
+                    continue  # a linha de ação tem de estar do lado certo do preço
+                if OPC["filtro_tendencia"] and not a_favor_da_tendencia(dict(direcao="compra" if compra else "venda"), r["tendencia"]):
+                    continue
+                if abs(L["valor_agora"] - preco) > 2 * r["atr"]["1h"]:
+                    continue
+                # linha de segurança: a oposta, já formada, do outro lado do preço, a mais próxima
+                opostas = [l for l in ativas if l["tipo"] != L["tipo"] and
+                           ((l["valor_agora"] < preco) if compra else (l["valor_agora"] > preco))]
+                if not opostas:
+                    continue
+                Sg = min(opostas, key=lambda l: abs(l["valor_agora"] - preco))
+                chave = ("compra" if compra else "venda", round(L["valor_agora"] / max(a15, 1e-9)))
+                ativos_recentes = [x for x in ativos_recentes if (t - x[0]) < pd.Timedelta(hours=8)]
+                if any(x[1] == chave[0] and abs(x[2] - L["valor_agora"]) < P["duplicata_atr"] * a15 for x in ativos_recentes):
+                    continue
+                ativos_recentes.append((t, chave[0], L["valor_agora"]))
+                reg = simular_tori(ativo, d15, i_ini, L, Sg, a15, ctx)
+                if reg is None:
+                    continue
+                if "descartado" in reg:
+                    descartes += 1
+                    continue
+                # uma posição por direção de cada vez: não abre outra enquanto a anterior está aberta
+                if reg["t_entrada"] <= fim_pos.get(reg["direcao"], ""):
+                    continue
+                fim_pos[reg["direcao"]] = reg["t_saida"]
+                trades.append(reg)
+            continue
         for p in r["planos"]:
             if OPC["estudo"]:  # estudo: ignora o limite de US$ 2 da conta, mede só em R
                 if not (p["rr"] and p["rr"] >= C["conta"]["rr_minimo"]):
@@ -413,13 +542,18 @@ def main():
     ap.add_argument("--linhas-4h", action="store_true", help="3 linhas por tempo gráfico e linhas do 4H também viram gatilho")
     ap.add_argument("--so-linhas", action="store_true", help="só LTA/LTB viram gatilho; zonas ficam só como alvo/obstáculo")
     ap.add_argument("--zona-max", action="store_true", help="zona horizontal com no máximo 1 ATR do 1h de largura")
+    ap.add_argument("--tori", action="store_true", help="manual Tori A+: linha de ação rompe com a linha de segurança já formada")
+    ap.add_argument("--risco-max-atr", type=float, default=2.0, help="manual Tori: stop até quantos ATR do 15m (risco baixo)")
     ap.add_argument("--saida-seguranca", action="store_true", help="sai pela linha de segurança em vez do alvo fixo (mesmas entradas)")
     ap.add_argument("--max-barras", type=int, default=None, help="limite de candles de 15m dentro da operação na saída pela linha")
     ap.add_argument("--saida", default=os.path.join(S.RAIZ, "testes", pd.Timestamp.now().strftime("%Y-%m-%d")))
     a = ap.parse_args()
     OPC["filtro_tendencia"], OPC["estudo"], OPC["reteste_rompido"] = a.filtro_tendencia, a.estudo, a.reteste_rompido
     OPC.update(origem_perna=a.origem_perna, linhas_4h=a.linhas_4h, so_linhas=a.so_linhas, zona_max=a.zona_max,
-               saida_seguranca=a.saida_seguranca)
+               saida_seguranca=a.saida_seguranca, tori=a.tori)
+    TORI["risco_max_atr"] = a.risco_max_atr
+    if a.tori and not a.max_barras:
+        P["max_barras_seguranca"] = 192
     if a.max_barras:
         P["max_barras_seguranca"] = a.max_barras
     if a.origem_perna:
