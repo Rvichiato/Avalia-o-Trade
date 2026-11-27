@@ -1,0 +1,75 @@
+{
+ "parametros": {
+  "validade_plano_barras": 16,
+  "barras_reteste": 16,
+  "max_barras_posicao": 48,
+  "deslizamento_pips": 0.2,
+  "intervalo_decisao_min": 60,
+  "duplicata_atr": 0.5,
+  "bootstrap": 3000,
+  "stop_minimo_atr": 0.75,
+  "pivo_seguranca": 2,
+  "max_barras_seguranca": 192
+ },
+ "opcoes": {
+  "filtro_tendencia": false,
+  "estudo": false,
+  "reteste_rompido": false,
+  "origem_perna": false,
+  "linhas_4h": false,
+  "so_linhas": false,
+  "zona_max": false,
+  "saida_seguranca": false,
+  "tori": true
+ },
+ "periodos": {
+  "EURUSD": [
+   "2024-01-01 22:00:00+00:00",
+   "2026-11-16 15:45:00+00:00"
+  ],
+  "USDJPY": [
+   "2024-01-01 22:00:00+00:00",
+   "2026-11-16 15:45:00+00:00"
+  ],
+  "US500": [
+   "2024-01-01 23:00:00+00:00",
+   "2026-11-16 15:45:00+00:00"
+  ]
+ },
+ "descartes_R_na_entrada": 5151,
+ "funil": {},
+ "sistema": {
+  "geral": {
+   "n": 0
+  },
+  "sem_custos": {
+   "n": 0
+  },
+  "por_ativo": {},
+  "por_direcao": {},
+  "por_origem": {},
+  "por_sessao": {},
+  "a_favor_tendencia_4h": {},
+  "a_favor_tendencia_1h": {},
+  "linha_vs_zona": {},
+  "atravessou_dado_eua": {},
+  "por_saida": {}
+ },
+ "direto": {
+  "geral": {
+   "n": 0
+  },
+  "sem_custos": {
+   "n": 0
+  },
+  "por_ativo": {},
+  "por_direcao": {},
+  "por_origem": {},
+  "por_sessao": {},
+  "a_favor_tendencia_4h": {},
+  "a_favor_tendencia_1h": {},
+  "linha_vs_zona": {},
+  "atravessou_dado_eua": {},
+  "por_saida": {}
+ }
+}
